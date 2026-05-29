@@ -4,383 +4,459 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
 <title>GDC 지갑</title>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --pri:#0047AB;--pri-dk:#002D7A;--pri-lt:#E8F0FE;
-  --acc:#00C48C;--acc-dk:#00A67A;--acc-lt:#E6FAF5;
-  --gld:#C8951A;--gld-lt:#FEF9E7;
-  --red:#C01C28;--red-lt:#FEE2E2;
-  --org:#C05621;--org-lt:#FEF3E2;
-  --txt:#0D1B3E;--sub:#3D5280;--hint:#7A8BAD;
-  --bdr:#D0D9EE;--bg:#F4F6FB;--sur:#FFFFFF;
-  --font:'Noto Sans KR',sans-serif;
-  --mono:'IBM Plex Mono',monospace;
-  --r:14px;
+  --bg:#f4f4f5;--sur:#fff;
+  --bd:rgba(0,0,0,.08);--bd2:rgba(0,0,0,.15);
+  --t1:#18181b;--t2:#52525b;--t3:#a1a1aa;
+  --brand:#3ecf8e;--brand-dk:#29a873;--brand-bg:rgba(62,207,142,.1);
+  --red:#ef4444;--red-bg:rgba(239,68,68,.08);
+  --font:'Noto Sans KR',-apple-system,sans-serif;
+  --r:8px;--r2:12px;
+}
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#09090b;--sur:#18181b;
+    --bd:rgba(255,255,255,.08);--bd2:rgba(255,255,255,.15);
+    --t1:#fafafa;--t2:#a1a1aa;--t3:#52525b;
+  }
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--font)}
+html,body{height:100%;overflow:hidden;background:var(--bg);font-family:var(--font);-webkit-font-smoothing:antialiased}
 #app{max-width:430px;margin:0 auto;height:100vh;display:flex;flex-direction:column;background:var(--bg);position:relative;overflow:hidden}
 
-/* SCREENS */
-.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;padding-bottom:72px;transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s}
-.screen.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
-.screen.slide-out{transform:translateX(-100%);opacity:0;pointer-events:none}
+/* SCREEN TRANSITIONS */
+.scr{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);overflow-y:auto;padding-bottom:78px;transition:transform .26s cubic-bezier(.4,0,.2,1),opacity .26s}
+.scr.hidden{transform:translateX(100%);opacity:0;pointer-events:none}
+.scr.out{transform:translateX(-100%);opacity:0;pointer-events:none}
 
 /* TOPBAR */
-.topbar{background:var(--sur);padding:14px 18px 12px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bdr);position:sticky;top:0;z-index:10;box-shadow:0 1px 6px rgba(0,18,51,.05)}
-.topbar-logo{width:32px;height:32px;background:linear-gradient(135deg,var(--pri),var(--acc));border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:800;color:#fff;font-family:var(--mono)}
-.topbar-title{font-size:16px;font-weight:700;color:var(--txt);flex:1}
-.topbar-sub{font-size:11px;color:var(--hint)}
-.topbar-back{width:36px;height:36px;border-radius:50%;background:var(--bg);border:none;cursor:pointer;font-size:18px;color:var(--txt);display:flex;align-items:center;justify-content:center}
+.tb{background:var(--sur);padding:14px 16px;display:flex;align-items:center;gap:10px;border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:10;flex-shrink:0}
+.tb-mark{width:32px;height:32px;background:var(--brand);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tb-title{font-size:16px;font-weight:500;color:var(--t1);flex:1}
+.tb-sub{font-size:12px;color:var(--t3);margin-top:1px}
+.tb-back{width:32px;height:32px;border-radius:50%;background:var(--bg);border:.5px solid var(--bd);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2)}
+.tb-badge{display:flex;align-items:center;gap:4px;font-size:12px;color:var(--brand);font-weight:500}
 
-/* WALLET CARD */
-.wallet-card{margin:16px;border-radius:18px;background:linear-gradient(135deg,var(--pri-dk) 0%,var(--pri) 60%,#1565C0 100%);padding:24px;color:#fff;position:relative;overflow:hidden}
-.wallet-card::after{content:'₮';position:absolute;right:-20px;bottom:-30px;font-size:120px;font-weight:900;font-family:var(--mono);color:rgba(255,255,255,.06)}
-.wallet-label{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:6px;font-weight:500}
-.wallet-balance{font-size:36px;font-weight:800;color:#fff;font-family:var(--mono);line-height:1;margin-bottom:4px}
-.wallet-krw{font-size:13px;color:rgba(255,255,255,.6)}
-.wallet-actions{display:flex;gap:10px;margin-top:20px}
-.wallet-btn{flex:1;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);border-radius:10px;padding:11px;font-size:12px;font-weight:700;color:#fff;font-family:var(--font);cursor:pointer;text-align:center;transition:background .15s}
-.wallet-btn:active{background:rgba(255,255,255,.25)}
+/* BALANCE SECTION */
+.bal-section{background:var(--brand);margin:14px;border-radius:var(--r2);padding:32px 20px 24px;position:relative;overflow:hidden}
+.bal-section::after{content:'₮';position:absolute;right:-8px;bottom:-16px;font-size:96px;font-weight:500;color:rgba(0,0,0,.07);pointer-events:none;line-height:1}
+.bal-label{font-size:14px;color:rgba(0,0,0,.5);font-weight:500;margin-bottom:8px;display:flex;align-items:center;gap:5px}
+.bal-amount{font-size:42px;font-weight:500;color:#fff;font-variant-numeric:tabular-nums;line-height:1;margin-bottom:5px}
+.bal-fiat{font-size:14px;color:rgba(0,0,0,.45)}
+.bal-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:22px;position:relative;z-index:1}
+.bal-btn{background:rgba(0,0,0,.1);border:none;border-radius:var(--r);padding:14px 4px 12px;font-size:13px;font-weight:500;color:rgba(0,0,0,.65);font-family:var(--font);cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;transition:background .12s}
+.bal-btn:active{background:rgba(0,0,0,.18)}
+.bal-btn svg{opacity:.8}
 
-/* QUICK MENU */
-.quick-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px 16px}
-.quick-item{background:var(--sur);border-radius:12px;border:1px solid var(--bdr);padding:14px 8px;text-align:center;cursor:pointer;transition:all .15s}
-.quick-item:active{background:var(--pri-lt)}
-.quick-icon{font-size:24px;margin-bottom:6px}
-.quick-label{font-size:11px;font-weight:600;color:var(--sub)}
+/* SECTION HEADER */
+.sec-hd{padding:16px 16px 8px;display:flex;align-items:center;justify-content:space-between}
+.sec-title{font-size:13px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.6px}
 
-/* SECTION */
-.sec-head{padding:0 18px 8px;display:flex;align-items:center;justify-content:space-between}
-.sec-title{font-size:13px;font-weight:700;color:var(--txt)}
-.sec-more{font-size:12px;color:var(--pri);cursor:pointer}
+/* CARD LIST */
+.clist{padding:0 14px 4px;display:flex;flex-direction:column;gap:8px}
 
-/* CARDS */
-.card-list{padding:0 16px 14px;display:flex;flex-direction:column;gap:10px}
-.info-card{background:var(--sur);border:1px solid var(--bdr);border-radius:12px;padding:14px 16px;display:flex;align-items:center;gap:12px}
-.info-icon{width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
-.info-icon.pri{background:var(--pri-lt)}
-.info-icon.acc{background:var(--acc-lt)}
-.info-icon.gld{background:var(--gld-lt)}
-.info-icon.red{background:var(--red-lt)}
-.info-body{flex:1;min-width:0}
-.info-title{font-size:13px;font-weight:600;color:var(--txt)}
-.info-sub{font-size:11px;color:var(--hint);margin-top:2px}
-.info-val{font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0;color:var(--pri)}
-.info-val.grn{color:var(--acc-dk)}
-.info-val.red{color:var(--red)}
-.info-val.gld{color:var(--gld)}
+/* ROW CARD */
+.row-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:15px 16px;display:flex;align-items:center;gap:12px}
+.row-ic{width:40px;height:40px;border-radius:var(--r);background:var(--bg);border:.5px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2)}
+.row-body{flex:1;min-width:0}
+.row-title{font-size:14px;font-weight:500;color:var(--t1)}
+.row-sub{font-size:12px;color:var(--t3);margin-top:2px}
+.row-val{font-size:14px;font-weight:500;flex-shrink:0;font-variant-numeric:tabular-nums;color:var(--t1)}
+.row-val.ok{color:var(--brand)}
+.row-val.minus{color:var(--red)}
+.row-arrow{color:var(--t3);flex-shrink:0}
 
-/* LEDGER ITEMS */
-.ledger-item{background:var(--sur);border-radius:12px;border:1px solid var(--bdr);padding:13px 15px;display:flex;align-items:center;gap:12px}
-.ledger-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+/* LEDGER ITEM */
+.ledger-item{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px 16px;display:flex;align-items:center;gap:12px}
+.ledger-ic{width:38px;height:38px;border-radius:var(--r);background:var(--bg);border:.5px solid var(--bd);display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--t2)}
 .ledger-info{flex:1;min-width:0}
-.ledger-title{font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.ledger-meta{font-size:11px;color:var(--hint);margin-top:2px}
-.ledger-amt{font-family:var(--mono);font-size:14px;font-weight:700;flex-shrink:0}
-.ledger-amt.plus{color:var(--acc-dk)}
+.ledger-title{font-size:14px;font-weight:500;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ledger-meta{font-size:12px;color:var(--t3);margin-top:2px}
+.ledger-amt{font-size:14px;font-weight:500;flex-shrink:0;font-variant-numeric:tabular-nums}
+.ledger-amt.plus{color:var(--brand)}
 .ledger-amt.minus{color:var(--red)}
 
 /* FORM SCREEN */
-.form-body{padding:16px 16px 100px}
-.form-group{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
-.form-row{display:flex;align-items:center;padding:13px 16px;border-bottom:1px solid var(--bdr);gap:12px}
+.form-body{padding:14px 14px 80px}
+.form-panel{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:12px}
+.form-row{display:flex;align-items:center;padding:14px 16px;border-bottom:.5px solid var(--bd);gap:10px}
 .form-row:last-child{border-bottom:none}
-.form-label{font-size:13px;color:var(--sub);width:90px;flex-shrink:0}
-.form-input{flex:1;border:none;background:none;font-size:14px;font-family:var(--font);color:var(--txt);outline:none}
-.form-unit{font-size:12px;color:var(--hint)}
-.form-select{flex:1;border:none;background:none;font-size:14px;font-family:var(--font);color:var(--txt);outline:none;cursor:pointer}
+.form-lbl{font-size:13px;color:var(--t2);width:80px;flex-shrink:0}
+.form-input{flex:1;border:none;background:none;font-size:14px;font-family:var(--font);color:var(--t1);outline:none}
+.form-input::placeholder{color:var(--t3)}
+.form-unit{font-size:13px;color:var(--t3)}
+.form-select{flex:1;border:none;background:none;font-size:14px;font-family:var(--font);color:var(--t1);outline:none;cursor:pointer;-webkit-appearance:none}
 
-/* RESULT CARD */
-.result-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);overflow:hidden;margin-bottom:14px}
-.result-hd{background:var(--bg);padding:11px 16px;font-size:12px;font-weight:700;color:var(--hint);letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--bdr)}
-.result-row{display:flex;justify-content:space-between;align-items:center;padding:11px 16px;border-bottom:1px solid var(--bdr);font-size:13px}
+/* RESULT PANEL */
+.result-panel{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:12px}
+.result-hd{padding:9px 16px;border-bottom:.5px solid var(--bd);font-size:12px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.5px;background:var(--bg)}
+.result-row{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:.5px solid var(--bd);font-size:14px}
 .result-row:last-child{border-bottom:none}
-.result-key{color:var(--sub)}
-.result-val{font-family:var(--mono);font-weight:600;color:var(--txt)}
-.result-val.big{font-size:16px;color:var(--pri)}
-.result-val.ok{color:var(--acc-dk)}
-.result-val.warn{color:var(--org)}
+.result-key{color:var(--t2)}
+.result-val{font-weight:500;color:var(--t1);font-variant-numeric:tabular-nums}
+.result-val.big{font-size:18px}
+.result-val.ok{color:var(--brand)}
+.result-val.warn{color:#f59e0b}
 .result-val.danger{color:var(--red)}
 
-/* CREDIT GRADE */
-.grade-big{display:inline-flex;align-items:center;justify-content:center;width:52px;height:30px;border-radius:6px;font-size:16px;font-weight:800;font-family:var(--mono)}
-.g-AAA{background:#E6F4EC;color:#1B6B3A}
-.g-AA{background:#EBF3FC;color:#0047AB}
-.g-A{background:#EBF8FF;color:#0369A1}
-.g-BBB{background:#FEF9E7;color:#92400E}
-.g-BB{background:#FEF3E2;color:#C05621}
-.g-C{background:#FEE2E2;color:#C01C28}
+/* GRADE CHIPS */
+.grade{display:inline-flex;align-items:center;justify-content:center;width:38px;height:22px;border-radius:4px;font-size:12px;font-weight:500;border:.5px solid}
+.g-AAA{color:#166534;background:#dcfce7;border-color:#86efac}
+.g-AA{color:#1e40af;background:#dbeafe;border-color:#93c5fd}
+.g-A{color:#075985;background:#e0f2fe;border-color:#7dd3fc}
+.g-BBB{color:#854d0e;background:#fef9c3;border-color:#fde047}
+.g-BB{color:#9a3412;background:#ffedd5;border-color:#fdba74}
+.g-C{color:#991b1b;background:#fee2e2;border-color:#fca5a5}
 
-/* ACTION BTNS */
-.action-btn{width:100%;margin:0 0 10px;background:var(--acc);color:#fff;border:none;border-radius:var(--r);padding:16px;font-size:15px;font-weight:700;font-family:var(--font);cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
-.action-btn:active{transform:scale(.98);background:var(--acc-dk)}
-.action-btn.pri{background:var(--pri)}
-.action-btn.pri:active{background:var(--pri-dk)}
-.action-btn.out{background:transparent;border:1.5px solid var(--pri);color:var(--pri)}
-.action-btn:disabled{background:#b0bdd8;cursor:not-allowed}
-.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+/* BUTTONS */
+.btn-primary{width:100%;margin-bottom:8px;background:var(--brand);color:#fff;border:none;border-radius:var(--r);padding:15px;font-size:15px;font-weight:500;font-family:var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+.btn-primary:active{background:var(--brand-dk)}
+.btn-primary:disabled{background:var(--t3);cursor:not-allowed}
+.btn-secondary{width:100%;margin-bottom:8px;background:var(--sur);color:var(--t1);border:.5px solid var(--bd2);border-radius:var(--r);padding:15px;font-size:15px;font-weight:500;font-family:var(--font);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:background .15s}
+.btn-secondary:active{background:var(--bg)}
+
+/* NOTICE */
+.notice{background:var(--bg);border:.5px solid var(--bd);border-radius:var(--r);padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--t2);line-height:1.55;display:flex;align-items:flex-start;gap:8px}
+
+/* SPINNER */
+.spin{width:14px;height:14px;border:1.5px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* SUCCESS SCREEN */
-.success-banner{background:linear-gradient(135deg,var(--acc-dk),var(--acc));padding:36px 20px 28px;text-align:center;color:#fff}
-.success-icon{width:64px;height:64px;background:rgba(255,255,255,.25);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 14px}
-.success-title{font-size:20px;font-weight:700;margin-bottom:6px}
-.success-desc{font-size:13px;opacity:.85}
+/* LIVE DOT */
+.dot-live{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 2s infinite;flex-shrink:0}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
 
 /* BOTTOM NAV */
-.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:70px;background:var(--sur);border-top:1px solid var(--bdr);display:flex;z-index:200;box-shadow:0 -4px 16px rgba(0,18,51,.07)}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;padding-bottom:6px;color:var(--hint);transition:color .15s}
-.nav-item.active{color:var(--pri)}
-.nav-icon{font-size:22px;line-height:1}
-.nav-label{font-size:10px;font-weight:500}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;height:70px;background:var(--sur);border-top:.5px solid var(--bd);display:flex;align-items:stretch;z-index:200}
+.nitem{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;border:none;background:none;color:var(--t3);transition:color .12s;padding-bottom:2px}
+.nitem.act{color:var(--brand)}
+.nitem-lbl{font-size:12px;font-weight:500;font-family:var(--font)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:40px 0;color:var(--t3);font-size:14px;line-height:1.6}
+
+/* SVG ICON HELPER */
+svg.ic{display:block;flex-shrink:0}
 </style>
 </head>
 <body>
 <div id="app">
 
-  <!-- ─── HOME ─── -->
-  <div class="screen" id="screen-home">
-    <div class="topbar">
-      <div class="topbar-logo">₮</div>
-      <div style="flex:1"><div class="topbar-title">GDC 지갑</div><div class="topbar-sub">Gopang Digital Currency</div></div>
-      <div style="display:flex;align-items:center;gap:5px;font-size:11px;color:var(--acc);font-weight:600">
-        <span style="width:6px;height:6px;border-radius:50%;background:var(--acc);display:inline-block;animation:blink 1.8s infinite"></span>연동
-      </div>
+<!-- ══════════════════════ HOME ══════════════════════ -->
+<div class="scr" id="scr-home">
+  <div class="tb">
+    <div class="tb-mark">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="#fff" stroke="none"/></svg>
     </div>
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+    <div style="flex:1"><div class="tb-title">GDC 지갑</div><div class="tb-sub">Gopang Digital Currency</div></div>
+    <div class="tb-badge"><span class="dot-live"></span>연동</div>
+  </div>
 
-    <!-- 잔액 카드 -->
-    <div class="wallet-card">
-      <div class="wallet-label">GDC 잔액</div>
-      <div class="wallet-balance" id="w-balance">₮—</div>
-      <div class="wallet-krw" id="w-krw">≈ KRW —원</div>
-      <div class="wallet-actions">
-        <button class="wallet-btn" onclick="goScreen('screen-transfer')">↑ 이체</button>
-        <button class="wallet-btn" onclick="goScreen('screen-deposit')">🏦 예금</button>
-        <button class="wallet-btn" onclick="goScreen('screen-loan')">💳 대출</button>
-        <button class="wallet-btn" onclick="goScreen('screen-credit')">📊 신용</button>
-      </div>
+  <!-- 잔액 카드 -->
+  <div class="bal-section">
+    <div class="bal-label">
+      <svg class="ic" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.5)" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></svg>
+      GDC 잔액
     </div>
-
-    <!-- 퀵 메뉴 -->
-    <div class="quick-grid">
-      <div class="quick-item" onclick="goScreen('screen-transfer')"><div class="quick-icon">↔️</div><div class="quick-label">이체</div></div>
-      <div class="quick-item" onclick="goScreen('screen-deposit')"><div class="quick-icon">🏦</div><div class="quick-label">예금</div></div>
-      <div class="quick-item" onclick="goScreen('screen-loan')"><div class="quick-icon">💳</div><div class="quick-label">대출</div></div>
-      <div class="quick-item" onclick="goScreen('screen-credit')"><div class="quick-icon">📊</div><div class="quick-label">신용평가</div></div>
-    </div>
-
-    <!-- 은행 상품 요약 -->
-    <div class="sec-head"><span class="sec-title">은행 상품</span></div>
-    <div class="card-list">
-      <div class="info-card">
-        <div class="info-icon acc">🏦</div>
-        <div class="info-body"><div class="info-title">예금 금리</div><div class="info-sub">최고 연 6.5% · 일복리 자동</div></div>
-        <div class="info-val grn">연 6.5%</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon pri">💳</div>
-        <div class="info-body"><div class="info-title">대출 금리</div><div class="info-sub">AI 신용평가 0.1초 · AAA 기준</div></div>
-        <div class="info-val">연 2.0%~</div>
-      </div>
-      <div class="info-card">
-        <div class="info-icon gld">🌏</div>
-        <div class="info-body"><div class="info-title">FIAT POOL 환전</div><div class="info-sub">KRW·USD·EUR·JPY 즉시 교환</div></div>
-        <div class="info-val gld">수수료 0%</div>
-      </div>
-    </div>
-
-    <!-- 최근 거래 -->
-    <div class="sec-head"><span class="sec-title">최근 거래</span></div>
-    <div class="card-list" id="home-ledger">
-      <div style="text-align:center;padding:24px;color:var(--hint);font-size:13px">불러오는 중…</div>
-    </div>
-
-    <div class="bottom-nav">
-      <button class="nav-item active"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></button>
-      <button class="nav-item" onclick="goScreen('screen-deposit')"><div class="nav-icon">🏦</div><div class="nav-label">예금</div></button>
-      <button class="nav-item" onclick="goScreen('screen-loan')"><div class="nav-icon">💳</div><div class="nav-label">대출</div></button>
-      <button class="nav-item" onclick="goScreen('screen-transfer')"><div class="nav-icon">↔️</div><div class="nav-label">이체</div></button>
-      <button class="nav-item" onclick="goScreen('screen-mypage')"><div class="nav-icon">👤</div><div class="nav-label">내 정보</div></button>
+    <div class="bal-amount" id="w-bal" style="opacity:.4;letter-spacing:2px">₮ · · ·</div>
+    <div class="bal-fiat" id="w-fiat" style="opacity:.5">≈ KRW —원</div>
+    <div class="bal-actions">
+      <button class="bal-btn" onclick="goScr('scr-transfer')">
+        <svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        이체
+      </button>
+      <button class="bal-btn" onclick="goScr('scr-deposit')">
+        <svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        예금
+      </button>
+      <button class="bal-btn" onclick="goScr('scr-loan')">
+        <svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+        대출
+      </button>
+      <button class="bal-btn" onclick="goScr('scr-credit')">
+        <svg class="ic" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,.65)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        신용
+      </button>
     </div>
   </div>
 
-  <!-- ─── TRANSFER ─── -->
-  <div class="screen hidden" id="screen-transfer">
-    <div class="topbar"><button class="topbar-back" onclick="goBack()">←</button><div class="topbar-title">GDC 이체</div></div>
-    <div class="form-body">
-      <div class="form-group">
-        <div class="form-row"><span class="form-label">수신자 GUID</span><input class="form-input" id="t-to" placeholder="bbbbbbbb-…" type="text"></div>
-        <div class="form-row"><span class="form-label">금액</span><input class="form-input" id="t-amount" placeholder="0" type="number" min="1"><span class="form-unit">₮</span></div>
-        <div class="form-row"><span class="form-label">메모</span><input class="form-input" id="t-memo" placeholder="상품 대금 지급 등" type="text"></div>
-      </div>
-      <div class="result-card">
-        <div class="result-hd">이체 정보</div>
-        <div class="result-row"><span class="result-key">현재 잔액</span><span class="result-val" id="t-balance">₮—</span></div>
-        <div class="result-row"><span class="result-key">이체 후 잔액</span><span class="result-val" id="t-after">₮—</span></div>
-        <div class="result-row"><span class="result-key">수수료</span><span class="result-val ok">없음</span></div>
-        <div class="result-row"><span class="result-key">서명 방식</span><span class="result-val">ED25519</span></div>
-      </div>
-      <div style="background:var(--pri-lt);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--pri);line-height:1.6">
-        🔐 개인키는 브라우저 내에서만 사용됩니다. 서버로 전송되지 않습니다.
-      </div>
-      <button class="action-btn pri" id="transfer-btn" onclick="doTransfer()"><span>↑</span> <span id="transfer-btn-txt">이체 실행</span></button>
-      <button class="action-btn out" onclick="goBack()">취소</button>
-    </div>
+  <!-- 최근 거래 -->
+  <div class="sec-hd">
+    <span class="sec-title">최근 거래</span>
+  </div>
+  <div class="clist" id="home-ledger">
+    <div class="empty">불러오는 중…</div>
   </div>
 
-  <!-- ─── DEPOSIT ─── -->
-  <div class="screen hidden" id="screen-deposit">
-    <div class="topbar"><button class="topbar-back" onclick="goBack()">←</button><div class="topbar-title">예금 개설</div></div>
-    <div class="form-body">
-      <div class="form-group">
-        <div class="form-row">
-          <span class="form-label">상품 선택</span>
-          <select class="form-select" id="dep-product" onchange="updateDepCalc()">
-            <option value="demand">요구불예금 — 연 3.0%</option>
-            <option value="time_7">7일 정기 — 연 4.0%</option>
-            <option value="time_30">30일 정기 — 연 5.0%</option>
-            <option value="time_365">365일 정기 — 연 6.5%</option>
-          </select>
-        </div>
-        <div class="form-row"><span class="form-label">예치 금액</span><input class="form-input" id="dep-amount" placeholder="0" type="number" min="1000" oninput="updateDepCalc()"><span class="form-unit">₮</span></div>
-      </div>
-      <div class="result-card">
-        <div class="result-hd">예상 이자</div>
-        <div class="result-row"><span class="result-key">연이율</span><span class="result-val ok" id="dep-rate">3.0%</span></div>
-        <div class="result-row"><span class="result-key">일일 이자</span><span class="result-val ok" id="dep-daily">₮0</span></div>
-        <div class="result-row"><span class="result-key">월 이자</span><span class="result-val ok" id="dep-monthly">₮0</span></div>
-        <div class="result-row"><span class="result-key">연 이자</span><span class="result-val ok" id="dep-annual">₮0</span></div>
-      </div>
-      <button class="action-btn acc" onclick="openDeposit()">🏦 예금 개설</button>
-      <button class="action-btn out" onclick="goBack()">취소</button>
-    </div>
+  <div class="bnav">
+    <button class="nitem act">
+      <svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="nitem-lbl">홈</span>
+    </button>
+    <button class="nitem" onclick="goScr('scr-deposit')">
+      <svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span class="nitem-lbl">예금</span>
+    </button>
+    <button class="nitem" onclick="goScr('scr-loan')">
+      <svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      <span class="nitem-lbl">대출</span>
+    </button>
+    <button class="nitem" onclick="goScr('scr-transfer')">
+      <svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <span class="nitem-lbl">이체</span>
+    </button>
+    <button class="nitem" onclick="goScr('scr-mypage')">
+      <svg class="ic" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span class="nitem-lbl">내 정보</span>
+    </button>
   </div>
-
-  <!-- ─── LOAN ─── -->
-  <div class="screen hidden" id="screen-loan">
-    <div class="topbar"><button class="topbar-back" onclick="goBack()">←</button><div class="topbar-title">대출 신청</div></div>
-    <div class="form-body">
-      <div class="form-group">
-        <div class="form-row"><span class="form-label">대출 금액</span><input class="form-input" id="loan-amount" placeholder="0" type="number" min="1"><span class="form-unit">₮</span></div>
-        <div class="form-row">
-          <span class="form-label">상환 기간</span>
-          <select class="form-select" id="loan-term">
-            <option value="6">6개월</option>
-            <option value="12" selected>12개월</option>
-            <option value="24">24개월</option>
-            <option value="36">36개월</option>
-          </select>
-        </div>
-        <div class="form-row">
-          <span class="form-label">상환 방식</span>
-          <select class="form-select" id="loan-method">
-            <option value="equal_payment">원리금균등</option>
-            <option value="equal_principal">원금균등</option>
-            <option value="bullet">만기일시</option>
-          </select>
-        </div>
-      </div>
-      <div style="background:var(--pri-lt);border-radius:10px;padding:12px 14px;margin-bottom:14px;font-size:12px;color:var(--pri);line-height:1.6">
-        🤖 신용평가를 먼저 진행하면 정확한 한도와 금리를 확인할 수 있습니다.
-      </div>
-      <button class="action-btn" style="background:var(--org)" onclick="goScreen('screen-credit')">📊 신용평가 먼저 받기</button>
-      <button class="action-btn pri" onclick="applyLoan()">💳 대출 신청</button>
-      <button class="action-btn out" onclick="goBack()">취소</button>
-    </div>
-  </div>
-
-  <!-- ─── CREDIT ─── -->
-  <div class="screen hidden" id="screen-credit">
-    <div class="topbar"><button class="topbar-back" onclick="goBack()">←</button><div class="topbar-title">AI 신용평가</div></div>
-    <div class="form-body">
-      <div style="background:linear-gradient(135deg,var(--pri-dk),var(--pri));border-radius:14px;padding:20px;color:#fff;margin-bottom:14px;text-align:center">
-        <div style="font-size:32px;margin-bottom:8px">🤖</div>
-        <div style="font-size:15px;font-weight:700;margin-bottom:4px">AI 재무제표 신용평가</div>
-        <div style="font-size:12px;opacity:.75">재무제표 4지표 분석 · 목표 0.1초</div>
-      </div>
-
-      <div class="result-card" id="credit-result-card" style="display:none">
-        <div class="result-hd">신용평가 결과</div>
-        <div class="result-row"><span class="result-key">신용점수</span><span class="result-val big" id="cr-score">—</span></div>
-        <div class="result-row"><span class="result-key">신용등급</span><span id="cr-grade-wrap">—</span></div>
-        <div class="result-row"><span class="result-key">대출 금리</span><span class="result-val" id="cr-rate">—</span></div>
-        <div class="result-row"><span class="result-key">대출 한도</span><span class="result-val" id="cr-limit">—</span></div>
-        <div class="result-row"><span class="result-key">평가 시간</span><span class="result-val ok" id="cr-time">—</span></div>
-      </div>
-
-      <div class="result-card" id="credit-indicators" style="display:none">
-        <div class="result-hd">4대 지표</div>
-        <div class="result-row"><span class="result-key">유동비율 (25%)</span><span class="result-val" id="cr-liq">—</span></div>
-        <div class="result-row"><span class="result-key">부채비율 (25%)</span><span class="result-val" id="cr-debt">—</span></div>
-        <div class="result-row"><span class="result-key">영업이익률 (30%)</span><span class="result-val" id="cr-margin">—</span></div>
-        <div class="result-row"><span class="result-key">현금흐름비율 (20%)</span><span class="result-val" id="cr-cf">—</span></div>
-      </div>
-
-      <button class="action-btn pri" id="credit-btn" onclick="runCredit()">📊 신용평가 시작</button>
-      <button class="action-btn out" onclick="goBack()">돌아가기</button>
-    </div>
-  </div>
-
-  <!-- ─── MYPAGE ─── -->
-  <div class="screen hidden" id="screen-mypage">
-    <div style="background:linear-gradient(135deg,var(--pri-dk),var(--pri));padding:28px 20px 24px;color:#fff;text-align:center">
-      <div style="width:64px;height:64px;background:rgba(255,255,255,.15);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:26px;margin:0 auto 10px">👤</div>
-      <div style="font-size:17px;font-weight:700" id="mp-name">—</div>
-      <div style="font-size:11px;opacity:.6;font-family:var(--mono);margin-top:2px" id="mp-guid">guid: —</div>
-      <div style="display:flex;gap:24px;justify-content:center;margin-top:16px">
-        <div><div style="font-size:18px;font-weight:800;font-family:var(--mono)" id="mp-balance">₮—</div><div style="font-size:10px;opacity:.7">GDC 잔액</div></div>
-        <div><div style="font-size:18px;font-weight:800;font-family:var(--mono)" id="mp-revenue">₮—</div><div style="font-size:10px;opacity:.7">연간 매출</div></div>
-      </div>
-    </div>
-    <div style="padding:16px 16px 100px">
-      <div style="background:var(--sur);border-radius:var(--r);border:1px solid var(--bdr);overflow:hidden;margin-bottom:14px">
-        <div style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bdr);gap:12px;cursor:pointer" onclick="goScreen('screen-transfer')"><span style="font-size:20px;width:28px;text-align:center">↔️</span><span style="flex:1;font-size:14px">GDC 이체</span><span style="color:var(--hint)">›</span></div>
-        <div style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bdr);gap:12px;cursor:pointer" onclick="goScreen('screen-deposit')"><span style="font-size:20px;width:28px;text-align:center">🏦</span><span style="flex:1;font-size:14px">예금 개설</span><span style="color:var(--hint)">›</span></div>
-        <div style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bdr);gap:12px;cursor:pointer" onclick="goScreen('screen-credit')"><span style="font-size:20px;width:28px;text-align:center">📊</span><span style="flex:1;font-size:14px">신용평가</span><span style="color:var(--hint)">›</span></div>
-        <div style="display:flex;align-items:center;padding:14px 16px;gap:12px;cursor:pointer" onclick="location.href='dashboard.html'"><span style="font-size:20px;width:28px;text-align:center">🖥</span><span style="flex:1;font-size:14px">관리자 대시보드</span><span style="color:var(--hint)">›</span></div>
-      </div>
-      <div style="background:var(--sur);border-radius:var(--r);border:1px solid var(--bdr);overflow:hidden">
-        <div style="display:flex;align-items:center;padding:14px 16px;border-bottom:1px solid var(--bdr);gap:12px;cursor:pointer" onclick="location.href='https://gopang.net'"><span style="font-size:20px;width:28px;text-align:center">🏠</span><span style="flex:1;font-size:14px">고팡 홈</span><span style="color:var(--hint)">›</span></div>
-        <div style="display:flex;align-items:center;padding:14px 16px;gap:12px;cursor:pointer" onclick="location.href='index.html'"><span style="font-size:20px;width:28px;text-align:center">ℹ️</span><span style="flex:1;font-size:14px">GDC 소개</span><span style="color:var(--hint)">›</span></div>
-      </div>
-    </div>
-    <div class="bottom-nav">
-      <button class="nav-item" onclick="goScreen('screen-home')"><div class="nav-icon">🏠</div><div class="nav-label">홈</div></button>
-      <button class="nav-item" onclick="goScreen('screen-deposit')"><div class="nav-icon">🏦</div><div class="nav-label">예금</div></button>
-      <button class="nav-item" onclick="goScreen('screen-loan')"><div class="nav-icon">💳</div><div class="nav-label">대출</div></button>
-      <button class="nav-item" onclick="goScreen('screen-transfer')"><div class="nav-icon">↔️</div><div class="nav-label">이체</div></button>
-      <button class="nav-item active"><div class="nav-icon">👤</div><div class="nav-label">내 정보</div></button>
-    </div>
-  </div>
-
 </div>
+
+<!-- ══════════════════════ TRANSFER ══════════════════════ -->
+<div class="scr hidden" id="scr-transfer">
+  <div class="tb">
+    <button class="tb-back" onclick="goBack()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="tb-title">GDC 이체</div>
+  </div>
+  <div class="form-body">
+    <div class="form-panel">
+      <div class="form-row">
+        <span class="form-lbl">수신자</span>
+        <input class="form-input" id="t-to" placeholder="GUID 입력…" type="text">
+      </div>
+      <div class="form-row">
+        <span class="form-lbl">금액</span>
+        <input class="form-input" id="t-amount" placeholder="0" type="number" min="1" oninput="updateTAfter()">
+        <span class="form-unit">₮</span>
+      </div>
+      <div class="form-row">
+        <span class="form-lbl">메모</span>
+        <input class="form-input" id="t-memo" placeholder="선택 입력" type="text">
+      </div>
+    </div>
+    <div class="result-panel">
+      <div class="result-hd">이체 정보</div>
+      <div class="result-row"><span class="result-key">현재 잔액</span><span class="result-val" id="t-bal">₮—</span></div>
+      <div class="result-row"><span class="result-key">이체 후 잔액</span><span class="result-val" id="t-after">₮—</span></div>
+      <div class="result-row"><span class="result-key">수수료</span><span class="result-val ok">없음</span></div>
+      <div class="result-row"><span class="result-key">서명</span><span class="result-val">ED25519</span></div>
+    </div>
+    <div class="notice">
+      <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;color:var(--t3);margin-top:1px" aria-hidden="true"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span>개인키는 브라우저 내에서만 사용됩니다. 서버로 전송되지 않습니다.</span>
+    </div>
+    <button class="btn-primary" id="t-btn" onclick="doTransfer()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <span id="t-btn-txt">이체 실행</span>
+    </button>
+    <button class="btn-secondary" onclick="goBack()">취소</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ DEPOSIT ══════════════════════ -->
+<div class="scr hidden" id="scr-deposit">
+  <div class="tb">
+    <button class="tb-back" onclick="goBack()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="tb-title">예금 개설</div>
+  </div>
+  <div class="form-body">
+    <div class="form-panel">
+      <div class="form-row">
+        <span class="form-lbl">상품</span>
+        <select class="form-select" id="dep-prod" onchange="calcDep()">
+          <option value="demand">요구불 — 연 3.0%</option>
+          <option value="time_7">7일 정기 — 연 4.0%</option>
+          <option value="time_30">30일 정기 — 연 5.0%</option>
+          <option value="time_365">365일 정기 — 연 6.5%</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <span class="form-lbl">예치 금액</span>
+        <input class="form-input" id="dep-amt" placeholder="0" type="number" min="1000" oninput="calcDep()">
+        <span class="form-unit">₮</span>
+      </div>
+    </div>
+    <div class="result-panel">
+      <div class="result-hd">예상 이자</div>
+      <div class="result-row"><span class="result-key">연이율</span><span class="result-val ok" id="dep-rate">3.0%</span></div>
+      <div class="result-row"><span class="result-key">일일 이자</span><span class="result-val ok" id="dep-daily">₮0</span></div>
+      <div class="result-row"><span class="result-key">월 이자</span><span class="result-val ok" id="dep-monthly">₮0</span></div>
+      <div class="result-row"><span class="result-key">연 이자</span><span class="result-val ok" id="dep-annual">₮0</span></div>
+    </div>
+    <button class="btn-primary" onclick="openDep()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      예금 개설
+    </button>
+    <button class="btn-secondary" onclick="goBack()">취소</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ LOAN ══════════════════════ -->
+<div class="scr hidden" id="scr-loan">
+  <div class="tb">
+    <button class="tb-back" onclick="goBack()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="tb-title">대출 신청</div>
+  </div>
+  <div class="form-body">
+    <div class="form-panel">
+      <div class="form-row">
+        <span class="form-lbl">대출 금액</span>
+        <input class="form-input" id="ln-amt" placeholder="0" type="number" min="1">
+        <span class="form-unit">₮</span>
+      </div>
+      <div class="form-row">
+        <span class="form-lbl">상환 기간</span>
+        <select class="form-select" id="ln-term">
+          <option value="6">6개월</option>
+          <option value="12" selected>12개월</option>
+          <option value="24">24개월</option>
+          <option value="36">36개월</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <span class="form-lbl">상환 방식</span>
+        <select class="form-select" id="ln-method">
+          <option value="equal_payment">원리금균등</option>
+          <option value="equal_principal">원금균등</option>
+          <option value="bullet">만기일시</option>
+        </select>
+      </div>
+    </div>
+    <div class="notice">
+      <svg class="ic" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;color:var(--t3);margin-top:1px" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r=".5" fill="currentColor"/></svg>
+      <span>신용평가를 먼저 받으면 정확한 한도와 금리를 확인할 수 있습니다.</span>
+    </div>
+    <button class="btn-secondary" onclick="goScr('scr-credit')">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      신용평가 먼저 받기
+    </button>
+    <button class="btn-primary" onclick="applyLoan()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+      대출 신청
+    </button>
+    <button class="btn-secondary" onclick="goBack()">취소</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ CREDIT ══════════════════════ -->
+<div class="scr hidden" id="scr-credit">
+  <div class="tb">
+    <button class="tb-back" onclick="goBack()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <div class="tb-title">AI 신용평가</div>
+  </div>
+  <div class="form-body">
+    <div class="notice" style="align-items:center">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="color:var(--brand);flex-shrink:0" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>
+      <span>재무제표 4지표 자동 분석 · 유동비율 · 부채비율 · 영업이익률 · 현금흐름비율</span>
+    </div>
+    <div class="result-panel" id="cr-card" style="display:none">
+      <div class="result-hd">평가 결과</div>
+      <div class="result-row"><span class="result-key">신용점수</span><span class="result-val big" id="cr-score">—</span></div>
+      <div class="result-row"><span class="result-key">신용등급</span><span id="cr-grade-wrap">—</span></div>
+      <div class="result-row"><span class="result-key">대출 금리</span><span class="result-val" id="cr-rate">—</span></div>
+      <div class="result-row"><span class="result-key">대출 한도</span><span class="result-val" id="cr-limit">—</span></div>
+      <div class="result-row"><span class="result-key">평가 시간</span><span class="result-val ok" id="cr-time">—</span></div>
+    </div>
+    <div class="result-panel" id="cr-ind" style="display:none">
+      <div class="result-hd">세부 지표</div>
+      <div class="result-row"><span class="result-key">유동비율 (25%)</span><span class="result-val" id="cr-liq">—</span></div>
+      <div class="result-row"><span class="result-key">부채비율 (25%)</span><span class="result-val" id="cr-debt">—</span></div>
+      <div class="result-row"><span class="result-key">영업이익률 (30%)</span><span class="result-val" id="cr-margin">—</span></div>
+      <div class="result-row"><span class="result-key">현금흐름비율 (20%)</span><span class="result-val" id="cr-cf">—</span></div>
+    </div>
+    <button class="btn-primary" id="cr-btn" onclick="runCredit()">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span id="cr-btn-txt">신용평가 시작</span>
+    </button>
+    <button class="btn-secondary" onclick="goBack()">돌아가기</button>
+  </div>
+</div>
+
+<!-- ══════════════════════ MYPAGE ══════════════════════ -->
+<div class="scr hidden" id="scr-mypage">
+  <div class="tb">
+    <div class="tb-mark">
+      <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <div style="flex:1"><div class="tb-title" id="mp-name">—</div><div class="tb-sub" id="mp-guid">—</div></div>
+  </div>
+  <div style="padding:14px">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">
+      <div style="background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px">
+        <div style="font-size:11px;color:var(--t3);margin-bottom:4px">GDC 잔액</div>
+        <div style="font-size:18px;font-weight:500;color:var(--brand);font-variant-numeric:tabular-nums" id="mp-bal">₮—</div>
+      </div>
+      <div style="background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:14px">
+        <div style="font-size:11px;color:var(--t3);margin-bottom:4px">연간 매출</div>
+        <div style="font-size:18px;font-weight:500;color:var(--t1);font-variant-numeric:tabular-nums" id="mp-rev">₮—</div>
+      </div>
+    </div>
+    <div style="background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:10px">
+      <div class="row-card" style="cursor:pointer;border:none;border-bottom:.5px solid var(--bd);border-radius:0" onclick="goScr('scr-transfer')">
+        <div class="row-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></div>
+        <div class="row-body"><div class="row-title">GDC 이체</div></div>
+        <svg class="row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="row-card" style="cursor:pointer;border:none;border-bottom:.5px solid var(--bd);border-radius:0" onclick="goScr('scr-deposit')">
+        <div class="row-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <div class="row-body"><div class="row-title">예금 개설</div></div>
+        <svg class="row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="row-card" style="cursor:pointer;border:none;border-bottom:.5px solid var(--bd);border-radius:0" onclick="goScr('scr-credit')">
+        <div class="row-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <div class="row-body"><div class="row-title">신용평가</div></div>
+        <svg class="row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+      <div class="row-card" style="cursor:pointer;border:none;border-radius:0" onclick="location.href='dashboard.html'">
+        <div class="row-ic"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg></div>
+        <div class="row-body"><div class="row-title">관리자 대시보드</div></div>
+        <svg class="row-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </div>
+  </div>
+  <div class="bnav">
+    <button class="nitem" onclick="goScr('scr-home')"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span class="nitem-lbl">홈</span></button>
+    <button class="nitem" onclick="goScr('scr-deposit')"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span class="nitem-lbl">예금</span></button>
+    <button class="nitem" onclick="goScr('scr-loan')"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span class="nitem-lbl">대출</span></button>
+    <button class="nitem" onclick="goScr('scr-transfer')"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg><span class="nitem-lbl">이체</span></button>
+    <button class="nitem act"><svg class="ic" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nitem-lbl">내 정보</span></button>
+  </div>
+</div>
+
+</div><!-- /app -->
 
 <script>
 const S='https://ebbecjfrwaswbdybbgiu.supabase.co';
 const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
 const H={'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'};
 const Hd={'apikey':K,'Authorization':'Bearer '+K};
-
-const params=new URLSearchParams(location.search);
-let GUID=params.get('guid')||'aaaaaaaa-test-4000-a000-000000000001';
+const P=new URLSearchParams(location.search);
+let GUID=P.get('guid')||'aaaaaaaa-test-4000-a000-000000000001';
 let _profile={};
-let curScreen='screen-home', prevScreen='screen-home';
+let curS='scr-home',prevS='scr-home';
 const fmt=n=>(+(n||0)).toLocaleString('ko-KR',{maximumFractionDigits:0});
 const fmtT=n=>'₮'+fmt(n);
 
-function goScreen(id){
-  document.getElementById(curScreen).classList.add('slide-out');
-  const next=document.getElementById(id);
-  next.classList.remove('hidden','slide-out');
-  prevScreen=curScreen; curScreen=id;
-  setTimeout(()=>document.getElementById(prevScreen)?.classList.add('hidden'),350);
-  if(id==='screen-home') loadHome();
-  if(id==='screen-transfer') loadTransfer();
+function goScr(id){
+  document.getElementById(curS).classList.add('out');
+  const nx=document.getElementById(id);
+  nx.classList.remove('hidden','out');
+  prevS=curS; curS=id;
+  setTimeout(()=>document.getElementById(prevS)?.classList.add('hidden'),300);
+  if(id==='scr-home') loadHome();
+  if(id==='scr-transfer') loadTransfer();
 }
-function goBack(){ goScreen(prevScreen===curScreen?'screen-home':prevScreen); }
+function goBack(){ goScr(prevS===curS?'scr-home':prevS); }
 
 async function getExtra(){
   const r=await fetch(`${S}/rest/v1/user_profiles?guid=eq.${GUID}&select=*&limit=1`,{headers:Hd});
@@ -389,159 +465,158 @@ async function getExtra(){
   return _profile.extra||{};
 }
 
-async function loadHome(){
-  const extra=await getExtra();
-  const cash=parseFloat(extra?.fs?.bs?.['bs-cash']||'0')||0;
-  document.getElementById('w-balance').textContent=fmtT(cash);
-  document.getElementById('w-krw').textContent='≈ KRW '+fmt(cash*1000)+'원';
-  document.getElementById('t-balance').textContent=fmtT(cash);
-  document.getElementById('mp-name').textContent=_profile.name||'—';
-  document.getElementById('mp-guid').textContent='guid: '+GUID.slice(0,20)+'…';
-  document.getElementById('mp-balance').textContent=fmtT(cash);
-  document.getElementById('mp-revenue').textContent=fmtT(extra?.fs?.pl?.['pl-revenue']||0);
+// 거래 아이콘 SVG 맵
+const LEDGER_ICONS={
+  cash:           '<polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>',
+  revenue:        '<polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/>',
+  tax_payment:    '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/>',
+  platform_fee:   '<line x1="19" y1="5" x2="5" y2="19"/><circle cx="6.5" cy="6.5" r="2.5"/><circle cx="17.5" cy="17.5" r="2.5"/>',
+  interest_income:'<line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>',
+  loan_proceeds:  '<rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/>',
+  loan_repayment: '<polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.08"/>',
+  gdc_transfer:   '<line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>',
+};
+function ledgerIcSvg(account){
+  const p=LEDGER_ICONS[account]||'<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><circle cx="12" cy="16" r=".5" fill="currentColor"/>';
+  return`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+}
 
-  // 최근 거래
-  const r2=await fetch(`${S}/rest/v1/fs_ledger?guid=eq.${GUID}&order=tx_at.desc&limit=8&select=*`,{headers:Hd});
+async function loadHome(){
+  const ex=await getExtra();
+  const cash=parseFloat(ex?.fs?.bs?.['bs-cash']||'0')||0;
+  document.getElementById('w-bal').textContent=fmtT(cash);
+  document.getElementById('w-bal').style.opacity='1';
+  document.getElementById('w-fiat').textContent='≈ KRW '+fmt(cash*1000)+'원';
+  document.getElementById('t-bal').textContent=fmtT(cash);
+  document.getElementById('mp-name').textContent=_profile.name||GUID.slice(0,16)+'…';
+  document.getElementById('mp-guid').textContent=GUID.slice(0,24)+'…';
+  document.getElementById('mp-bal').textContent=fmtT(cash);
+  document.getElementById('mp-rev').textContent=fmtT(ex?.fs?.pl?.['pl-revenue']||0);
+
+  const r2=await fetch(`${S}/rest/v1/fs_ledger?guid=eq.${GUID}&order=tx_at.desc&limit=10&select=*`,{headers:Hd});
   const rows=await r2.json();
   const el=document.getElementById('home-ledger');
-  if(!Array.isArray(rows)||!rows.length){el.innerHTML='<div style="text-align:center;padding:20px;color:var(--hint);font-size:13px">거래 내역이 없습니다.</div>';return;}
-  const icons={cash:'💰',revenue:'📦',tax_payment:'🏛',platform_fee:'⚙️',interest_income:'🏦',loan_proceeds:'💳',loan_repayment:'📋',gdc_transfer:'↔️'};
+  if(!Array.isArray(rows)||!rows.length){
+    el.innerHTML='<div class="empty"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" style="margin:0 auto 12px;display:block;color:var(--t3)" aria-hidden="true"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-4 0v2"/></rect></svg>아직 거래 내역이 없습니다.</div>';
+    return;
+  }
   el.innerHTML=rows.map(r=>{
-    const isCredit=r.direction==='credit';
+    const isC=r.direction==='credit';
     return`<div class="ledger-item">
-      <div class="ledger-icon" style="background:${isCredit?'var(--acc-lt)':'var(--red-lt)'}">
-        ${icons[r.fs_account]||'📄'}
-      </div>
+      <div class="ledger-ic">${ledgerIcSvg(r.fs_account)}</div>
       <div class="ledger-info">
-        <div class="ledger-title">${r.item_name||r.memo||r.fs_account}</div>
-        <div class="ledger-meta">${r.tx_id?.slice(0,8)||'—'}… · ${r.tx_at?new Date(r.tx_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—'}</div>
+        <div class="ledger-title">${r.item_name||r.memo||r.fs_account||'거래'}</div>
+        <div class="ledger-meta">${(r.tx_id||'').slice(0,8)}… · ${r.tx_at?new Date(r.tx_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—'}</div>
       </div>
-      <div class="ledger-amt ${isCredit?'plus':'minus'}">${isCredit?'+':'-'}${fmtT(r.amount)}</div>
+      <div class="ledger-amt ${isC?'plus':'minus'}">${isC?'+':'-'}${fmtT(r.amount)}</div>
     </div>`;
   }).join('');
 }
 
 function loadTransfer(){
   const cash=parseFloat(_profile.extra?.fs?.bs?.['bs-cash']||'0')||0;
-  document.getElementById('t-balance').textContent=fmtT(cash);
-  document.getElementById('t-amount').oninput=function(){
-    const after=Math.max(0,cash-parseFloat(this.value)||0);
-    document.getElementById('t-after').textContent=fmtT(after);
-  };
+  document.getElementById('t-bal').textContent=fmtT(cash);
+}
+function updateTAfter(){
+  const cash=parseFloat(_profile.extra?.fs?.bs?.['bs-cash']||'0')||0;
+  const amt=parseFloat(document.getElementById('t-amount').value)||0;
+  document.getElementById('t-after').textContent=fmtT(Math.max(0,cash-amt));
 }
 
 async function doTransfer(){
   const to=document.getElementById('t-to').value.trim();
-  const amount=parseFloat(document.getElementById('t-amount').value)||0;
+  const amt=parseFloat(document.getElementById('t-amount').value)||0;
   const memo=document.getElementById('t-memo').value.trim();
   if(!to){alert('수신자 GUID를 입력하세요.');return;}
-  if(amount<=0){alert('금액을 입력하세요.');return;}
+  if(amt<=0){alert('금액을 입력하세요.');return;}
   const cash=parseFloat(_profile.extra?.fs?.bs?.['bs-cash']||'0')||0;
-  if(amount>cash){alert(`잔액 부족\n보유: ${fmtT(cash)}\n이체: ${fmtT(amount)}`);return;}
-
-  const btn=document.getElementById('transfer-btn');
-  const txt=document.getElementById('transfer-btn-txt');
+  if(amt>cash){alert(`잔액 부족\n보유 ${fmtT(cash)} / 이체 ${fmtT(amt)}`);return;}
+  const btn=document.getElementById('t-btn');
+  const txt=document.getElementById('t-btn-txt');
   btn.disabled=true;
-  txt.innerHTML='<span class="spinner"></span> 서명·이체 처리 중…';
-  await new Promise(r=>setTimeout(r,1500));
-
-  const txId=crypto.randomUUID();
-  const now=new Date().toISOString();
+  txt.innerHTML='<span class="spin"></span> 처리 중…';
+  await new Promise(r=>setTimeout(r,1200));
+  const txId=crypto.randomUUID();const now=new Date().toISOString();
   await fetch(`${S}/rest/v1/fs_ledger`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},
-    body:JSON.stringify({tx_id:txId,guid:GUID,counterpart:to,direction:'debit',amount,item_name:'GDC 이체',fs_account:'gdc_transfer',memo:memo||'GDC 이체',tx_at:now})});
+    body:JSON.stringify({tx_id:txId,guid:GUID,counterpart:to,direction:'debit',amount:amt,item_name:'GDC 이체',fs_account:'gdc_transfer',memo:memo||'GDC 이체',tx_at:now})});
   await fetch(`${S}/rest/v1/fs_ledger`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},
-    body:JSON.stringify({tx_id:txId,guid:to,counterpart:GUID,direction:'credit',amount,item_name:'GDC 수신',fs_account:'gdc_transfer',memo:memo||'GDC 이체 수신',tx_at:now})});
-
-  // 잔액 업데이트
-  const ex=_profile.extra||{};
-  ex.fs=ex.fs||{}; ex.fs.bs=ex.fs.bs||{};
-  ex.fs.bs['bs-cash']=String(Math.max(0,cash-amount));
+    body:JSON.stringify({tx_id:txId,guid:to,counterpart:GUID,direction:'credit',amount:amt,item_name:'GDC 수신',fs_account:'gdc_transfer',memo:memo||'GDC 이체 수신',tx_at:now})});
+  const ex=_profile.extra||{};ex.fs=ex.fs||{};ex.fs.bs=ex.fs.bs||{};
+  ex.fs.bs['bs-cash']=String(Math.max(0,cash-amt));
   await fetch(`${S}/rest/v1/user_profiles?guid=eq.${GUID}`,{method:'PATCH',headers:H,body:JSON.stringify({extra:ex})});
-
-  alert(`✅ 이체 완료\n${fmtT(amount)} → ${to.slice(0,16)}…\nTX: ${txId.slice(0,16)}…`);
-  btn.disabled=false; txt.textContent='↑ 이체 실행';
-  goScreen('screen-home');
+  btn.disabled=false; txt.textContent='이체 실행';
+  alert(`이체 완료\n${fmtT(amt)} → ${to.slice(0,16)}…`);
+  goScr('scr-home');
 }
 
-const DEP_RATES={demand:0.030,time_7:0.040,time_30:0.050,time_365:0.065};
-function updateDepCalc(){
-  const product=document.getElementById('dep-product').value;
-  const amount=parseFloat(document.getElementById('dep-amount').value)||0;
-  const rate=DEP_RATES[product]||0.03;
-  document.getElementById('dep-rate').textContent=(rate*100).toFixed(1)+'%';
-  document.getElementById('dep-daily').textContent=fmtT(Math.round(amount*rate/365*100)/100);
-  document.getElementById('dep-monthly').textContent=fmtT(Math.round(amount*rate/12*100)/100);
-  document.getElementById('dep-annual').textContent=fmtT(Math.round(amount*rate*100)/100);
+const DEP={demand:.030,time_7:.040,time_30:.050,time_365:.065};
+function calcDep(){
+  const p=document.getElementById('dep-prod').value;
+  const a=parseFloat(document.getElementById('dep-amt').value)||0;
+  const r=DEP[p]||.03;
+  document.getElementById('dep-rate').textContent=(r*100).toFixed(1)+'%';
+  document.getElementById('dep-daily').textContent=fmtT(Math.round(a*r/365*100)/100);
+  document.getElementById('dep-monthly').textContent=fmtT(Math.round(a*r/12*100)/100);
+  document.getElementById('dep-annual').textContent=fmtT(Math.round(a*r*100)/100);
 }
 
-async function openDeposit(){
-  const product=document.getElementById('dep-product').value;
-  const amount=parseFloat(document.getElementById('dep-amount').value)||0;
-  if(amount<1000){alert('최소 예치금은 ₮1,000 입니다.');return;}
+async function openDep(){
+  const p=document.getElementById('dep-prod').value;
+  const a=parseFloat(document.getElementById('dep-amt').value)||0;
+  if(a<1000){alert('최소 예치금은 ₮1,000 입니다.');return;}
   const cash=parseFloat(_profile.extra?.fs?.bs?.['bs-cash']||'0')||0;
-  if(amount>cash){alert(`잔액 부족: ${fmtT(cash)}`);return;}
-
+  if(a>cash){alert(`잔액 부족: ${fmtT(cash)}`);return;}
   try{
     const r=await fetch(`${S}/rest/v1/gdc_deposits`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_guid:GUID,product_type:product,principal:amount,interest_rate:DEP_RATES[product]})});
-    if(r.ok||r.status===201){
-      alert('✅ 예금 개설 완료\n잔액에서 차감됩니다.');
-      goScreen('screen-home');
-    } else {
-      alert('gdc_deposits 테이블이 필요합니다.\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.');
-    }
-  }catch(e){alert('예금 처리 중 오류: '+e.message);}
+      body:JSON.stringify({user_guid:GUID,product_type:p,principal:a,interest_rate:DEP[p]})});
+    if(r.ok||r.status===201){alert('예금 개설 완료');goScr('scr-home');}
+    else alert('gdc_deposits 테이블 적용 필요\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.');
+  }catch(e){alert('오류: '+e.message);}
 }
 
-async function applyLoan(){
-  const amount=parseFloat(document.getElementById('loan-amount').value)||0;
-  if(amount<=0){alert('대출 금액을 입력하세요.');return;}
-  alert('대출 신청 기능은 gdc_loans 테이블 적용 후 사용 가능합니다.\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.');
+function applyLoan(){
+  const a=parseFloat(document.getElementById('ln-amt').value)||0;
+  if(a<=0){alert('대출 금액을 입력하세요.');return;}
+  alert('대출 신청 기능은 gdc_loans 테이블 적용 후 사용 가능합니다.');
 }
 
 async function runCredit(){
-  const btn=document.getElementById('credit-btn');
-  btn.disabled=true; btn.innerHTML='<span class="spinner"></span> 분석 중…';
+  const btn=document.getElementById('cr-btn');
+  const txt=document.getElementById('cr-btn-txt');
+  btn.disabled=true; txt.innerHTML='<span class="spin"></span> 분석 중…';
   const t0=performance.now();
-
-  const extra=await getExtra();
-  const bs=extra?.fs?.bs||{}, pl=extra?.fs?.pl||{}, cf=extra?.fs?.cf||{};
-  const num=k=>parseFloat(k||'0')||0;
-  const cash=num(bs['bs-cash']), ar=num(bs['bs-ar']), ap=num(bs['bs-ap']);
-  const debt=num(bs['bs-debt']), equity=num(bs['bs-equity']);
-  const rev=num(pl['pl-revenue']), cogs=num(pl['pl-cogs']), opex=num(pl['pl-opex']);
-  const cfOp=num(cf['cf-op']);
-
-  const liqRatio = ap>0?(cash+ar)/ap:10.0;
-  const debtRatio = equity>0?debt/equity:99.0;
-  const opMargin = rev>0?(rev-cogs-opex)/rev:0.0;
-  const cfRatio = debt>0?cfOp/debt:(cfOp>0?5.0:0.0);
-  const s1=Math.min(25,liqRatio*10);
-  const s2=Math.min(25,Math.max(0,(2.0-debtRatio)*12.5));
-  const s3=Math.min(30,opMargin*100);
-  const s4=Math.min(20,cfRatio*5);
-  const score=Math.min(1000,Math.max(0,Math.round((s1+s2+s3+s4)*10)));
-  const grade=score>=950?'AAA':score>=900?'AA':score>=800?'A':score>=700?'BBB':score>=600?'BB':'C';
-  const rates={AAA:2.0,AA:3.0,A:4.0,BBB:5.5,BB:7.0,C:8.0};
-  const ltvs={AAA:.70,AA:.65,A:.60,BBB:.50,BB:.35,C:.20};
+  const ex=await getExtra();
+  const bs=ex?.fs?.bs||{},pl=ex?.fs?.pl||{},cf=ex?.fs?.cf||{};
+  const n=k=>parseFloat(k||'0')||0;
+  const cash=n(bs['bs-cash']),ar=n(bs['bs-ar']),ap=n(bs['bs-ap']);
+  const debt=n(bs['bs-debt']),equity=n(bs['bs-equity']);
+  const rev=n(pl['pl-revenue']),cogs=n(pl['pl-cogs']),opex=n(pl['pl-opex']);
+  const cfOp=n(cf['cf-op']);
+  const liq=ap>0?(cash+ar)/ap:10;
+  const dbt=equity>0?debt/equity:99;
+  const margin=rev>0?(rev-cogs-opex)/rev:0;
+  const cfr=debt>0?cfOp/debt:(cfOp>0?5:0);
+  const score=Math.min(1000,Math.max(0,Math.round(
+    (Math.min(25,liq*10)+Math.min(25,Math.max(0,(2-dbt)*12.5))+Math.min(30,margin*100)+Math.min(20,cfr*5))*10
+  )));
+  const g=score>=950?'AAA':score>=900?'AA':score>=800?'A':score>=700?'BBB':score>=600?'BB':'C';
+  const rates={AAA:2,AA:3,A:4,BBB:5.5,BB:7,C:8};
+  const ltvs={AAA:.7,AA:.65,A:.6,BBB:.5,BB:.35,C:.2};
   const elapsed=(performance.now()-t0).toFixed(0);
-
-  document.getElementById('credit-result-card').style.display='block';
-  document.getElementById('credit-indicators').style.display='block';
+  document.getElementById('cr-card').style.display='block';
+  document.getElementById('cr-ind').style.display='block';
   document.getElementById('cr-score').textContent=score;
-  document.getElementById('cr-grade-wrap').innerHTML=`<span class="grade-big g-${grade}">${grade}</span>`;
-  document.getElementById('cr-rate').textContent='연 '+rates[grade]+'%';
-  document.getElementById('cr-limit').textContent=fmtT(Math.floor(equity*(ltvs[grade]||0.2)));
+  document.getElementById('cr-grade-wrap').innerHTML=`<span class="grade g-${g}">${g}</span>`;
+  document.getElementById('cr-rate').textContent='연 '+rates[g]+'%';
+  document.getElementById('cr-limit').textContent=fmtT(Math.floor(equity*(ltvs[g]||.2)));
   document.getElementById('cr-time').textContent=elapsed+'ms';
-  document.getElementById('cr-liq').textContent=liqRatio.toFixed(2);
-  document.getElementById('cr-debt').textContent=debtRatio.toFixed(2);
-  document.getElementById('cr-margin').textContent=(opMargin*100).toFixed(1)+'%';
-  document.getElementById('cr-cf').textContent=cfRatio.toFixed(2);
-
-  btn.disabled=false; btn.textContent='📊 재평가';
+  document.getElementById('cr-liq').textContent=liq.toFixed(2);
+  document.getElementById('cr-debt').textContent=dbt.toFixed(2);
+  document.getElementById('cr-margin').textContent=(margin*100).toFixed(1)+'%';
+  document.getElementById('cr-cf').textContent=cfr.toFixed(2);
+  btn.disabled=false; txt.textContent='재평가';
 }
 
-// 초기 로드
 loadHome();
 </script>
 </body>
