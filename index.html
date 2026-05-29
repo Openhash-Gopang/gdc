@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GDC — Gopang Digital Currency</title>
+<meta name="description" content="OpenHash 분산원장 기반 디지털 화폐. 은행·예금·대출·이체·투자를 하나로.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Noto+Serif+KR:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gov:    #001233;
+  --nav:    #002855;
+  --pri:    #0047AB;
+  --pri-lt: #1565C0;
+  --pri-bg: #E8F0FE;
+  --acc:    #00C48C;
+  --acc-dk: #00A67A;
+  --gld:    #C8951A;
+  --gld-lt: #F5C842;
+  --sur:    #FFFFFF;
+  --bg:     #F4F6FB;
+  --bdr:    #D0D9EE;
+  --txt:    #0D1B3E;
+  --sub:    #3D5280;
+  --hint:   #7A8BAD;
+  --font:   'Noto Sans KR', sans-serif;
+  --serif:  'Noto Serif KR', serif;
+  --mono:   'IBM Plex Mono', monospace;
+  --r: 10px;
+  --sh: 0 2px 8px rgba(0,18,51,.08);
+  --sh2: 0 8px 32px rgba(0,18,51,.14);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: var(--font); color: var(--txt); background: var(--sur); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+a { text-decoration: none; color: inherit; }
+
+/* ── GOV BAR ── */
+.gov-bar { background: var(--gov); color: rgba(255,255,255,.6); font-size: 11px; padding: 5px 0; text-align: center; letter-spacing: .4px; }
+.gov-bar strong { color: #fff; }
+
+/* ── NAV ── */
+.nav { background: var(--sur); border-bottom: 1px solid var(--bdr); position: sticky; top: 0; z-index: 100; box-shadow: var(--sh); }
+.nav-inner { max-width: 1120px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; height: 58px; gap: 24px; }
+.nav-logo { display: flex; align-items: center; gap: 10px; font-size: 17px; font-weight: 800; color: var(--nav); }
+.nav-logo-mark { width: 34px; height: 34px; background: linear-gradient(135deg, var(--pri), var(--pri-lt)); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 900; font-size: 15px; font-family: var(--mono); }
+.nav-links { display: flex; gap: 2px; flex: 1; }
+.nav-links a { padding: 6px 14px; border-radius: 5px; font-size: 13px; font-weight: 500; color: var(--sub); transition: all .15s; }
+.nav-links a:hover { background: var(--pri-bg); color: var(--pri); }
+.nav-cta { display: flex; gap: 8px; }
+.btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 18px; border-radius: 5px; font-size: 13px; font-weight: 600; font-family: var(--font); cursor: pointer; border: none; transition: all .15s; text-decoration: none; }
+.btn-pri { background: var(--pri); color: #fff; }
+.btn-pri:hover { background: var(--pri-lt); box-shadow: var(--sh); }
+.btn-acc { background: var(--acc); color: #fff; }
+.btn-acc:hover { background: var(--acc-dk); }
+.btn-out { background: transparent; border: 1.5px solid var(--pri); color: var(--pri); }
+.btn-out:hover { background: var(--pri-bg); }
+.btn-lg { padding: 14px 32px; font-size: 15px; border-radius: 7px; }
+.btn-xl { padding: 16px 40px; font-size: 16px; border-radius: 8px; }
+
+/* ── HERO ── */
+.hero { background: linear-gradient(150deg, var(--gov) 0%, #001A4D 55%, #002266 100%); color: #fff; padding: 0; overflow: hidden; position: relative; }
+.hero-grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px); background-size: 48px 48px; }
+.hero-glow { position: absolute; top: -200px; right: -200px; width: 600px; height: 600px; background: radial-gradient(circle, rgba(0,196,140,.12) 0%, transparent 70%); pointer-events: none; }
+.hero-inner { max-width: 1120px; margin: 0 auto; padding: 88px 24px 80px; display: flex; align-items: center; gap: 64px; position: relative; z-index: 1; }
+.hero-left { flex: 1; max-width: 600px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,196,140,.15); border: 1px solid rgba(0,196,140,.35); border-radius: 20px; padding: 5px 14px; font-size: 12px; font-weight: 700; color: var(--acc); margin-bottom: 22px; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--acc); animation: blink 1.8s infinite; }
+@keyframes blink { 0%,100%{opacity:1}50%{opacity:.3} }
+.hero h1 { font-family: var(--serif); font-size: clamp(30px, 4.5vw, 50px); font-weight: 700; line-height: 1.18; margin-bottom: 18px; letter-spacing: -.5px; }
+.hero h1 em { color: var(--gld-lt); font-style: normal; }
+.hero-desc { font-size: 16px; color: rgba(255,255,255,.75); line-height: 1.75; margin-bottom: 32px; max-width: 500px; }
+.hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 40px; }
+.hero-stats { display: flex; gap: 0; border: 1px solid rgba(255,255,255,.1); border-radius: var(--r); overflow: hidden; background: rgba(255,255,255,.04); }
+.hero-stat { flex: 1; padding: 16px 20px; border-right: 1px solid rgba(255,255,255,.08); }
+.hero-stat:last-child { border-right: none; }
+.hero-stat-val { font-size: 22px; font-weight: 800; color: #fff; font-family: var(--mono); }
+.hero-stat-val em { color: var(--acc); font-style: normal; }
+.hero-stat-lbl { font-size: 11px; color: rgba(255,255,255,.5); margin-top: 3px; }
+
+/* GDC 코인 목업 */
+.hero-right { flex-shrink: 0; }
+.coin-wrap { width: 280px; height: 280px; position: relative; display: flex; align-items: center; justify-content: center; }
+.coin-ring { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(200,149,26,.25); animation: spin 20s linear infinite; }
+.coin-ring::before { content: ''; position: absolute; inset: 12px; border-radius: 50%; border: 1px dashed rgba(200,149,26,.15); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.coin { width: 180px; height: 180px; border-radius: 50%; background: linear-gradient(135deg, #C8951A 0%, #F5C842 40%, #C8951A 70%, #8B6010 100%); box-shadow: 0 0 60px rgba(200,149,26,.4), inset 0 2px 8px rgba(255,255,255,.3), inset 0 -2px 8px rgba(0,0,0,.3); display: flex; flex-direction: column; align-items: center; justify-content: center; animation: float 4s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+.coin-symbol { font-size: 52px; font-weight: 900; color: rgba(0,0,0,.4); font-family: var(--mono); line-height: 1; }
+.coin-label { font-size: 11px; font-weight: 700; color: rgba(0,0,0,.5); letter-spacing: 2px; margin-top: 4px; }
+.coin-dots { position: absolute; }
+.coin-dot { position: absolute; width: 8px; height: 8px; border-radius: 50%; background: var(--acc); }
+.coin-dot:nth-child(1) { top: 20px; left: 50%; transform: translateX(-50%); }
+.coin-dot:nth-child(2) { bottom: 20px; left: 50%; transform: translateX(-50%); }
+.coin-dot:nth-child(3) { left: 20px; top: 50%; transform: translateY(-50%); }
+.coin-dot:nth-child(4) { right: 20px; top: 50%; transform: translateY(-50%); }
+
+/* ── CONTAINER ── */
+.container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.section { padding: 80px 0; }
+.section-alt { background: var(--bg); }
+.section-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; color: var(--pri); margin-bottom: 10px; }
+.section-title { font-family: var(--serif); font-size: clamp(22px, 3vw, 34px); font-weight: 700; margin-bottom: 12px; letter-spacing: -.3px; }
+.section-desc { font-size: 15px; color: var(--sub); line-height: 1.7; max-width: 520px; }
+
+/* ── FEATURE CARDS ── */
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 48px; }
+@media(max-width:860px) { .feature-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width:560px) { .feature-grid { grid-template-columns: 1fr; } }
+.feature-card { background: var(--sur); border: 1px solid var(--bdr); border-radius: 14px; padding: 28px 24px; box-shadow: var(--sh); transition: all .2s; position: relative; overflow: hidden; }
+.feature-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--pri), var(--acc)); opacity: 0; transition: opacity .2s; }
+.feature-card:hover { box-shadow: var(--sh2); transform: translateY(-3px); }
+.feature-card:hover::before { opacity: 1; }
+.feature-icon { font-size: 36px; margin-bottom: 14px; }
+.feature-title { font-size: 16px; font-weight: 800; color: var(--txt); margin-bottom: 8px; }
+.feature-desc { font-size: 13px; color: var(--sub); line-height: 1.65; }
+.feature-tag { display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 8px; background: var(--pri-bg); color: var(--pri); }
+
+/* ── RATE TABLE ── */
+.rate-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; }
+@media(max-width:640px) { .rate-grid { grid-template-columns: 1fr; } }
+.rate-card { background: var(--sur); border: 1px solid var(--bdr); border-radius: 14px; overflow: hidden; box-shadow: var(--sh); }
+.rate-card-hd { background: var(--nav); color: #fff; padding: 16px 20px; font-size: 14px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.rate-table { width: 100%; border-collapse: collapse; }
+.rate-table tr { border-bottom: 1px solid var(--bdr); }
+.rate-table tr:last-child { border-bottom: none; }
+.rate-table td { padding: 12px 20px; font-size: 13px; }
+.rate-table td:first-child { color: var(--sub); }
+.rate-table td:last-child { text-align: right; font-family: var(--mono); font-weight: 600; color: var(--pri); }
+.rate-table td.grn { color: var(--acc-dk) !important; }
+.rate-table td.gld { color: var(--gld) !important; }
+.rate-compare { font-size: 11px; color: var(--hint); margin-left: 6px; font-weight: 400; font-family: var(--font); }
+
+/* ── CREDIT TABLE ── */
+.credit-table { width: 100%; border-collapse: collapse; margin-top: 40px; box-shadow: var(--sh); border-radius: 10px; overflow: hidden; }
+.credit-table th { background: var(--nav); color: #fff; padding: 12px 18px; font-size: 12px; font-weight: 600; text-align: left; }
+.credit-table td { padding: 12px 18px; font-size: 13px; border-bottom: 1px solid var(--bdr); background: var(--sur); }
+.credit-table tr:last-child td { border-bottom: none; }
+.grade { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 22px; border-radius: 4px; font-size: 11px; font-weight: 800; font-family: var(--mono); }
+.grade-aaa { background: #E6F4EC; color: #1B6B3A; }
+.grade-aa  { background: #EBF3FC; color: #0047AB; }
+.grade-a   { background: #EBF8FF; color: #0369A1; }
+.grade-bbb { background: #FEF9E7; color: #92400E; }
+.grade-bb  { background: #FEF3E2; color: #C05621; }
+.grade-c   { background: #FEE2E2; color: #C01C28; }
+
+/* ── POOL DIAGRAM ── */
+.pool-diagram { margin-top: 48px; background: var(--nav); border-radius: 14px; padding: 32px; color: #fff; }
+.pool-title { font-size: 14px; font-weight: 700; color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 24px; }
+.pool-currencies { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 24px; }
+.pool-currency { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 8px; padding: 10px 16px; text-align: center; flex: 1; min-width: 80px; }
+.pool-currency-flag { font-size: 24px; margin-bottom: 4px; }
+.pool-currency-code { font-size: 12px; font-weight: 700; font-family: var(--mono); }
+.pool-arrow { font-size: 28px; color: var(--acc); text-align: center; margin-bottom: 20px; }
+.pool-split { display: flex; gap: 16px; }
+.pool-part { flex: 1; border-radius: 8px; padding: 14px 16px; }
+.pool-reserve { background: rgba(0,196,140,.1); border: 1px solid rgba(0,196,140,.25); }
+.pool-invest { background: rgba(200,149,26,.1); border: 1px solid rgba(200,149,26,.25); }
+.pool-part-pct { font-size: 24px; font-weight: 800; font-family: var(--mono); }
+.pool-reserve .pool-part-pct { color: var(--acc); }
+.pool-invest  .pool-part-pct { color: var(--gld-lt); }
+.pool-part-label { font-size: 12px; color: rgba(255,255,255,.6); margin-top: 4px; }
+
+/* ── FLOW ── */
+.flow-steps { display: flex; gap: 0; margin-top: 48px; position: relative; }
+.flow-steps::before { content: ''; position: absolute; top: 24px; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--pri), var(--acc)); z-index: 0; }
+.flow-step { flex: 1; text-align: center; position: relative; z-index: 1; }
+.flow-num { width: 48px; height: 48px; border-radius: 50%; background: var(--sur); border: 2px solid var(--pri); display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: var(--pri); margin: 0 auto 14px; }
+.flow-title { font-size: 13px; font-weight: 700; color: var(--txt); margin-bottom: 5px; }
+.flow-desc { font-size: 11px; color: var(--sub); line-height: 1.5; padding: 0 8px; }
+
+/* ── ACCESS ── */
+.access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; }
+@media(max-width:640px) { .access-grid { grid-template-columns: 1fr; } }
+.access-card { background: var(--sur); border: 1px solid var(--bdr); border-radius: 14px; padding: 32px; box-shadow: var(--sh); display: flex; flex-direction: column; gap: 14px; }
+.access-icon { font-size: 38px; }
+.access-title { font-size: 18px; font-weight: 800; }
+.access-desc { font-size: 13px; color: var(--sub); line-height: 1.65; }
+.access-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.access-list li { font-size: 13px; display: flex; align-items: center; gap: 8px; }
+.access-list li::before { content: '▸'; color: var(--pri); font-size: 11px; flex-shrink: 0; }
+
+/* ── FOOTER ── */
+.footer { background: var(--gov); color: rgba(255,255,255,.6); padding: 48px 0 28px; }
+.footer-inner { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 32px; margin-bottom: 36px; }
+@media(max-width:760px) { .footer-grid { grid-template-columns: 1fr 1fr; } }
+.footer-brand { font-size: 16px; font-weight: 800; color: #fff; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+.footer-brand-desc { font-size: 12px; line-height: 1.7; color: rgba(255,255,255,.4); }
+.footer-col-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,.35); margin-bottom: 12px; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.footer-links li a { font-size: 13px; color: rgba(255,255,255,.5); transition: color .15s; }
+.footer-links li a:hover { color: #fff; }
+.footer-bottom { border-top: 1px solid rgba(255,255,255,.08); padding-top: 18px; font-size: 12px; color: rgba(255,255,255,.3); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; }
+
+/* ── FLOATING ── */
+.float-btn { position: fixed; bottom: 28px; right: 24px; z-index: 999; display: flex; flex-direction: column; align-items: center; gap: 6px; text-decoration: none; }
+.float-circle { width: 58px; height: 58px; border-radius: 50%; background: linear-gradient(135deg, var(--pri), var(--acc)); display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 4px 20px rgba(0,71,171,.45); animation: fpulse 2.5s ease-in-out infinite; transition: transform .2s; }
+.float-btn:hover .float-circle { transform: scale(1.1); animation-play-state: paused; }
+@keyframes fpulse { 0%{box-shadow:0 4px 20px rgba(0,71,171,.45),0 0 0 0 rgba(0,71,171,.3)}50%{box-shadow:0 6px 28px rgba(0,71,171,.55),0 0 0 10px rgba(0,71,171,.1)}100%{box-shadow:0 4px 20px rgba(0,71,171,.45),0 0 0 20px rgba(0,71,171,0)} }
+.float-label { background: rgba(0,18,51,.85); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 10px; white-space: nowrap; }
+
+/* ── MOBILE NAV ── */
+.hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 8px; }
+.hamburger span { width: 22px; height: 2px; background: var(--nav); border-radius: 2px; transition: all .22s; display: block; }
+.mobile-menu { display: none; flex-direction: column; background: var(--sur); border-top: 1px solid var(--bdr); }
+.mobile-menu.open { display: flex; }
+.mobile-menu a { padding: 13px 20px; font-size: 14px; font-weight: 500; color: var(--sub); border-bottom: 1px solid var(--bg); }
+.mobile-menu a:hover { background: var(--pri-bg); color: var(--pri); }
+@media(max-width:860px) {
+  .nav-links, .nav-cta { display: none; }
+  .hamburger { display: flex; }
+  .hero-right { display: none; }
+  .hero-inner { padding: 56px 24px 48px; }
+  .flow-steps { flex-wrap: wrap; }
+  .flow-steps::before { display: none; }
+  .flow-step { flex: 0 0 50%; margin-bottom: 24px; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+@media(max-width:560px) {
+  .section { padding: 52px 0; }
+  .hero h1 { font-size: 26px; }
+  .hero-stats { flex-direction: column; }
+  .hero-stat { border-right: none; border-bottom: 1px solid rgba(255,255,255,.08); }
+  .flow-step { flex: 0 0 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="gov-bar">
+  <strong>GDC — Gopang Digital Currency</strong> &nbsp;|&nbsp; OpenHash 분산원장 기반 디지털 화폐 · 은행 모듈 v1.0
+</div>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-logo-mark">₮</div>
+      GDC 은행
+    </a>
+    <div class="nav-links">
+      <a href="#features">서비스</a>
+      <a href="#rates">금리</a>
+      <a href="#credit">신용평가</a>
+      <a href="#pool">FIAT POOL</a>
+      <a href="dashboard.html">대시보드</a>
+    </div>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+    <div class="nav-cta">
+      <a href="webapp.html" class="btn btn-acc">💳 GDC 앱 열기</a>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#features" onclick="closeMenu()">서비스</a>
+    <a href="#rates" onclick="closeMenu()">금리</a>
+    <a href="#credit" onclick="closeMenu()">신용평가</a>
+    <a href="#pool" onclick="closeMenu()">FIAT POOL</a>
+    <a href="dashboard.html" onclick="closeMenu()">대시보드</a>
+    <a href="webapp.html" onclick="closeMenu()" style="color:var(--acc);font-weight:700">💳 GDC 앱 열기</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-badge"><span class="live-dot"></span> OpenHash 원장 실시간 연동 중</div>
+      <h1>재무제표가 곧<br><em>신용이 되는</em><br>디지털 화폐</h1>
+      <p class="hero-desc">GDC(₮)는 고팡 재무제표 현금 계정에 연동된 디지털 화폐입니다. 은행·예금·대출·이체·투자를 하나의 지갑으로. 지점도 직원도 없어 금리는 현저히 유리합니다.</p>
+      <div class="hero-actions">
+        <a href="webapp.html" class="btn btn-acc btn-xl">💳 GDC 앱 열기</a>
+        <a href="dashboard.html" class="btn btn-out btn-lg" style="color:#fff;border-color:rgba(255,255,255,.35)">🖥 대시보드</a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="hero-stat-val">₮<em>1</em></div>
+          <div class="hero-stat-lbl">= KRW 1,000원 기준</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val"><em>연 6.5%</em></div>
+          <div class="hero-stat-lbl">최고 예금 금리</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val"><em>0.1초</em></div>
+          <div class="hero-stat-lbl">AI 신용평가</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-val"><em>∞</em></div>
+          <div class="hero-stat-lbl">OpenHash 원장</div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="coin-wrap">
+        <div class="coin-ring"></div>
+        <div class="coin-dots">
+          <div class="coin-dot"></div><div class="coin-dot"></div>
+          <div class="coin-dot"></div><div class="coin-dot"></div>
+        </div>
+        <div class="coin">
+          <div class="coin-symbol">₮</div>
+          <div class="coin-label">GDC</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="section">
+  <div class="container">
+    <div class="section-label">핵심 서비스</div>
+    <h2 class="section-title">은행이 할 수 있는 모든 것,<br>지갑 하나로</h2>
+    <p class="section-desc">GDC는 중앙은행과 시중은행의 기능을 통합합니다. 지점·직원 없이 24시간 운영합니다.</p>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <div class="feature-icon">💰</div>
+        <div class="feature-title">GDC 지갑 · 이체</div>
+        <p class="feature-desc">재무제표 bs-cash가 곧 GDC 잔액. ED25519 디지털 서명으로 위변조 불가 이체. 수수료 없음.</p>
+        <span class="feature-tag">수수료 0%</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🏦</div>
+        <div class="feature-title">예금 · 이자</div>
+        <p class="feature-desc">요구불 연 3.0%부터 365일 정기 연 6.5%까지. 일복리 자동 지급. 시중은행 평균의 5배.</p>
+        <span class="feature-tag">최고 연 6.5%</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">💳</div>
+        <div class="feature-title">대출 · 신용평가</div>
+        <p class="feature-desc">재무제표 4지표 분석으로 0.1초 신용평가. AAA 등급 연 2.0%~C 등급 연 8.0%. 순자산의 최대 70%.</p>
+        <span class="feature-tag">AI 0.1초 심사</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🌏</div>
+        <div class="feature-title">FIAT POOL · 환전</div>
+        <p class="feature-desc">KRW·USD·EUR·JPY 등 각국 통화를 POOL에 통합. 실시간 환율로 즉시 교환. 별도 환전 절차 없음.</p>
+        <span class="feature-tag">6개 통화 지원</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📈</div>
+        <div class="feature-title">투자 · 국민성장펀드</div>
+        <p class="feature-desc">POOL 자산의 80%를 각국 인덱스 ETF 및 국민성장펀드에 투자. 사용자 위험성향 맞춤 추천.</p>
+        <span class="feature-tag">기본: 국민성장펀드</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⛓</div>
+        <div class="feature-title">OpenHash 원장</div>
+        <p class="feature-desc">모든 GDC 거래는 확률론적 계층 분산원장에 기록. 어떤 기관도 수정·삭제 불가. 거래 영구 보존.</p>
+        <span class="feature-tag">위변조 불가</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RATES -->
+<section id="rates" class="section section-alt">
+  <div class="container">
+    <div class="section-label">금리 비교</div>
+    <h2 class="section-title">지점도 직원도 없으니<br>금리가 다릅니다</h2>
+    <div class="rate-grid">
+      <div class="rate-card">
+        <div class="rate-card-hd">🏦 예금 금리</div>
+        <table class="rate-table">
+          <tr><td>요구불예금</td><td class="grn">연 3.0% <span class="rate-compare">(시중 0.1%)</span></td></tr>
+          <tr><td>7일 정기예금</td><td class="grn">연 4.0%</td></tr>
+          <tr><td>30일 정기예금</td><td class="grn">연 5.0%</td></tr>
+          <tr><td>365일 정기예금</td><td class="grn">연 6.5% <span class="rate-compare">(시중 3.5%)</span></td></tr>
+          <tr><td>이자 지급 방식</td><td>일복리 자동</td></tr>
+        </table>
+      </div>
+      <div class="rate-card">
+        <div class="rate-card-hd">💳 대출 금리 (신용등급별)</div>
+        <table class="rate-table">
+          <tr><td><span class="grade grade-aaa">AAA</span></td><td class="grn">연 2.0% <span class="rate-compare">(시중 4~5%)</span></td></tr>
+          <tr><td><span class="grade grade-aa">AA</span></td><td class="grn">연 3.0%</td></tr>
+          <tr><td><span class="grade grade-a">A</span></td><td>연 4.0%</td></tr>
+          <tr><td><span class="grade grade-bbb">BBB</span></td><td>연 5.5%</td></tr>
+          <tr><td><span class="grade grade-bb">BB</span></td><td>연 7.0%</td></tr>
+          <tr><td><span class="grade grade-c">C</span></td><td>연 8.0% <span class="rate-compare">(시중 15~20%)</span></td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CREDIT -->
+<section id="credit" class="section">
+  <div class="container">
+    <div class="section-label">AI 신용평가</div>
+    <h2 class="section-title">재무제표만으로 0.1초 안에<br>신용을 증명합니다</h2>
+    <p class="section-desc">고팡 재무제표(extra.fs)는 OpenHash 원장에 의해 위변조가 불가합니다. 이 데이터만으로 4대 지표를 분석해 즉시 신용등급을 산출합니다.</p>
+    <table class="credit-table">
+      <thead>
+        <tr>
+          <th>등급</th>
+          <th>신용점수</th>
+          <th>대출 금리</th>
+          <th>대출 한도 (순자산 대비)</th>
+          <th>평가 기준</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><span class="grade grade-aaa">AAA</span></td><td style="font-family:var(--mono)">950~1000</td><td style="color:var(--acc-dk);font-weight:700">연 2.0%</td><td>70%</td><td>최우수 유동성·수익성</td></tr>
+        <tr><td><span class="grade grade-aa">AA</span></td><td style="font-family:var(--mono)">900~949</td><td style="color:var(--acc-dk);font-weight:700">연 3.0%</td><td>65%</td><td>우수 재무건전성</td></tr>
+        <tr><td><span class="grade grade-a">A</span></td><td style="font-family:var(--mono)">800~899</td><td style="font-weight:700">연 4.0%</td><td>60%</td><td>양호한 재무구조</td></tr>
+        <tr><td><span class="grade grade-bbb">BBB</span></td><td style="font-family:var(--mono)">700~799</td><td style="font-weight:700">연 5.5%</td><td>50%</td><td>보통 수준</td></tr>
+        <tr><td><span class="grade grade-bb">BB</span></td><td style="font-family:var(--mono)">600~699</td><td style="color:var(--gld);font-weight:700">연 7.0%</td><td>35%</td><td>다소 취약</td></tr>
+        <tr><td><span class="grade grade-c">C</span></td><td style="font-family:var(--mono)">0~599</td><td style="color:#C01C28;font-weight:700">연 8.0%</td><td>20%</td><td>개선 필요</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px;font-size:12px;color:var(--hint)">※ 4대 평가 지표: 유동비율 25% · 부채비율 25% · 영업이익률 30% · 현금흐름비율 20%</p>
+  </div>
+</section>
+
+<!-- FIAT POOL -->
+<section id="pool" class="section section-alt">
+  <div class="container">
+    <div class="section-label">FIAT POOL</div>
+    <h2 class="section-title">환전 없이 전 세계와<br>즉시 거래합니다</h2>
+    <p class="section-desc">각국 법정화폐가 FIAT POOL에 통합됩니다. 실시간 환율로 자동 환산되어 수신자는 즉시 수령합니다.</p>
+    <div class="pool-diagram">
+      <div class="pool-title">GDC FIAT POOL 구조</div>
+      <div class="pool-currencies">
+        <div class="pool-currency"><div class="pool-currency-flag">🇰🇷</div><div class="pool-currency-code">KRW</div></div>
+        <div class="pool-currency"><div class="pool-currency-flag">🇺🇸</div><div class="pool-currency-code">USD</div></div>
+        <div class="pool-currency"><div class="pool-currency-flag">🇪🇺</div><div class="pool-currency-code">EUR</div></div>
+        <div class="pool-currency"><div class="pool-currency-flag">🇯🇵</div><div class="pool-currency-code">JPY</div></div>
+        <div class="pool-currency"><div class="pool-currency-flag">🇨🇳</div><div class="pool-currency-code">CNY</div></div>
+        <div class="pool-currency"><div class="pool-currency-flag">🇬🇧</div><div class="pool-currency-code">GBP</div></div>
+      </div>
+      <div class="pool-arrow">⬇</div>
+      <div class="pool-split">
+        <div class="pool-part pool-reserve">
+          <div class="pool-part-pct">20%</div>
+          <div class="pool-part-label">지불준비금<br>즉시 출금 보장</div>
+        </div>
+        <div class="pool-part pool-invest">
+          <div class="pool-part-pct">80%</div>
+          <div class="pool-part-label">투자 운용<br>인덱스 ETF · 국민성장펀드</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FLOW -->
+<section class="section">
+  <div class="container">
+    <div class="section-label">이체 흐름</div>
+    <h2 class="section-title">디지털 서명으로 보호되는<br>GDC 이체 과정</h2>
+    <div class="flow-steps">
+      <div class="flow-step"><div class="flow-num">1</div><div class="flow-title">이체 요청</div><div class="flow-desc">수신자 GUID + 금액 입력</div></div>
+      <div class="flow-step"><div class="flow-num">2</div><div class="flow-title">ED25519 서명</div><div class="flow-desc">브라우저 내 개인키로 서명<br>(서버 미전송)</div></div>
+      <div class="flow-step"><div class="flow-num">3</div><div class="flow-title">서명 검증</div><div class="flow-desc">공개키로 서명 유효성 확인</div></div>
+      <div class="flow-step"><div class="flow-num">4</div><div class="flow-title">원장 기록</div><div class="flow-desc">fs_ledger · OpenHash 동시 기록</div></div>
+      <div class="flow-step"><div class="flow-num">5</div><div class="flow-title">PDV 기록</div><div class="flow-desc">송수신자 PDV에 6하 원칙 기록</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ACCESS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-label">접근</div>
+    <h2 class="section-title">지금 시작하세요</h2>
+    <div class="access-grid">
+      <div class="access-card">
+        <div class="access-icon">💳</div>
+        <div class="access-title">GDC 사용자 앱</div>
+        <p class="access-desc">스마트폰 최적화 · 모든 금융 서비스</p>
+        <ul class="access-list">
+          <li>GDC 잔액 조회 및 이체</li>
+          <li>예금 개설·이자 내역</li>
+          <li>AI 신용평가 및 대출 신청</li>
+          <li>FIAT POOL 환율 조회</li>
+          <li>OpenHash 원장 거래 내역</li>
+        </ul>
+        <a href="webapp.html" class="btn btn-acc btn-lg" style="text-align:center">💳 GDC 앱 열기 →</a>
+      </div>
+      <div class="access-card">
+        <div class="access-icon">🖥️</div>
+        <div class="access-title">관리자 대시보드</div>
+        <p class="access-desc">POOL 현황·발행량·투자 집계</p>
+        <ul class="access-list">
+          <li>GDC 총 발행량 실시간 추적</li>
+          <li>FIAT POOL 통화별 현황</li>
+          <li>예금·대출 포트폴리오</li>
+          <li>투자 수익률 집계</li>
+          <li>신용평가 통계</li>
+        </ul>
+        <a href="dashboard.html" class="btn btn-out btn-lg" style="text-align:center">🖥 대시보드 열기 →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand"><span style="font-family:var(--mono);font-size:18px">₮</span> GDC 은행</div>
+        <p class="footer-brand-desc">Gopang Digital Currency — OpenHash 분산원장 기반<br>중앙은행·시중은행 통합 디지털 금융 플랫폼</p>
+      </div>
+      <div>
+        <div class="footer-col-title">서비스</div>
+        <ul class="footer-links">
+          <li><a href="webapp.html">GDC 앱</a></li>
+          <li><a href="dashboard.html">대시보드</a></li>
+          <li><a href="#rates">금리 안내</a></li>
+          <li><a href="https://gopang.net">고팡 홈</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">연동 서비스</div>
+        <ul class="footer-links">
+          <li><a href="https://market.gopang.net">고팡 마켓</a></li>
+          <li><a href="https://tax.gopang.net">고팡 세무</a></li>
+          <li><a href="https://klaw.openhash.kr">K-Law</a></li>
+          <li><a href="https://openhash.kr">OpenHash</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">법적 안내</div>
+        <ul class="footer-links">
+          <li><a href="#">이용 약관</a></li>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="#">GDC 백서</a></li>
+          <li><a href="#">면책 조항</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 GDC · AI City Inc. All rights reserved.</span>
+      <span>Powered by OpenHash Network · 제주 시범 서비스</span>
+    </div>
+  </div>
+</footer>
+
+<a href="webapp.html" class="float-btn">
+  <div class="float-circle">₮</div>
+  <div class="float-label">GDC 앱</div>
+</a>
+
+<script>
+function toggleMenu() {
+  const m = document.getElementById('mobileMenu');
+  const b = document.getElementById('hamburger');
+  m.classList.toggle('open');
+  const s = b.querySelectorAll('span');
+  if (m.classList.contains('open')) {
+    s[0].style.transform = 'translateY(7px) rotate(45deg)';
+    s[1].style.opacity = '0';
+    s[2].style.transform = 'translateY(-7px) rotate(-45deg)';
+  } else { s[0].style.transform=''; s[1].style.opacity='1'; s[2].style.transform=''; }
+}
+function closeMenu() {
+  document.getElementById('mobileMenu').classList.remove('open');
+  const s = document.getElementById('hamburger').querySelectorAll('span');
+  s[0].style.transform=''; s[1].style.opacity='1'; s[2].style.transform='';
+}
+</script>
+</body>
+</html>
