@@ -487,6 +487,8 @@ function ledgerIcSvg(account){
 
 async function loadHome(){
   if (!GUID) { return; } // GUID 없으면 대기
+  // fs_ledger 집계 → extra.fs PL 갱신 (market 거래 반영)
+  await settleLedger(GUID);
   const ex=await getExtra();
   const cash=parseFloat(ex?.fs?.bs?.['bs-cash']||'0')||0;
   document.getElementById('w-bal').textContent=fmtT(cash);
@@ -745,6 +747,89 @@ window._onGopangAuth = async function(user) {
     btn.classList.add('visible');
   }
 })();
+
+// ══════════════════════════════════════════════════════════════
+// settleLedger — fs_ledger 집계 → extra.fs 재무제표 갱신
+// 설계 원칙: gdc만 extra.fs를 씁니다.
+//   market: fs_ledger INSERT만
+//   tax:    extra.fs READ + fs_ledger INSERT(납세)
+//   gdc:    fs_ledger READ → extra.fs WRITE (여기)
+// ══════════════════════════════════════════════════════════════
+async function settleLedger(guid) {
+  if (!guid) return;
+  try {
+    // ① fs_ledger에서 revenue/purchase/opex 거래 전체 집계
+    //    gdc_transfer / tax_payment 제외 (별도 처리)
+    const res = await fetch(
+      `${S}/rest/v1/fs_ledger`
+      + `?guid=eq.${guid}`
+      + `&fs_account=in.(revenue,purchase,opex,cogs,service_fee,interest_income)`
+      + `&select=direction,amount,fs_account`,
+      { headers: Hd }
+    );
+    const rows = await res.json();
+    if (!Array.isArray(rows)) {
+      console.warn('[GDC Settle] fs_ledger 조회 실패');
+      return;
+    }
+
+    // ② 집계
+    let revenue = 0, opex = 0, cogs = 0;
+    for (const r of rows) {
+      const amt = parseFloat(r.amount) || 0;
+      if (r.direction === 'credit') {
+        revenue += amt;
+      } else {
+        // debit: 계정과목별 분류
+        if (r.fs_account === 'cogs')     cogs += amt;
+        else                             opex += amt;
+      }
+    }
+    const grossProfit = Math.max(0, revenue - cogs);
+    const netIncome   = Math.max(0, grossProfit - opex);
+
+    // ③ 현재 extra 읽기 (bs-cash는 이체로 이미 갱신됨 — 덮어쓰지 않음)
+    const profRes  = await fetch(
+      `${S}/rest/v1/user_profiles?guid=eq.${guid}&select=extra`,
+      { headers: Hd }
+    );
+    const profRows = await profRes.json();
+    if (!profRows?.length) return;
+
+    const ex = profRows[0].extra || {};
+    ex.fs    = ex.fs    || {};
+    ex.fs.pl = ex.fs.pl || {};
+    ex.fs.bs = ex.fs.bs || {};
+
+    // ④ PL 갱신 (BS cash는 건드리지 않음 — gdc_transfer로 이미 관리)
+    ex.fs.pl['pl-revenue']      = String(revenue);
+    ex.fs.pl['pl-opex']         = String(opex);
+    ex.fs.pl['pl-cogs']         = String(cogs);
+    ex.fs.pl['pl-gross-profit'] = String(grossProfit);
+    ex.fs.pl['pl-net-income']   = String(netIncome);
+
+    // ⑤ PATCH
+    const patchRes = await fetch(
+      `${S}/rest/v1/user_profiles?guid=eq.${guid}`,
+      { method: 'PATCH', headers: H, body: JSON.stringify({ extra: ex }) }
+    );
+
+    if (patchRes.ok) {
+      console.log(
+        '[GDC Settle] ✅',
+        `revenue ₮${revenue.toLocaleString()}`,
+        `opex ₮${opex.toLocaleString()}`,
+        `net ₮${netIncome.toLocaleString()}`
+      );
+    } else {
+      console.warn('[GDC Settle] PATCH 실패:', patchRes.status);
+    }
+
+    return { revenue, opex, cogs, grossProfit, netIncome };
+  } catch(e) {
+    console.warn('[GDC Settle] 오류:', e.message);
+  }
+}
 
 /* PDV 전송 — HANDOVER §5.2 표준 패턴 */
 async function sendPDV(ipv6, user, reportOverride = null) {
