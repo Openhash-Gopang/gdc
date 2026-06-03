@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GDC 국가 대시보드 — 대한민국</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:    #F8F9FA; --sur:  #FFFFFF; --sur2: #F1F5F9;
+  --bd:    rgba(0,0,0,.09); --bd2: rgba(0,0,0,.16);
+  --t1:    #111827; --t2: #4A5578; --t3: #9898A6;
+  --brand: #3ECF8E; --brand2: #2DB87A; --brand-bg: rgba(62,207,142,.08);
+  --red:   #EF4444; --red-bg: rgba(239,68,68,.08);
+  --amber: #F59E0B; --amber-bg: rgba(245,158,11,.08);
+  --blue:  #3B82F6; --blue-bg: rgba(59,130,246,.08);
+  --mono:  'DM Mono', monospace;
+  --font:  'Noto Sans KR', -apple-system, sans-serif;
+  --r: 8px; --r2: 12px;
+  --sb-rail: 48px; --sb-full: 224px; --top: 52px;
+}
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html,body { height:100%; overflow:hidden }
+body { font-family:var(--font); font-size:13px; color:var(--t1); background:var(--bg); -webkit-font-smoothing:antialiased }
+a { text-decoration:none; color:inherit }
+::-webkit-scrollbar { width:3px; height:3px }
+::-webkit-scrollbar-thumb { background:var(--bd2); border-radius:2px }
+
+.app { display:flex; height:100vh; overflow:hidden }
+
+/* ── SIDEBAR ── */
+.sb { width:var(--sb-rail); flex-shrink:0; background:var(--sur); border-right:1px solid var(--bd); display:flex; flex-direction:column; overflow:hidden; transition:width .2s ease; z-index:200 }
+.sb:hover { width:var(--sb-full) }
+.sb-brand { height:var(--top); padding:0 12px; border-bottom:1px solid var(--bd); display:flex; align-items:center; gap:10px; overflow:hidden; flex-shrink:0 }
+.sb-logo { width:24px; height:24px; flex-shrink:0; background:var(--brand); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#fff }
+.sb-name { font-size:13px; font-weight:500; color:var(--t1); white-space:nowrap; opacity:0; transition:opacity .1s .05s }
+.sb-sub { font-size:10px; color:var(--t3) }
+.sb:hover .sb-name { opacity:1 }
+.sb-nav { padding:6px; flex:1; overflow-y:auto; overflow-x:hidden }
+.sb-sec { padding:10px 10px 4px; font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; color:var(--t3); white-space:nowrap; opacity:0; transition:opacity .1s }
+.sb:hover .sb-sec { opacity:1 }
+.sb-item { display:flex; align-items:center; gap:9px; padding:6px 9px; border-radius:6px; font-size:12px; color:var(--t2); cursor:pointer; transition:all .12s; white-space:nowrap; overflow:hidden; text-decoration:none }
+.sb-item:hover,.sb-item.act { background:var(--brand-bg); color:var(--brand2) }
+.sb-item svg { flex-shrink:0; display:block; min-width:16px; opacity:.55; transition:opacity .12s }
+.sb-item:hover svg,.sb-item.act svg { opacity:1; color:var(--brand) }
+.sb-lbl { opacity:0; transition:opacity .15s .05s }
+.sb:hover .sb-lbl { opacity:1 }
+
+/* ── MAIN ── */
+.main { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0 }
+.topbar { height:var(--top); flex-shrink:0; background:var(--sur); border-bottom:1px solid var(--bd); display:flex; align-items:center; padding:0 18px; gap:12px }
+.breadcrumb { flex:1; font-size:12px; color:var(--t3); display:flex; align-items:center; gap:5px }
+.breadcrumb b { color:var(--t1); font-weight:500 }
+.bc-sep { color:var(--bd2) }
+.live-pill { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--brand); padding:3px 9px; border-radius:20px; border:1px solid rgba(62,207,142,.25); background:var(--brand-bg) }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--brand); animation:blink 2s infinite }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.clock { font-family:var(--mono); font-size:12px; color:var(--t3) }
+
+/* ── LAYOUT ── */
+.scroll { flex:1; overflow-y:auto; padding:18px; display:flex; flex-direction:column; gap:14px }
+.kpi-row { display:grid; grid-template-columns:repeat(6,1fr); gap:10px }
+@media(max-width:1200px) { .kpi-row { grid-template-columns:repeat(3,1fr) } }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:14px }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:14px }
+.grid-6-4 { display:grid; grid-template-columns:6fr 4fr; gap:14px }
+.grid-4-6 { display:grid; grid-template-columns:4fr 6fr; gap:14px }
+@media(max-width:1000px) { .grid-2,.grid-3,.grid-6-4,.grid-4-6 { grid-template-columns:1fr } }
+
+/* ── KPI CARD ── */
+.kpi { background:var(--sur); border:1px solid var(--bd); border-radius:var(--r2); padding:14px 16px; position:relative; overflow:hidden; animation:fadeUp .35s ease both }
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+.kpi:nth-child(1){animation-delay:.04s} .kpi:nth-child(2){animation-delay:.08s}
+.kpi:nth-child(3){animation-delay:.12s} .kpi:nth-child(4){animation-delay:.16s}
+.kpi:nth-child(5){animation-delay:.20s} .kpi:nth-child(6){animation-delay:.24s}
+.kpi-icon { width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; margin-bottom:10px }
+.kpi-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--t3); margin-bottom:5px }
+.kpi-val { font-family:var(--mono); font-size:20px; font-weight:500; color:var(--t1); margin-bottom:3px }
+.kpi-val small { font-size:12px; color:var(--t3); font-weight:400 }
+.kpi-badge { display:inline-flex; align-items:center; gap:3px; font-size:10px; font-weight:500; padding:2px 6px; border-radius:10px }
+.badge-up   { color:var(--brand2); background:var(--brand-bg) }
+.badge-down { color:var(--red);    background:var(--red-bg) }
+.badge-neu  { color:var(--t3);     background:var(--sur2) }
+
+/* ── PANEL ── */
+.panel { background:var(--sur); border:1px solid var(--bd); border-radius:var(--r2); overflow:hidden }
+.ph { padding:11px 15px; border-bottom:1px solid var(--bd); display:flex; align-items:center; justify-content:space-between; flex-shrink:0 }
+.ph-l { display:flex; align-items:center; gap:7px; font-size:13px; font-weight:500; color:var(--t1) }
+.ph-l svg { color:var(--brand); opacity:.85; flex-shrink:0 }
+.ph-r { font-size:11px; color:var(--t3) }
+.pb { padding:14px }
+
+/* ── 지역 선택 드릴다운 ── */
+.drill-nav { display:flex; gap:2px; padding:10px 15px; border-bottom:1px solid var(--bd); overflow-x:auto; flex-shrink:0 }
+.drill-btn { padding:4px 10px; border-radius:6px; font-size:12px; border:1px solid var(--bd); background:var(--sur2); color:var(--t2); cursor:pointer; white-space:nowrap; transition:all .1s; font-family:var(--font) }
+.drill-btn:hover { border-color:var(--brand); color:var(--brand) }
+.drill-btn.act { background:var(--brand); border-color:var(--brand); color:#fff; font-weight:500 }
+.drill-sep { color:var(--t3); font-size:12px; padding:4px 2px; display:flex; align-items:center }
+
+/* ── 지도 캔버스 ── */
+.map-wrap { position:relative; background:var(--sur2); border-radius:var(--r); overflow:hidden }
+.map-tooltip { position:absolute; background:var(--t1); color:#fff; font-size:11px; padding:5px 8px; border-radius:5px; pointer-events:none; opacity:0; transition:opacity .15s; white-space:nowrap; z-index:10 }
+
+/* ── 카테고리 도넛 ── */
+.cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px }
+.cat-item { display:flex; align-items:center; gap:8px; padding:7px 10px; background:var(--sur2); border-radius:7px; border:1px solid var(--bd) }
+.cat-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0 }
+.cat-name { font-size:11px; color:var(--t2); flex:1 }
+.cat-amt { font-family:var(--mono); font-size:11px; color:var(--t1); font-weight:500 }
+.cat-pct { font-size:10px; color:var(--t3) }
+
+/* ── 추세선 ── */
+.trend-labels { display:flex; justify-content:space-between; font-size:10px; color:var(--t3); margin-top:5px; padding:0 2px }
+
+/* ── 테이블 ── */
+table.tbl { width:100%; border-collapse:collapse }
+table.tbl th { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; color:var(--t3); padding:8px 12px; border-bottom:1px solid var(--bd); text-align:left; background:var(--sur2) }
+table.tbl th.r { text-align:right }
+table.tbl td { padding:9px 12px; border-bottom:1px solid var(--bd); font-size:12px; color:var(--t2) }
+table.tbl tr:last-child td { border-bottom:none }
+table.tbl tr:hover td { background:var(--sur2) }
+table.tbl td.val { font-family:var(--mono); color:var(--t1); text-align:right; font-weight:500 }
+table.tbl td.pos { font-family:var(--mono); color:var(--brand); text-align:right; font-weight:500 }
+table.tbl td.neg { font-family:var(--mono); color:var(--red); text-align:right; font-weight:500 }
+table.tbl td.r { text-align:right }
+.rank-no { display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:5px; font-size:10px; font-weight:500; font-family:var(--mono) }
+.rank-1 { background:#FFD700; color:#000 }
+.rank-2 { background:#C0C0C0; color:#000 }
+.rank-3 { background:#CD7F32; color:#fff }
+.rank-n { background:var(--sur2); color:var(--t3) }
+
+/* ── 열지도 (heatmap) ── */
+.heatmap-grid { display:grid; gap:3px }
+.hm-cell { border-radius:3px; cursor:pointer; transition:all .1s; display:flex; align-items:center; justify-content:center; font-size:9px; color:rgba(0,0,0,.5); font-weight:500 }
+.hm-cell:hover { transform:scale(1.15); z-index:2; box-shadow:0 2px 8px rgba(0,0,0,.15) }
+
+/* ── 인디케이터 바 ── */
+.ind-bar-wrap { height:6px; background:var(--sur2); border-radius:3px; overflow:hidden; margin-top:3px }
+.ind-bar-fill { height:100%; border-radius:3px; transition:width .7s ease }
+
+/* ── 경보 박스 ── */
+.alert-box { padding:10px 13px; border-radius:8px; border:1px solid; margin-bottom:8px; font-size:12px }
+.alert-warn { background:var(--amber-bg); border-color:rgba(245,158,11,.25); color:#92400E }
+.alert-ok   { background:var(--brand-bg); border-color:rgba(62,207,142,.25); color:#065F46 }
+.alert-info { background:var(--blue-bg);  border-color:rgba(59,130,246,.25); color:#1E3A5F }
+
+/* ── 선택 지역 헤더 ── */
+.region-hd { background:linear-gradient(135deg, var(--brand-bg), var(--blue-bg)); border:1px solid rgba(62,207,142,.2); border-radius:var(--r2); padding:14px 18px; display:flex; align-items:center; justify-content:space-between }
+.region-title { font-size:18px; font-weight:700; color:var(--t1) }
+.region-sub { font-size:12px; color:var(--t2); margin-top:3px }
+
+/* ── CHIP ── */
+.chip { display:inline-flex; align-items:center; padding:2px 7px; border-radius:20px; font-size:10px; font-weight:500; border:1px solid }
+.chip-grn { color:#065F46; background:var(--brand-bg); border-color:rgba(62,207,142,.3) }
+.chip-red { color:#9B1C1C; background:var(--red-bg); border-color:rgba(239,68,68,.3) }
+.chip-gld { color:#92400E; background:var(--amber-bg); border-color:rgba(245,158,11,.3) }
+.chip-blue { color:#1E3A5F; background:var(--blue-bg); border-color:rgba(59,130,246,.3) }
+
+.foot { text-align:center; font-size:10px; color:var(--t3); padding:6px 0 2px }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════════ -->
+<aside class="sb">
+  <a href="desktop.html" class="sb-brand">
+    <div class="sb-logo">
+      <svg viewBox="0 0 28 34" fill="currentColor" style="width:55%;height:55%"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg>
+    </div>
+    <div class="sb-name">GDC 국가 대시보드<div class="sb-sub">통화정책 분석</div></div>
+  </a>
+  <nav class="sb-nav">
+    <div class="sb-sec">분석</div>
+    <a class="sb-item act" href="nation-dashboard.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/><path d="M3.5 9h17M3.5 15h17"/></svg>
+      <span class="sb-lbl">국가 종합 현황</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="7" r="3.5"/><path d="M3 21v-1.5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5V21"/><path d="M16 3.5a3.5 3.5 0 0 1 0 7"/><path d="M21 21v-1.5a4.5 4.5 0 0 0-3-4.24"/></svg>
+      <span class="sb-lbl">인구별 분석</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 17 7 11 11 14 15 7 20 12"/><path d="M20 7h-4v4"/></svg>
+      <span class="sb-lbl">소비 트렌드</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 4.4-3.3 8.5-8 10-4.7-1.5-8-5.6-8-10V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+      <span class="sb-lbl">신용 분포</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V5l-4 4M17 8v11l4-4"/></svg>
+      <span class="sb-lbl">자금 흐름</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg>
+      <span class="sb-lbl">정책 시뮬레이터</span>
+    </a>
+    <div class="sb-sec">이동</div>
+    <a class="sb-item" href="dashboard.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="1.5"/><rect x="14" y="3" width="7" height="5" rx="1.5"/><rect x="14" y="12" width="7" height="9" rx="1.5"/><rect x="3" y="16" width="7" height="5" rx="1.5"/></svg>
+      <span class="sb-lbl">관리자 대시보드</span>
+    </a>
+    <a class="sb-item" href="pool-dashboard.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/><path d="M3.5 9h17M3.5 15h17"/></svg>
+      <span class="sb-lbl">POOL 대시보드</span>
+    </a>
+    <a class="sb-item" href="desktop.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11.5L12 3l9 8.5"/><path d="M5 10v9a1 1 0 0 0 1 1h4v-5h4v5h4a1 1 0 0 0 1-1v-9"/></svg>
+      <span class="sb-lbl">GDC 홈</span>
+    </a>
+  </nav>
+</aside>
+
+<!-- ══ MAIN ═══════════════════════════════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <nav class="breadcrumb">
+      <a href="desktop.html">GDC</a><span class="bc-sep">/</span>
+      <b id="bc-region">대한민국</b>
+      <span class="bc-sep" id="bc-sep2" style="display:none">/</span>
+      <b id="bc-metro" style="display:none"></b>
+      <span class="bc-sep" id="bc-sep3" style="display:none">/</span>
+      <b id="bc-sgg" style="display:none"></b>
+    </nav>
+    <select id="year-select" style="font-size:11px;border:1px solid var(--bd);border-radius:6px;padding:3px 8px;background:var(--sur);color:var(--t2);font-family:var(--font);cursor:pointer">
+      <option>2026년</option><option>2025년</option>
+    </select>
+    <select id="period-select" style="font-size:11px;border:1px solid var(--bd);border-radius:6px;padding:3px 8px;background:var(--sur);color:var(--t2);font-family:var(--font);cursor:pointer">
+      <option>월간</option><option>분기</option><option>연간</option>
+    </select>
+    <div class="live-pill"><span class="dot"></span>PDV 연동 준비</div>
+    <span class="clock" id="clock">--:--:--</span>
+  </header>
+
+  <div class="scroll">
+
+    <!-- ── 통화정책 경보 ─────────────────────────── -->
+    <div id="alert-zone">
+      <div class="alert-ok">✅ <strong>GDC 전국 유동성 정상</strong> — 지불준비금 비율 20.0% 유지, 이상 신호 없음</div>
+      <div class="alert-warn">⚠️ <strong>제주 서귀포시</strong> 의료비 지출 전월 대비 +23% 급등 — 계절성 요인 분석 필요</div>
+      <div class="alert-info">ℹ️ <strong>서울 강남구</strong> GDC 이체량 이달 최고치 갱신 — 부동산 관련 거래 증가 추정</div>
+    </div>
+
+    <!-- ── 전국 KPI ───────────────────────────────── -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--brand-bg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="7" r="3.5"/><path d="M3 21v-1.5a5 5 0 0 1 5-5h4a5 5 0 0 1 5 5V21"/><path d="M16 3.5a3.5 3.5 0 0 1 0 7"/><path d="M21 21v-1.5a4.5 4.5 0 0 0-3-4.24"/></svg>
+        </div>
+        <div class="kpi-label">GDC 활성 사용자</div>
+        <div class="kpi-val" id="k-users">4,823<small>만명</small></div>
+        <span class="kpi-badge badge-up">▲ +12.4%</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--blue-bg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c-2.5 3.5-4 6.5-4 10s1.5 6.5 4 10"/><path d="M12 2c2.5 3.5 4 6.5 4 10s-1.5 6.5-4 10"/><path d="M3 12h18"/><path d="M3 7.5h18M3 16.5h18"/><path d="M99 99a2 2 0 0 0-1.8-1h-2a2 2 0 1 0 0 4h2a2 2 0 1 0 0 4h-2a2 2 0 0 1-1.8-1"/><path d="M12 7v10"/></svg>
+        </div>
+        <div class="kpi-label">전국 GDC 유통량</div>
+        <div class="kpi-val" id="k-circulation">2.84<small>조 ₮</small></div>
+        <span class="kpi-badge badge-up">▲ +8.7%</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--amber-bg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 17 7 11 11 14 15 7 20 12"/><path d="M20 7h-4v4"/></svg>
+        </div>
+        <div class="kpi-label">일평균 거래량</div>
+        <div class="kpi-val" id="k-daily-tx">18.2<small>만건</small></div>
+        <span class="kpi-badge badge-up">▲ +5.1%</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--red-bg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 16V5l-4 4M17 8v11l4-4"/></svg>
+        </div>
+        <div class="kpi-label">평균 신용점수</div>
+        <div class="kpi-val" id="k-credit">712<small>점</small></div>
+        <span class="kpi-badge badge-neu">→ 보통</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--brand-bg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/><path d="M3.5 9h17M3.5 15h17"/></svg>
+        </div>
+        <div class="kpi-label">KRW POOL 납입</div>
+        <div class="kpi-val" id="k-pool">58.0<small>조원</small></div>
+        <span class="kpi-badge badge-up">▲ +3.2%</span>
+      </div>
+      <div class="kpi">
+        <div class="kpi-icon" style="background:var(--blue-bg)">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 4.4-3.3 8.5-8 10-4.7-1.5-8-5.6-8-10V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+        </div>
+        <div class="kpi-label">KOSPI 연동 수익</div>
+        <div class="kpi-val" id="k-yield">+107<small>%</small></div>
+        <span class="kpi-badge badge-up">▲ 2026 YTD</span>
+      </div>
+    </div>
+
+    <!-- ── 지역 선택 드릴다운 + 선택 지역 정보 ───── -->
+    <div class="region-hd">
+      <div>
+        <div class="region-title" id="selected-region-name">🇰🇷 대한민국 전체</div>
+        <div class="region-sub" id="selected-region-sub">광역자치단체를 클릭하면 시군구 → 읍면동 단위로 드릴다운됩니다</div>
+      </div>
+      <div style="display:flex;gap:16px;align-items:center">
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--t3)">GDC 사용량</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--brand)" id="rg-amount">284.3억 ₮</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--t3)">활성 사용자</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--t1)" id="rg-users">4,823만</div>
+        </div>
+        <div style="text-align:center">
+          <div style="font-size:10px;color:var(--t3)">1인당 월 사용액</div>
+          <div style="font-family:var(--mono);font-size:18px;font-weight:500;color:var(--t1)" id="rg-per-capita">₮58,900</div>
+        </div>
+        <button onclick="resetDrill()" style="padding:6px 12px;border:1px solid var(--bd);border-radius:6px;background:var(--sur);color:var(--t2);cursor:pointer;font-size:11px;font-family:var(--font)">전국 보기</button>
+      </div>
+    </div>
+
+    <!-- ── 열지도 + 드릴다운 테이블 ─────────────── -->
+    <div class="grid-6-4">
+
+      <!-- 광역시도 열지도 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9"/><path d="M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9"/><path d="M3.5 9h17M3.5 15h17"/></svg>
+            광역자치단체별 GDC 사용량 열지도
+          </div>
+          <span class="ph-r" id="hm-level-label">17개 광역자치단체</span>
+        </div>
+
+        <!-- 드릴다운 네비 -->
+        <div class="drill-nav" id="drill-nav">
+          <button class="drill-btn act" onclick="drillTo('national')">🇰🇷 전국</button>
+        </div>
+
+        <!-- 열지도 영역 -->
+        <div class="pb">
+          <div id="heatmap-container"></div>
+
+          <!-- 범례 -->
+          <div style="display:flex;align-items:center;gap:6px;margin-top:10px;font-size:10px;color:var(--t3)">
+            <span>낮음</span>
+            <div style="flex:1;height:6px;border-radius:3px;background:linear-gradient(to right,#E6F7F1,#3ECF8E,#065F46)"></div>
+            <span>높음</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 지역 순위 테이블 -->
+      <div class="panel" style="display:flex;flex-direction:column">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg>
+            GDC 사용량 순위
+          </div>
+          <span class="ph-r" id="rank-label">광역자치단체</span>
+        </div>
+        <div style="flex:1;overflow-y:auto">
+          <table class="tbl" id="rank-table">
+            <thead><tr>
+              <th>순위</th><th>지역</th>
+              <th class="r">사용량 (₮)</th><th class="r">전월比</th><th>추세</th>
+            </tr></thead>
+            <tbody id="rank-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 소비 카테고리 + 추세선 ─────────────────── -->
+    <div class="grid-4-6">
+
+      <!-- 소비 카테고리 도넛 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><path d="M12 3v5M21 12h-5M12 21v-5M3 12h5"/></svg>
+            소비 카테고리 분포
+          </div>
+          <span class="ph-r" id="cat-region-label">전국</span>
+        </div>
+        <div class="pb">
+          <!-- 도넛 -->
+          <div style="position:relative;width:150px;height:150px;margin:0 auto 14px">
+            <svg id="cat-donut" viewBox="0 0 120 120" width="150" height="150">
+              <circle cx="60" cy="60" r="42" fill="none" stroke="var(--sur2)" stroke-width="18"/>
+            </svg>
+            <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <div style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--t1)" id="cat-center">—</div>
+              <div style="font-size:10px;color:var(--t3)">총 지출</div>
+            </div>
+          </div>
+          <!-- 카테고리 그리드 -->
+          <div class="cat-grid" id="cat-grid"></div>
+        </div>
+      </div>
+
+      <!-- 월별 사용량 추세선 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 17 7 11 11 14 15 7 20 12"/><path d="M20 7h-4v4"/></svg>
+            월별 GDC 사용량 추세선
+          </div>
+          <div style="display:flex;gap:6px" id="trend-legend-boxes"></div>
+        </div>
+        <div class="pb">
+          <canvas id="trend-canvas" height="140" style="width:100%;display:block"></canvas>
+          <div class="trend-labels" id="trend-x"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 읍면동 드릴다운 상세 (제주 예시) ─────── -->
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-l">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 4v16"/></svg>
+          읍면동 단위 상세 — 제주시 한림읍 (예시)
+        </div>
+        <div style="display:flex;gap:6px">
+          <span class="chip chip-grn">제주특별자치도</span>
+          <span class="chip chip-blue">제주시</span>
+          <span class="chip chip-gld">한림읍</span>
+        </div>
+      </div>
+      <div style="padding:14px;display:grid;grid-template-columns:repeat(4,1fr);gap:10px" id="emd-kpi"></div>
+      <div style="padding:0 14px 14px">
+        <table class="tbl">
+          <thead><tr>
+            <th>읍면동</th><th class="r">GDC 사용량</th><th class="r">식비</th><th class="r">교통</th>
+            <th class="r">의료</th><th class="r">교육</th><th class="r">생활</th><th class="r">기타</th><th>추세</th>
+          </tr></thead>
+          <tbody id="emd-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── 정책 지표 & 자금 흐름 ──────────────────── -->
+    <div class="grid-2">
+
+      <!-- 통화정책 지표 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 3v6c0 4.4-3.3 8.5-8 10-4.7-1.5-8-5.6-8-10V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg>
+            통화정책 주요 지표
+          </div>
+          <span class="ph-r">한국은행 통화정책팀 참고용</span>
+        </div>
+        <div class="pb" style="display:flex;flex-direction:column;gap:12px" id="policy-indicators"></div>
+      </div>
+
+      <!-- 지역간 자금 흐름 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V5l-4 4M17 8v11l4-4"/></svg>
+            지역간 GDC 자금 흐름 (순유입/유출)
+          </div>
+          <span class="ph-r">당월 누계</span>
+        </div>
+        <div class="pb">
+          <canvas id="flow-canvas" height="180" style="width:100%;display:block"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 신용 분포 & 소득 분위별 ──────────────── -->
+    <div class="grid-2">
+
+      <!-- 신용점수 분포 히스토그램 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="3 17 7 11 11 14 15 7 20 12"/><path d="M20 7h-4v4"/></svg>
+            전국 신용점수 분포
+          </div>
+          <span class="ph-r">재무제표 기반 AI 평가</span>
+        </div>
+        <div class="pb">
+          <canvas id="credit-canvas" height="130" style="width:100%;display:block"></canvas>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-top:4px">
+            <span>0점 (C)</span><span>200</span><span>400</span><span>600</span><span>800</span><span>1000점 (AAA)</span>
+          </div>
+          <div style="display:flex;gap:10px;margin-top:10px;flex-wrap:wrap" id="grade-dist"></div>
+        </div>
+      </div>
+
+      <!-- 소비 품목 top10 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="12" width="4" height="9" rx="1"/><rect x="10" y="7" width="4" height="14" rx="1"/><rect x="17" y="4" width="4" height="17" rx="1"/><path d="M3 3h18"/></svg>
+            GDC 소비 품목 Top 10
+          </div>
+          <span class="ph-r" id="top10-region">전국 · 당월</span>
+        </div>
+        <div class="pb" style="display:flex;flex-direction:column;gap:7px" id="top10-list"></div>
+      </div>
+    </div>
+
+    <div style="margin:0 0 10px;padding:10px 16px;background:rgba(59,130,246,.06);border:1px solid rgba(59,130,246,.18);border-radius:8px;font-size:12px;color:var(--t2)">🏛️ <strong style="color:var(--t1)">통화정책 참고</strong> — GDC는 중앙은행 방식의 사전 발행이 없습니다. 발행량 = 누적 입금액 ÷ 교환비(KRW 1,000 : ₮1)이며, POOL 잔고가 발행량의 유일한 담보입니다. 초기 잔고 0에서 시작하므로 인플레이션 위험이 구조적으로 차단됩니다.</div>
+    <div class="foot">GDC 국가 대시보드 · PDV 연동 이전 시뮬레이션 데이터 · 통화정책 참고용 · AI City Inc. 2026</div>
+  </div>
+</div>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════
+   GDC 국가 대시보드 — 시뮬레이션 데이터
+   PDV 연동 후: S+'/rest/v1/...' 경로로 실데이터 교체
+   ════════════════════════════════════════════════════ */
+
+const fmt  = n => (+(n||0)).toLocaleString('ko-KR',{maximumFractionDigits:0});
+const fmtT = n => '₮'+fmt(n);
+const fmtB = n => n>=1e8?(n/1e8).toFixed(1)+'억':n>=1e4?(n/1e4).toFixed(0)+'만':fmt(n);
+
+/* ── 광역자치단체 데이터 ─────────────────────────── */
+const METROS = [
+  { code:'11', name:'서울특별시',   emoji:'🏙️', amount:8420000000, users:9910000, delta:+5.2, grade:'AAA', color:'#3ECF8E' },
+  { code:'26', name:'부산광역시',   emoji:'🌊', amount:2180000000, users:3420000, delta:+3.1, grade:'AA',  color:'#60A5FA' },
+  { code:'27', name:'대구광역시',   emoji:'🏔️', amount:1350000000, users:2420000, delta:+1.8, grade:'AA',  color:'#A78BFA' },
+  { code:'28', name:'인천광역시',   emoji:'✈️', amount:1620000000, users:2980000, delta:+4.7, grade:'AA',  color:'#34D399' },
+  { code:'29', name:'광주광역시',   emoji:'🌻', amount:  980000000, users:1460000, delta:+2.3, grade:'A',   color:'#FBBF24' },
+  { code:'30', name:'대전광역시',   emoji:'🔬', amount:  890000000, users:1460000, delta:+3.0, grade:'A',   color:'#FB923C' },
+  { code:'31', name:'울산광역시',   emoji:'🏭', amount:  610000000, users:1140000, delta:-0.5, grade:'BBB', color:'#F87171' },
+  { code:'36', name:'세종특별자치시',emoji:'🏛️', amount:  280000000, users: 390000, delta:+8.1, grade:'A',  color:'#818CF8' },
+  { code:'41', name:'경기도',       emoji:'🌾', amount:7320000000, users:13840000, delta:+6.3, grade:'AA', color:'#2DD4BF' },
+  { code:'42', name:'강원특별자치도',emoji:'⛰️', amount:  520000000, users:1540000, delta:+1.1, grade:'BBB',color:'#94A3B8' },
+  { code:'43', name:'충청북도',     emoji:'🌲', amount:  480000000, users:1590000, delta:+0.8, grade:'BBB', color:'#A3E635' },
+  { code:'44', name:'충청남도',     emoji:'🌊', amount:  620000000, users:2120000, delta:+2.2, grade:'BBB', color:'#FCD34D' },
+  { code:'45', name:'전북특별자치도',emoji:'🌺', amount:  490000000, users:1790000, delta:-1.2, grade:'BBB',color:'#FCA5A5' },
+  { code:'46', name:'전라남도',     emoji:'🍊', amount:  420000000, users:1870000, delta:+0.4, grade:'BBB', color:'#86EFAC' },
+  { code:'47', name:'경상북도',     emoji:'🍎', amount:  650000000, users:2620000, delta:+1.6, grade:'BBB', color:'#DDD6FE' },
+  { code:'48', name:'경상남도',     emoji:'🚢', amount:  840000000, users:3320000, delta:+2.8, grade:'A',   color:'#FED7AA' },
+  { code:'50', name:'제주특별자치도',emoji:'🌴', amount:  320000000, users: 670000, delta:+11.2,grade:'AA', color:'#6EE7B7' },
+];
+
+/* ── 제주 시군구 ──────────────────────────────────── */
+const JEJU_SGG = [
+  { name:'제주시',   amount:210000000, users:500000, delta:+9.8,  color:'#3ECF8E' },
+  { name:'서귀포시', amount:110000000, users:170000, delta:+13.8, color:'#60A5FA' },
+];
+
+/* ── 제주시 읍면동 ──────────────────────────────────── */
+const JEJU_EMD = [
+  { name:'한림읍',   food:12400000, trans:3800000, medical:2100000, edu:1600000, living:8900000, other:2200000 },
+  { name:'애월읍',   food:10200000, trans:3100000, medical:1800000, edu:1400000, living:7600000, other:1900000 },
+  { name:'구좌읍',   food: 7800000, trans:2600000, medical:1500000, edu:1100000, living:5800000, other:1400000 },
+  { name:'조천읍',   food: 6500000, trans:2200000, medical:1300000, edu: 980000, living:4800000, other:1200000 },
+  { name:'한경면',   food: 5200000, trans:1800000, medical:1100000, edu: 780000, living:3900000, other: 980000 },
+  { name:'대정읍',   food: 4800000, trans:1600000, medical:1050000, edu: 720000, living:3600000, other: 900000 },
+  { name:'안덕면',   food: 3900000, trans:1300000, medical: 920000, edu: 620000, living:2900000, other: 730000 },
+  { name:'표선면',   food: 3600000, trans:1200000, medical: 880000, edu: 590000, living:2700000, other: 680000 },
+];
+
+/* ── 소비 카테고리 ──────────────────────────────── */
+const CATEGORIES = [
+  { name:'식비',     key:'food',    color:'#FB923C', pct:28 },
+  { name:'생활비',   key:'living',  color:'#A78BFA', pct:22 },
+  { name:'교통비',   key:'trans',   color:'#60A5FA', pct:14 },
+  { name:'의료비',   key:'medical', color:'#F87171', pct:12 },
+  { name:'교육·학습',key:'edu',     color:'#3ECF8E', pct:11 },
+  { name:'연구개발', key:'rd',      color:'#34D399', pct:7 },
+  { name:'이체',     key:'transfer',color:'#94A3B8', pct:6 },
+];
+
+/* ── 정책 지표 ──────────────────────────────────── */
+const POLICY_INDS = [
+  { name:'GDC 유동성 비율 (준비금/유통량)', val:20.0, unit:'%',  ok:20,  warn:15, good:25, dir:'up',   desc:'지불준비금 정상' },
+  { name:'전국 평균 대출금리 (신용가중평균)', val:2.14, unit:'%',  ok:3,   warn:4,  good:0,  dir:'down', desc:'시중은행 5.8% 대비 현저히 낮음' },
+  { name:'GDC 물가연동지수 (CPI 상관)',       val:0.82, unit:'',   ok:0.7, warn:0.5,good:1,  dir:'up',   desc:'소비자물가와 높은 상관' },
+  { name:'지역간 유동성 편차 (지니계수)',      val:0.31, unit:'',   ok:0.4, warn:0.5,good:0,  dir:'down', desc:'서울-비수도권 격차 주시' },
+  { name:'일평균 신규 사용자 증가',            val:12400,unit:'명', ok:5000,warn:1000,good:20000,dir:'up',desc:'고성장 유지' },
+  { name:'GDC → 실물결제 비율',               val:67.3, unit:'%',  ok:50,  warn:30, good:80, dir:'up',   desc:'결제 인프라 정착 중' },
+];
+
+/* ── Top 10 소비 품목 ────────────────────────────── */
+const TOP10 = [
+  { name:'편의점·마트 (생활)',    amt:42800000000, delta:+3.2 },
+  { name:'음식점 (식비)',          amt:38900000000, delta:+5.7 },
+  { name:'대중교통 (교통)',        amt:21400000000, delta:+1.1 },
+  { name:'약국·병원 (의료)',       amt:18700000000, delta:+8.4 },
+  { name:'온라인 쇼핑 (생활)',     amt:16200000000, delta:+14.2 },
+  { name:'학원·교육 (교육)',       amt:13800000000, delta:+2.3 },
+  { name:'주유소·주차 (교통)',     amt:11900000000, delta:-2.1 },
+  { name:'카페·음료 (식비)',       amt:10300000000, delta:+6.8 },
+  { name:'병원 입원비 (의료)',     amt: 9800000000, delta:+11.3 },
+  { name:'온라인 강의 (교육)',     amt: 7400000000, delta:+19.6 },
+];
+
+/* ── 신용 등급 분포 ─────────────────────────────── */
+const GRADE_DIST = [
+  { grade:'AAA', pct:8,  color:'#3ECF8E' },
+  { grade:'AA',  pct:14, color:'#34D399' },
+  { grade:'A',   pct:22, color:'#60A5FA' },
+  { grade:'BBB', pct:31, color:'#FBBF24' },
+  { grade:'BB',  pct:17, color:'#FB923C' },
+  { grade:'C',   pct:8,  color:'#F87171' },
+];
+
+/* ── 도넛 유틸 ──────────────────────────────────── */
+function drawDonut(svgId, segs) {
+  const svg = document.getElementById(svgId);
+  [...svg.querySelectorAll('.dseg')].forEach(e=>e.remove());
+  const r=42, circ=2*Math.PI*r;
+  let off=-circ*0.25;
+  segs.forEach(({pct,color})=>{
+    const len=circ*pct, gap=circ-len+1.5;
+    const el=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    el.setAttribute('class','dseg'); el.setAttribute('cx',60); el.setAttribute('cy',60); el.setAttribute('r',r);
+    el.setAttribute('fill','none'); el.setAttribute('stroke',color); el.setAttribute('stroke-width',18);
+    el.setAttribute('stroke-dasharray',`${len} ${gap}`);
+    el.setAttribute('stroke-dashoffset',-off);
+    el.setAttribute('stroke-linecap','round');
+    svg.appendChild(el);
+    off+=len+1.5;
+  });
+}
+
+/* ── 열지도 렌더 ────────────────────────────────── */
+let drillLevel='national', drillMetro=null;
+
+function renderHeatmap(data, labelKey='name') {
+  const max = Math.max(...data.map(d=>d.amount));
+  const container = document.getElementById('heatmap-container');
+  const cols = Math.ceil(Math.sqrt(data.length));
+
+  container.innerHTML = '';
+  const grid = document.createElement('div');
+  grid.style.cssText = `display:grid;grid-template-columns:repeat(${cols},1fr);gap:4px`;
+
+  data.forEach(d => {
+    const intensity = d.amount / max;
+    const lightness = Math.round(95 - intensity * 60);
+    const textColor = intensity > 0.5 ? '#fff' : '#065F46';
+    const bg = intensity > 0.5
+      ? `rgba(62,207,142,${0.3 + intensity*0.7})`
+      : `rgba(62,207,142,${0.08 + intensity*0.25})`;
+
+    const cell = document.createElement('div');
+    cell.className = 'hm-cell';
+    cell.style.cssText = `height:52px;background:${bg};color:${textColor}`;
+    cell.innerHTML = `<div style="text-align:center;line-height:1.3">
+      <div style="font-size:16px">${d.emoji||''}</div>
+      <div style="font-size:9px;font-weight:500">${d.name.replace(/특별|광역|특별자치|자치/g,'').replace(/시$|도$/,'')}</div>
+      <div style="font-size:8px;opacity:.8">${fmtB(d.amount)}</div>
+    </div>`;
+    cell.title = `${d.name}: ₮${fmt(d.amount)} | 전월比 ${d.delta>0?'+':''}${d.delta}%`;
+    cell.onclick = () => {
+      if (drillLevel === 'national') drillTo('metro', d);
+      else if (drillLevel === 'metro') drillTo('sgg', d);
+    };
+    grid.appendChild(cell);
+  });
+  container.appendChild(grid);
+}
+
+/* ── 순위 테이블 ────────────────────────────────── */
+function renderRankTable(data) {
+  const sorted = [...data].sort((a,b)=>b.amount-a.amount);
+  const max = sorted[0]?.amount || 1;
+  const tbody = document.getElementById('rank-tbody');
+  tbody.innerHTML = sorted.map((d,i) => {
+    const rankCls = i===0?'rank-1':i===1?'rank-2':i===2?'rank-3':'rank-n';
+    const spark = generateSparkPath(d.amount, d.delta);
+    return `<tr style="cursor:pointer" onclick="void(0)">
+      <td><span class="rank-no ${rankCls}">${i+1}</span></td>
+      <td style="font-weight:500;color:var(--t1)">${d.emoji||''} ${d.name}</td>
+      <td class="val">${fmtB(d.amount)}</td>
+      <td class="${d.delta>=0?'pos':'neg'}">${d.delta>=0?'+':''}${d.delta}%</td>
+      <td style="width:60px">
+        <svg width="60" height="20" viewBox="0 0 60 20">
+          <polyline points="${spark}" fill="none" stroke="${d.delta>=0?'var(--brand)':'var(--red)'}" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function generateSparkPath(base, delta) {
+  // 6포인트 시뮬레이션 추세선
+  const pts = Array.from({length:6},(_,i)=>{
+    const v = base * (1 + (delta/100)*(i/5) + (Math.random()-0.5)*0.03);
+    return v;
+  });
+  const mn=Math.min(...pts), mx=Math.max(...pts);
+  return pts.map((v,i)=>`${i*12},${18-(v-mn)/(mx-mn||1)*16}`).join(' ');
+}
+
+/* ── 드릴다운 로직 ──────────────────────────────── */
+function drillTo(level, data) {
+  drillLevel = level;
+  const nav = document.getElementById('drill-nav');
+  const label = document.getElementById('hm-level-label');
+  const rankLabel = document.getElementById('rank-label');
+
+  if (level === 'national') {
+    nav.innerHTML = '<button class="drill-btn act">🇰🇷 전국</button>';
+    label.textContent = '17개 광역자치단체';
+    rankLabel.textContent = '광역자치단체';
+    renderHeatmap(METROS);
+    renderRankTable(METROS);
+    updateRegionHeader('🇰🇷 대한민국 전체', '광역자치단체를 클릭하면 시군구 → 읍면동 단위로 드릴다운됩니다', 28430000000, 48230000, 58900);
+    document.getElementById('bc-sep2').style.display='none';
+    document.getElementById('bc-metro').style.display='none';
+    document.getElementById('bc-sep3').style.display='none';
+    document.getElementById('bc-sgg').style.display='none';
+    renderTrend(null);
+    renderCatDonut(null);
+
+  } else if (level === 'metro' && data) {
+    drillMetro = data;
+    // 제주만 실제 시군구 데이터 보유, 나머지는 시뮬레이션
+    const sggData = data.code === '50' ? JEJU_SGG :
+      Array.from({length:Math.floor(Math.random()*8)+3},(_,i)=>({
+        name:['가구','나구','다구','라구','마구','바구','사구','아구'][i]||`${i+1}구`,
+        emoji:['🏘️','🏙️','🌲','🌊','🏭','🏫','🏥','🌺'][i]||'🏙️',
+        amount:data.amount*(0.05+Math.random()*0.4),
+        users:Math.round(data.users*(0.05+Math.random()*0.4)),
+        delta:+(data.delta+(Math.random()-0.5)*5).toFixed(1),
+        color:data.color,
+      }));
+
+    nav.innerHTML = `<button class="drill-btn" onclick="drillTo('national')">🇰🇷 전국</button>
+      <span class="drill-sep">›</span>
+      <button class="drill-btn act">${data.emoji} ${data.name}</button>`;
+    label.textContent = `${data.name} 시군구`;
+    rankLabel.textContent = '시군구';
+    renderHeatmap(sggData);
+    renderRankTable(sggData);
+    updateRegionHeader(`${data.emoji} ${data.name}`, `시군구를 클릭하면 읍면동 단위로 상세 조회됩니다`, data.amount, data.users, Math.round(data.amount/data.users/12));
+    document.getElementById('bc-sep2').style.display='';
+    document.getElementById('bc-metro').style.display='';
+    document.getElementById('bc-metro').textContent = data.name;
+    document.getElementById('bc-sep3').style.display='none';
+    document.getElementById('bc-sgg').style.display='none';
+    renderTrend(data.name);
+    renderCatDonut(data.name);
+
+  } else if (level === 'sgg' && data) {
+    nav.innerHTML = `<button class="drill-btn" onclick="drillTo('national')">🇰🇷 전국</button>
+      <span class="drill-sep">›</span>
+      <button class="drill-btn" onclick="drillTo('metro',drillMetro)">${drillMetro?.emoji} ${drillMetro?.name}</button>
+      <span class="drill-sep">›</span>
+      <button class="drill-btn act">${data.name}</button>`;
+    label.textContent = `${data.name} 읍면동`;
+    rankLabel.textContent = '읍면동';
+
+    // 읍면동 시뮬레이션
+    const emdData = Array.from({length:8},(_,i)=>({
+      name:['중앙동','신흥동','도남동','영평동','이도동','삼도동','건입동','화북동'][i],
+      emoji:'🏘️',
+      amount:data.amount*(0.05+Math.random()*0.25),
+      users:Math.round(data.users*(0.03+Math.random()*0.2)),
+      delta:+(data.delta+(Math.random()-0.5)*4).toFixed(1),
+      color:data.color,
+    }));
+    renderHeatmap(emdData);
+    renderRankTable(emdData);
+    updateRegionHeader(`📍 ${data.name}`, '읍면동 단위 최소 행정 단위 분석', data.amount, data.users, Math.round(data.amount/data.users/12));
+    document.getElementById('bc-sep3').style.display='';
+    document.getElementById('bc-sgg').style.display='';
+    document.getElementById('bc-sgg').textContent = data.name;
+    renderTrend(data.name);
+    renderCatDonut(data.name);
+  }
+}
+
+function resetDrill() { drillTo('national'); }
+
+function updateRegionHeader(name, sub, amount, users, perCapita) {
+  document.getElementById('selected-region-name').textContent = name;
+  document.getElementById('selected-region-sub').textContent = sub;
+  document.getElementById('rg-amount').textContent = fmtB(amount) + ' ₮';
+  document.getElementById('rg-users').textContent = fmtB(users) + '명';
+  document.getElementById('rg-per-capita').textContent = '₮' + fmt(perCapita);
+}
+
+/* ── 소비 카테고리 도넛 ─────────────────────────── */
+function renderCatDonut(regionName) {
+  const total = CATEGORIES.reduce((s,c)=>s+c.pct,0);
+  drawDonut('cat-donut', CATEGORIES.map(c=>({pct:c.pct/total, color:c.color})));
+  document.getElementById('cat-center').textContent = regionName ? fmtB(Math.random()*2e9+5e8) : '284.3억';
+  document.getElementById('cat-region-label').textContent = regionName || '전국';
+  document.getElementById('cat-grid').innerHTML = CATEGORIES.map(c=>`
+    <div class="cat-item">
+      <div class="cat-dot" style="background:${c.color}"></div>
+      <span class="cat-name">${c.name}</span>
+      <div>
+        <div class="cat-amt">${c.pct}%</div>
+      </div>
+    </div>`).join('');
+}
+
+/* ── 월별 추세선 캔버스 ─────────────────────────── */
+function renderTrend(regionName) {
+  const canvas = document.getElementById('trend-canvas');
+  const W = canvas.offsetWidth || 700, H = 140;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  const months = 12;
+  // 주요 3개 시도 추세선
+  const lines = regionName ? [
+    { label:regionName, color:'var(--brand)', base:Math.random()*2e9+5e8, growth:0.08 },
+  ] : [
+    { label:'서울',  color:'#3ECF8E', base:8.4e9, growth:0.05 },
+    { label:'경기',  color:'#60A5FA', base:7.3e9, growth:0.06 },
+    { label:'제주',  color:'#FB923C', base:3.2e8, growth:0.11 },
+  ];
+
+  // 격자
+  ctx.strokeStyle='rgba(0,0,0,.05)'; ctx.lineWidth=1;
+  for(let i=0;i<=4;i++){
+    const y=H*0.08+H*0.84*i/4;
+    ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke();
+  }
+
+  const monthLabels=['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+
+  lines.forEach(line=>{
+    const data=Array.from({length:months},(_,i)=>
+      line.base*(1+line.growth*(i/months))*(1+(Math.random()-0.45)*0.04)
+    );
+    const mn=Math.min(...data), mx=Math.max(...data);
+    const norm=v=>H*0.08+H*0.84*(1-(v-mn)/(mx-mn||1));
+
+    // 면적 채우기
+    ctx.beginPath();
+    data.forEach((v,i)=>{
+      const x=W/(months-1)*i, y=norm(v);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.lineTo(W,H*0.92); ctx.lineTo(0,H*0.92); ctx.closePath();
+    const col=line.color.startsWith('var')?getComputedStyle(document.documentElement).getPropertyValue('--brand').trim()||'#3ECF8E':line.color;
+    const grad=ctx.createLinearGradient(0,0,0,H);
+    grad.addColorStop(0,col+'33'); grad.addColorStop(1,col+'00');
+    ctx.fillStyle=grad; ctx.fill();
+
+    // 라인
+    ctx.beginPath();
+    data.forEach((v,i)=>{
+      const x=W/(months-1)*i, y=norm(v);
+      i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
+    });
+    ctx.strokeStyle=col; ctx.lineWidth=2;
+    ctx.shadowColor=col; ctx.shadowBlur=4;
+    ctx.stroke(); ctx.shadowBlur=0;
+  });
+
+  document.getElementById('trend-x').innerHTML=monthLabels.map(m=>`<span>${m}</span>`).join('');
+  document.getElementById('trend-legend-boxes').innerHTML=lines.map(l=>{
+    const c=l.color.startsWith('var')?'#3ECF8E':l.color;
+    return `<span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2)">
+      <span style="width:14px;height:2px;background:${c};display:inline-block;border-radius:2px"></span>${l.label}
+    </span>`;
+  }).join('');
+}
+
+/* ── 읍면동 테이블 ───────────────────────────────── */
+function renderEMD() {
+  // EMD KPI
+  const hlim = JEJU_EMD[0];
+  const total = Object.values(hlim).reduce((s,v)=>s+v,0);
+  document.getElementById('emd-kpi').innerHTML = [
+    { label:'총 GDC 사용량', val:'₮'+fmtB(total), color:'var(--brand)' },
+    { label:'1인당 월 사용', val:'₮'+fmt(Math.round(total/8500)), color:'var(--t1)' },
+    { label:'주요 소비',     val:'식비 (40%)',  color:'#FB923C' },
+    { label:'전월 대비',     val:'+7.2%',       color:'var(--brand)' },
+  ].map(k=>`<div style="background:var(--sur2);border:1px solid var(--bd);border-radius:8px;padding:12px">
+    <div style="font-size:10px;color:var(--t3);margin-bottom:4px">${k.label}</div>
+    <div style="font-family:var(--mono);font-size:16px;font-weight:500;color:${k.color}">${k.val}</div>
+  </div>`).join('');
+
+  // 읍면동 테이블
+  document.getElementById('emd-tbody').innerHTML = JEJU_EMD.map((e,i)=>{
+    const total2 = e.food+e.trans+e.medical+e.edu+e.living+e.other;
+    const spark  = generateSparkPath(total2, (Math.random()-0.3)*12);
+    const delta  = +((Math.random()-0.3)*12).toFixed(1);
+    return `<tr>
+      <td style="font-weight:500;color:var(--t1)">${e.name}</td>
+      <td class="val">${fmtB(total2)}</td>
+      <td class="val" style="color:#FB923C">${fmtB(e.food)}</td>
+      <td class="val" style="color:#60A5FA">${fmtB(e.trans)}</td>
+      <td class="val" style="color:#F87171">${fmtB(e.medical)}</td>
+      <td class="val" style="color:#3ECF8E">${fmtB(e.edu)}</td>
+      <td class="val" style="color:#A78BFA">${fmtB(e.living)}</td>
+      <td class="val">${fmtB(e.other)}</td>
+      <td>
+        <svg width="60" height="20" viewBox="0 0 60 20">
+          <polyline points="${spark}" fill="none" stroke="${delta>=0?'var(--brand)':'var(--red)'}" stroke-width="1.5" stroke-linecap="round"/>
+        </svg>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── 정책 지표 ───────────────────────────────────── */
+function renderPolicyIndicators() {
+  document.getElementById('policy-indicators').innerHTML = POLICY_INDS.map(ind=>{
+    const pct = ind.dir==='up'
+      ? Math.min(ind.val/ind.good*100,100)
+      : Math.min((ind.ok-Math.min(ind.val,ind.ok))/ind.ok*100+50,100);
+    const barColor = ind.val>=ind.ok
+      ? (ind.dir==='up'?'var(--brand)':'var(--red)')
+      : (ind.val>=ind.warn?'var(--amber)':'var(--brand)');
+    const badge = ind.val>=ind.ok
+      ? `<span class="chip chip-grn">정상</span>`
+      : ind.val>=ind.warn
+      ? `<span class="chip chip-gld">주의</span>`
+      : `<span class="chip chip-red">경보</span>`;
+    return `<div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+        <span style="font-size:11px;color:var(--t2)">${ind.name}</span>
+        <div style="display:flex;align-items:center;gap:6px">
+          ${badge}
+          <span style="font-family:var(--mono);font-size:12px;font-weight:500;color:var(--t1)">${typeof ind.val==='number'&&ind.val>100?fmt(ind.val):ind.val}${ind.unit}</span>
+        </div>
+      </div>
+      <div class="ind-bar-wrap">
+        <div class="ind-bar-fill" style="width:${Math.min(pct,100)}%;background:${barColor}"></div>
+      </div>
+      <div style="font-size:10px;color:var(--t3);margin-top:2px">${ind.desc}</div>
+    </div>`;
+  }).join('');
+}
+
+/* ── 자금 흐름 수평 바 ─────────────────────────── */
+function renderFlowChart() {
+  const canvas = document.getElementById('flow-canvas');
+  const W = canvas.offsetWidth || 600, H = 180;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  const regions=[
+    {name:'서울', flow:+8400000000},
+    {name:'경기', flow:+3200000000},
+    {name:'인천', flow:+1100000000},
+    {name:'부산', flow:-800000000},
+    {name:'대구', flow:-600000000},
+    {name:'제주', flow:+4200000000},
+    {name:'전남', flow:-1200000000},
+    {name:'경북', flow:-900000000},
+  ];
+
+  const maxAbs=Math.max(...regions.map(r=>Math.abs(r.flow)));
+  const barH=16, gap=4;
+  const midX=W*0.32;
+
+  regions.forEach((r,i)=>{
+    const y=10+i*(barH+gap);
+    const barW=(Math.abs(r.flow)/maxAbs)*(W-midX-16);
+    const isIn=r.flow>=0;
+
+    // 지역명
+    ctx.fillStyle='#4A5578'; ctx.font='11px Noto Sans KR,sans-serif';
+    ctx.textAlign='right'; ctx.fillText(r.name, midX-6, y+barH*0.7);
+
+    // 바
+    ctx.beginPath();
+    ctx.roundRect?ctx.roundRect(midX, y, barW, barH, 3):ctx.rect(midX, y, barW, barH);
+    ctx.fillStyle = isIn ? 'rgba(62,207,142,0.8)' : 'rgba(239,68,68,0.7)';
+    ctx.fill();
+
+    // 금액
+    ctx.fillStyle = isIn ? '#065F46' : '#9B1C1C';
+    ctx.textAlign='left';
+    ctx.font='10px DM Mono,monospace';
+    ctx.fillText((isIn?'+':'')+fmtB(r.flow), midX+barW+5, y+barH*0.7);
+  });
+
+  // 중심선
+  ctx.strokeStyle='rgba(0,0,0,.15)'; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.moveTo(midX,0); ctx.lineTo(midX,H); ctx.stroke();
+
+  // 범례
+  ctx.font='10px sans-serif'; ctx.textAlign='left';
+  ctx.fillStyle=ctx.strokeStyle='rgba(62,207,142,0.8)';
+  ctx.fillRect(midX+20,H-18,10,8);
+  ctx.fillStyle='#4A5578'; ctx.fillText('순 유입',midX+34,H-11);
+  ctx.fillStyle='rgba(239,68,68,0.7)';
+  ctx.fillRect(midX+90,H-18,10,8);
+  ctx.fillStyle='#4A5578'; ctx.fillText('순 유출',midX+104,H-11);
+}
+
+/* ── 신용 분포 히스토그램 ────────────────────────── */
+function renderCreditDist() {
+  const canvas=document.getElementById('credit-canvas');
+  const W=canvas.offsetWidth||500, H=130;
+  canvas.width=W; canvas.height=H;
+  const ctx=canvas.getContext('2d');
+  ctx.clearRect(0,0,W,H);
+
+  // 정규 분포 형태 (700점 근처 최빈값)
+  const bins=20;
+  const peak=13; // 700점대 위치
+  const heights=Array.from({length:bins},(_,i)=>{
+    const d=i-peak; return Math.max(3,Math.round(95*Math.exp(-d*d/18)*(1+(Math.random()-0.5)*0.12)));
+  });
+  const maxH=Math.max(...heights);
+
+  // 컬러 스케일 (낮은 점수=빨강, 높은=초록)
+  heights.forEach((h,i)=>{
+    const x=W/bins*i+1, w=W/bins-2;
+    const pct=i/bins;
+    const r=Math.round(239*(1-pct)+62*pct);
+    const g=Math.round(68*(1-pct)+207*pct);
+    const b=Math.round(68*(1-pct)+142*pct);
+    const barH=(h/maxH)*(H*0.82);
+    ctx.fillStyle=`rgba(${r},${g},${b},.75)`;
+    ctx.beginPath();
+    if(ctx.roundRect) ctx.roundRect(x,H-barH-2,w,barH,2);
+    else ctx.rect(x,H-barH-2,w,barH);
+    ctx.fill();
+  });
+
+  // 평균선
+  const avgX=W*(700/1000);
+  ctx.strokeStyle='rgba(0,0,0,.3)'; ctx.lineWidth=1.5; ctx.setLineDash([4,3]);
+  ctx.beginPath(); ctx.moveTo(avgX,0); ctx.lineTo(avgX,H-2); ctx.stroke();
+  ctx.setLineDash([]);
+  ctx.fillStyle='#4A5578'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('평균 712', avgX, 12);
+
+  // 등급 분포
+  document.getElementById('grade-dist').innerHTML = GRADE_DIST.map(g=>
+    `<span class="chip" style="color:${g.color};background:${g.color}18;border-color:${g.color}44">
+      ${g.grade} ${g.pct}%
+    </span>`).join('');
+}
+
+/* ── Top 10 소비 품목 ────────────────────────────── */
+function renderTop10() {
+  const max=TOP10[0].amt;
+  document.getElementById('top10-list').innerHTML=TOP10.map((item,i)=>{
+    const barW=item.amt/max*100;
+    return `<div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-family:var(--mono);font-size:10px;color:var(--t3);width:16px;text-align:right">${i+1}</span>
+          <span style="font-size:12px;color:var(--t1)">${item.name}</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--t1);font-weight:500">${fmtB(item.amt)}</span>
+          <span style="font-size:10px;font-weight:500;${item.delta>0?'color:var(--brand)':'color:var(--red)'}">${item.delta>0?'▲':'▼'}${Math.abs(item.delta)}%</span>
+        </div>
+      </div>
+      <div class="ind-bar-wrap">
+        <div class="ind-bar-fill" style="width:${barW}%;background:var(--brand)"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* ── 초기화 ──────────────────────────────────────── */
+function init() {
+  drillTo('national');
+  renderCatDonut(null);
+  renderTrend(null);
+  renderEMD();
+  renderPolicyIndicators();
+  renderTop10();
+  setTimeout(()=>{ renderFlowChart(); renderCreditDist(); }, 100);
+}
+
+/* ── 시계 ────────────────────────────────────────── */
+(function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  setTimeout(tick,1000);
+})();
+
+window.addEventListener('load', ()=>{ init(); });
+window.addEventListener('resize', ()=>{ renderTrend(null); renderFlowChart(); renderCreditDist(); });
+</script>
+</body>
+</html>

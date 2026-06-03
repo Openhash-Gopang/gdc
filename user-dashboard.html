@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GDC 사용자 재무제표</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f8f9fa;--sur:#fff;
+  --bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
+  --t1:#1c1c1e;--t2:#4a4a55;--t3:#9898a6;
+  --brand:#3ecf8e;--brand-bg:rgba(62,207,142,.08);
+  --red:#ef4444;--red-bg:#fef2f2;
+  --amber:#f59e0b;--amber-bg:#fffbeb;
+  --blue:#3b82f6;--blue-bg:#eff6ff;
+  --font:'Noto Sans KR',-apple-system,sans-serif;
+  --r:6px;--r2:10px;
+  --sb-rail:48px;--sb-full:220px;--top:48px;
+}
+@media(prefers-color-scheme:dark){
+  :root{--bg:#0f0f0f;--sur:#1c1c1e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.2);--t1:#f5f5f7;--t2:#a1a1aa;--t3:#52525b}
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;overflow:hidden}
+body{font-family:var(--font);font-size:13px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+::-webkit-scrollbar{width:4px;height:4px}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:2px}
+
+/* ── LAYOUT ──────────────────────────────────────── */
+.app{display:flex;height:100vh;overflow:hidden}
+
+/* ── SIDEBAR ─────────────────────────────────────── */
+.sb{width:var(--sb-rail);flex-shrink:0;background:var(--sur);border-right:.5px solid var(--bd);display:flex;flex-direction:column;overflow:hidden;transition:width .18s ease;z-index:200}
+.sb:hover{width:var(--sb-full)}
+.sb-brand{height:var(--top);padding:0 12px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:10px;overflow:hidden;flex-shrink:0;text-decoration:none}
+.sb-logo{width:24px;height:24px;flex-shrink:0;background:var(--brand);border-radius:5px;display:flex;align-items:center;justify-content:center;color:#fff}
+.sb-name{font-size:13px;font-weight:500;color:var(--t1);white-space:nowrap;opacity:0;transition:opacity .1s .04s}
+.sb-sub{font-size:11px;color:var(--t3)}
+.sb:hover .sb-name{opacity:1}
+.sb-nav{padding:6px;flex:1;overflow-y:auto;overflow-x:hidden}
+.sb-sec{padding:10px 10px 4px;font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:var(--t3);white-space:nowrap;opacity:0;transition:opacity .1s}
+.sb:hover .sb-sec{opacity:1}
+.sb-item{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:var(--r);font-size:13px;color:var(--t2);cursor:pointer;transition:all .1s;white-space:nowrap;overflow:hidden;text-decoration:none}
+.sb-item:hover,.sb-item.act{background:var(--bg);color:var(--t1)}
+.sb-item svg{flex-shrink:0;opacity:.6;transition:opacity .1s}
+.sb-item:hover svg,.sb-item.act svg{opacity:1;color:var(--brand)}
+.sb-lbl{opacity:0;transition:opacity .1s .04s}
+.sb:hover .sb-lbl{opacity:1}
+
+/* ── MAIN ────────────────────────────────────────── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.topbar{height:var(--top);flex-shrink:0;background:var(--sur);border-bottom:.5px solid var(--bd);display:flex;align-items:center;padding:0 16px;gap:12px}
+.breadcrumb{flex:1;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--t3)}
+.bc-cur{color:var(--t1);font-weight:500}
+.bc-sep{color:var(--bd2)}
+.status-pill{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);padding:3px 8px;border-radius:20px;border:.5px solid var(--bd);background:var(--bg)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.clock{font-size:12px;color:var(--t3);font-variant-numeric:tabular-nums}
+.user-pill{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--t2);padding:3px 10px;border-radius:20px;border:.5px solid var(--bd);background:var(--bg)}
+.user-avatar{width:18px;height:18px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;color:#fff;font-size:9px;font-weight:500}
+
+.scroll{flex:1;overflow-y:auto;padding:20px}
+
+/* ── TAB NAV ─────────────────────────────────────── */
+.tab-nav{display:flex;gap:2px;border-bottom:.5px solid var(--bd);margin-bottom:20px;overflow-x:auto}
+.tab-btn{padding:8px 14px;font-size:12px;font-weight:500;color:var(--t3);background:none;border:none;cursor:pointer;border-bottom:2px solid transparent;transition:all .12s;white-space:nowrap;font-family:var(--font)}
+.tab-btn:hover{color:var(--t2)}
+.tab-btn.act{color:var(--brand);border-bottom-color:var(--brand)}
+.tab-pane{display:none}
+.tab-pane.act{display:block}
+
+/* ── STAT GRID ───────────────────────────────────── */
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:900px){.stat-grid{grid-template-columns:1fr 1fr}}
+.stat-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:16px}
+.stat-icon{margin-bottom:8px;color:var(--t3)}
+.stat-val{font-size:20px;font-weight:500;color:var(--t1);margin-bottom:2px;font-variant-numeric:tabular-nums}
+.stat-lbl{font-size:11px;color:var(--t3)}
+.stat-sub{font-size:11px;margin-top:3px;font-weight:500}
+.stat-sub.ok{color:var(--brand)}
+.stat-sub.warn{color:var(--amber)}
+.stat-sub.bad{color:var(--red)}
+
+/* ── PANELS ──────────────────────────────────────── */
+.sec-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:10px;display:flex;align-items:center;gap:7px}
+.panel{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-bottom:16px}
+.panel-hd{padding:10px 16px;border-bottom:.5px solid var(--bd);font-size:13px;font-weight:500;color:var(--t1);background:var(--bg);display:flex;align-items:center;justify-content:space-between}
+.panel-hd-left{display:flex;align-items:center;gap:7px;color:var(--t2)}
+.panel-hd-left span{color:var(--t1);font-weight:500}
+.panel-note{font-size:11px;color:var(--t3)}
+
+/* ── FINANCIAL STATEMENT TABLES ──────────────────── */
+table.fs{width:100%;border-collapse:collapse}
+table.fs th{background:var(--bg);border-bottom:.5px solid var(--bd);padding:7px 14px;font-size:11px;font-weight:500;color:var(--t3);text-align:left}
+table.fs th.r{text-align:right}
+table.fs td{padding:7px 14px;border-bottom:.5px solid var(--bd);font-size:12px;color:var(--t2)}
+table.fs tr:last-child td{border-bottom:none}
+table.fs tr:hover td{background:var(--bg)}
+table.fs td.r{text-align:right;font-variant-numeric:tabular-nums;font-weight:500}
+table.fs td.val{text-align:right;font-variant-numeric:tabular-nums;color:var(--t1)}
+table.fs tr.sub td{padding-left:28px;font-size:11px;color:var(--t3)}
+table.fs tr.sub td.r{color:var(--t2)}
+table.fs tr.total td{border-top:.5px solid var(--bd2);font-weight:500;color:var(--t1);background:var(--bg)}
+table.fs tr.section td{background:var(--brand-bg);color:var(--brand);font-size:11px;font-weight:500;padding:5px 14px;letter-spacing:.04em}
+table.fs td.pos{color:var(--brand)}
+table.fs td.neg{color:var(--red)}
+table.fs td.empty{color:var(--t3);font-style:italic}
+.fs-period{font-size:11px;color:var(--t3);text-align:right;padding:8px 14px;border-top:.5px solid var(--bd)}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.two-col{grid-template-columns:1fr}}
+.three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:16px}
+@media(max-width:900px){.three-col{grid-template-columns:1fr}}
+
+/* ── TRANSACTION HISTORY ─────────────────────────── */
+.filter-row{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+.filter-btn{padding:4px 10px;border:.5px solid var(--bd);border-radius:20px;font-size:11px;font-weight:500;background:var(--sur);color:var(--t2);cursor:pointer;transition:all .1s;font-family:var(--font)}
+.filter-btn:hover{border-color:var(--brand);color:var(--brand)}
+.filter-btn.act{background:var(--brand);border-color:var(--brand);color:#fff}
+.cat-chip{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:500}
+.cat-transport{background:#eff6ff;color:#1d4ed8}
+.cat-food{background:#fff7ed;color:#c2410c}
+.cat-medical{background:#fef2f2;color:#b91c1c}
+.cat-edu{background:#f0fdf4;color:#15803d}
+.cat-living{background:#faf5ff;color:#7e22ce}
+.cat-rd{background:#ecfeff;color:#0e7490}
+.cat-transfer{background:var(--brand-bg);color:#065f46}
+.cat-income{background:#f0fdf4;color:#15803d}
+.cat-other{background:var(--bg);color:var(--t3)}
+.dir-in{color:var(--brand);font-weight:500}
+.dir-out{color:var(--red);font-weight:500}
+table.tbl{width:100%;border-collapse:collapse}
+table.tbl th{background:var(--bg);border-bottom:.5px solid var(--bd);padding:8px 14px;font-size:11px;font-weight:500;color:var(--t3);text-align:left;white-space:nowrap}
+table.tbl td{padding:9px 14px;border-bottom:.5px solid var(--bd);font-size:12px;color:var(--t2);white-space:nowrap}
+table.tbl tr:last-child td{border-bottom:none}
+table.tbl tr:hover td{background:var(--bg)}
+.mono{font-variant-numeric:tabular-nums}
+
+/* ── RATIO BAR ───────────────────────────────────── */
+.ratio-bar{height:6px;background:var(--bg);border-radius:3px;overflow:hidden;margin-top:4px}
+.ratio-fill{height:100%;border-radius:3px;background:var(--brand);transition:width .4s ease}
+.ratio-fill.warn{background:var(--amber)}
+.ratio-fill.bad{background:var(--red)}
+.ratio-row{display:flex;justify-content:space-between;font-size:11px;color:var(--t3);margin-top:2px}
+
+/* ── PDV BADGE ───────────────────────────────────── */
+.pdv-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:4px;font-size:10px;font-weight:500;background:var(--brand-bg);color:var(--brand);border:.5px solid rgba(62,207,142,.3)}
+
+/* ── MISC ────────────────────────────────────────── */
+.chip{display:inline-flex;align-items:center;padding:2px 7px;border-radius:20px;font-size:11px;font-weight:500;border:.5px solid}
+.chip-grn{color:#1B6B3A;background:#E6F4EC;border-color:#A3D9B8}
+.chip-red{color:#9B1C1C;background:#FEE2E2;border-color:#FCA5A5}
+.chip-gld{color:#92400E;background:#FEF9E7;border-color:#FCD34D}
+.chip-gray{color:var(--t3);background:var(--bg);border-color:var(--bd)}
+.grade{display:inline-flex;align-items:center;justify-content:center;width:30px;height:18px;border-radius:3px;font-size:10px;font-weight:500;border:.5px solid}
+.g-AAA{color:#1B6B3A;background:#E6F4EC;border-color:#A3D9B8}
+.g-AA{color:#0047AB;background:#E8F0FE;border-color:#93C4F7}
+.g-A{color:#0369A1;background:#E0F2FE;border-color:#93C9F7}
+.g-BBB{color:#92400E;background:#FEF9E7;border-color:#FCD34D}
+.g-BB{color:#C05621;background:#FEF3E2;border-color:#FCA47A}
+.g-C{color:#9B1C1C;background:#FEE2E2;border-color:#FCA5A5}
+.footer-note{text-align:center;padding:12px 0;font-size:11px;color:var(--t3)}
+.empty-note{text-align:center;padding:32px 16px;color:var(--t3);font-size:12px}
+.iasb-note{font-size:10px;color:var(--t3);padding:6px 14px;border-top:.5px solid var(--bd);font-style:italic}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══ SIDEBAR ══════════════════════════════════════ -->
+<aside class="sb">
+  <a href="desktop.html" class="sb-brand">
+    <div class="sb-logo">
+      <svg viewBox="0 0 28 34" fill="currentColor" style="width:55%;height:55%" aria-label="T"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg>
+    </div>
+    <div class="sb-name">GDC 재무제표<div class="sb-sub">사용자 전용</div></div>
+  </a>
+  <nav class="sb-nav">
+    <div class="sb-sec">재무제표</div>
+    <a class="sb-item act" href="#" onclick="switchTab('bs');return false;">
+      <!-- balance sheet icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 3h18v4h-18z"/><path d="M3 11h18v4h-18z"/><path d="M3 19h18v2h-18z"/></svg>
+      <span class="sb-lbl">대차대조표 (BS)</span>
+    </a>
+    <a class="sb-item" href="#" onclick="switchTab('pl');return false;">
+      <!-- income statement icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19l4-6l4 3l4-7l4 4"/><path d="M4 5h16"/></svg>
+      <span class="sb-lbl">손익계산서 (PL)</span>
+    </a>
+    <a class="sb-item" href="#" onclick="switchTab('cf');return false;">
+      <!-- cash flow icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h14l-4-4"/><path d="M17 14h-14l4 4"/></svg>
+      <span class="sb-lbl">현금흐름표 (CF)</span>
+    </a>
+    <a class="sb-item" href="#" onclick="switchTab('eq');return false;">
+      <!-- equity icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M14.8 9a2 2 0 0 0-1.8-1h-2a2 2 0 1 0 0 4h2a2 2 0 1 0 0 4h-2a2 2 0 0 1-1.8-1"/><path d="M12 7v10"/></svg>
+      <span class="sb-lbl">지분변동표 (EQ)</span>
+    </a>
+    <a class="sb-item" href="#" onclick="switchTab('re');return false;">
+      <!-- retained earnings icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-12a2 2 0 0 0-2-2h-2"/><path d="M9 3m0 2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+      <span class="sb-lbl">자본잉여금처분</span>
+    </a>
+    <a class="sb-item" href="#" onclick="switchTab('ra');return false;">
+      <!-- analysis icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1-7.96-14.846a12 12 0 0 0 8.5-3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06"/><path d="M15 19l2 2l4-4"/></svg>
+      <span class="sb-lbl">재무분석 보고서</span>
+    </a>
+    <div class="sb-sec">거래</div>
+    <a class="sb-item" href="#" onclick="switchTab('tx');return false;">
+      <!-- transaction icon -->
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-12a3 3 0 0 1-3-3z"/><path d="M3 10l18 0"/><path d="M7 15l.01 0"/><path d="M11 15l2 0"/></svg>
+      <span class="sb-lbl">거래 내역 (TX)</span>
+    </a>
+    <div class="sb-sec">이동</div>
+    <a class="sb-item" href="desktop.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9-9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/></svg>
+      <span class="sb-lbl">GDC 홈</span>
+    </a>
+    <a class="sb-item" href="webapp.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-14z"/><path d="M11 17h2"/></svg>
+      <span class="sb-lbl">GDC 앱</span>
+    </a>
+    <a class="sb-item" href="dashboard.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/></svg>
+      <span class="sb-lbl">관리자 대시보드</span>
+    </a>
+  </nav>
+</aside>
+
+<!-- ══ MAIN ══════════════════════════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <nav class="breadcrumb">
+      <a href="desktop.html">GDC</a>
+      <span class="bc-sep">/</span>
+      <span class="bc-cur" id="bc-cur">대차대조표</span>
+    </nav>
+    <span class="pdv-badge">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/></svg>
+      PDV 연동 대기
+    </span>
+    <div class="user-pill">
+      <div class="user-avatar" id="user-initial">—</div>
+      <span id="user-name">사용자</span>
+    </div>
+    <div class="status-pill"><span class="dot"></span>IASB 기준</div>
+    <span class="clock" id="clock">--:--:--</span>
+  </header>
+
+  <div class="scroll">
+
+    <!-- 요약 지표 -->
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0-1-1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1-1 1h-12a2 2 0 0 1-2-2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0-4h4"/></svg>
+        </div>
+        <div class="stat-val" id="s-cash">— ₮</div>
+        <div class="stat-lbl">GDC 잔액 (bs-cash)</div>
+        <div class="stat-sub ok" id="s-cash-sub">PDV 연동 후 갱신</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19l4-6l4 3l4-7l4 4"/></svg>
+        </div>
+        <div class="stat-val" id="s-revenue">— ₮</div>
+        <div class="stat-lbl">기간 매출 (pl-revenue)</div>
+        <div class="stat-sub ok" id="s-rev-sub">PDV 연동 후 갱신</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0"/></svg>
+        </div>
+        <div class="stat-val" id="s-equity">— ₮</div>
+        <div class="stat-lbl">순자산 (bs-equity)</div>
+        <div class="stat-sub ok" id="s-eq-sub">PDV 연동 후 갱신</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1-7.96-14.846a12 12 0 0 0 8.5-3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06"/><path d="M15 19l2 2l4-4"/></svg>
+        </div>
+        <div class="stat-val" id="s-grade">—</div>
+        <div class="stat-lbl">GDC 신용등급</div>
+        <div class="stat-sub" id="s-grade-sub">PDV 연동 후 갱신</div>
+      </div>
+    </div>
+
+    <!-- 탭 네비 -->
+    <div class="tab-nav">
+      <button class="tab-btn act" data-tab="bs"  onclick="switchTab('bs')">대차대조표</button>
+      <button class="tab-btn"     data-tab="pl"  onclick="switchTab('pl')">손익계산서</button>
+      <button class="tab-btn"     data-tab="cf"  onclick="switchTab('cf')">현금흐름표</button>
+      <button class="tab-btn"     data-tab="eq"  onclick="switchTab('eq')">지분변동표</button>
+      <button class="tab-btn"     data-tab="re"  onclick="switchTab('re')">자본잉여금처분내역서</button>
+      <button class="tab-btn"     data-tab="ra"  onclick="switchTab('ra')">재무분석 보고서</button>
+      <button class="tab-btn"     data-tab="tx"  onclick="switchTab('tx')">거래 내역 (TX)</button>
+    </div>
+
+    <!-- ══ BS: 대차대조표 ════════════════════════════ -->
+    <div class="tab-pane act" id="pane-bs">
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-hd-left"><span>재무상태표 (Statement of Financial Position)</span></div>
+          <span class="panel-note">IASB IAS 1 준거</span>
+        </div>
+        <table class="fs">
+          <thead><tr><th>계정 과목</th><th>PDV 필드</th><th class="r">금 액 (₮)</th><th class="r">전기 (₮)</th></tr></thead>
+          <tbody>
+            <!-- 자산 -->
+            <tr class="section"><td colspan="4">자 산 (ASSETS)</td></tr>
+            <tr><td colspan="4" style="padding:4px 14px;font-size:11px;font-weight:500;color:var(--t2)">유동자산 (Current Assets)</td></tr>
+            <tr class="sub"><td>현금 및 현금성자산 (GDC)</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-cash</td><td class="val" id="bs-cash">—</td><td class="val" id="bs-cash-p">—</td></tr>
+            <tr class="sub"><td>매출채권</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-ar</td><td class="val" id="bs-ar">—</td><td class="val" id="bs-ar-p">—</td></tr>
+            <tr class="sub"><td>재고자산</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-inventory</td><td class="val" id="bs-inv">—</td><td class="val" id="bs-inv-p">—</td></tr>
+            <tr class="sub"><td>기타유동자산</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-current-other</td><td class="val" id="bs-cur-oth">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2" style="padding-left:14px">유동자산 합계</td><td class="val pos" id="bs-total-cur">—</td><td class="val">—</td></tr>
+            <tr><td colspan="4" style="padding:4px 14px;font-size:11px;font-weight:500;color:var(--t2)">비유동자산 (Non-current Assets)</td></tr>
+            <tr class="sub"><td>유형자산</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-ppe</td><td class="val" id="bs-ppe">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>무형자산</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-intangible</td><td class="val" id="bs-int">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>투자자산</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-investment</td><td class="val" id="bs-invest">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2" style="padding-left:14px">비유동자산 합계</td><td class="val pos" id="bs-total-ncur">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td colspan="2">자 산 총 계</td><td class="val pos" id="bs-total-assets">—</td><td class="val">—</td></tr>
+
+            <!-- 부채 -->
+            <tr class="section"><td colspan="4">부 채 (LIABILITIES)</td></tr>
+            <tr><td colspan="4" style="padding:4px 14px;font-size:11px;font-weight:500;color:var(--t2)">유동부채 (Current Liabilities)</td></tr>
+            <tr class="sub"><td>매입채무</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-ap</td><td class="val" id="bs-ap">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>단기차입금</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-short-debt</td><td class="val" id="bs-sdebt">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>기타유동부채</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-current-liab-other</td><td class="val" id="bs-cl-oth">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2" style="padding-left:14px">유동부채 합계</td><td class="val neg" id="bs-total-cl">—</td><td class="val">—</td></tr>
+            <tr><td colspan="4" style="padding:4px 14px;font-size:11px;font-weight:500;color:var(--t2)">비유동부채 (Non-current Liabilities)</td></tr>
+            <tr class="sub"><td>장기차입금 (GDC 대출)</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-debt</td><td class="val" id="bs-debt">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>기타비유동부채</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-ncl-other</td><td class="val" id="bs-ncl-oth">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2" style="padding-left:14px">비유동부채 합계</td><td class="val neg" id="bs-total-ncl">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td colspan="2">부 채 총 계</td><td class="val neg" id="bs-total-liab">—</td><td class="val">—</td></tr>
+
+            <!-- 자본 -->
+            <tr class="section"><td colspan="4">자 본 (EQUITY)</td></tr>
+            <tr class="sub"><td>자본금</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-capital</td><td class="val" id="bs-cap">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>자본잉여금</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-capital-surplus</td><td class="val" id="bs-csurplus">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>이익잉여금</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-retained</td><td class="val" id="bs-retained">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>기타포괄손익누계액</td><td style="font-size:10px;color:var(--brand)">fs.bs.bs-oci</td><td class="val" id="bs-oci">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td colspan="2">자 본 총 계</td><td class="val pos" id="bs-equity">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px;border-top:1px solid var(--t1)"><td colspan="2">부채 및 자본 총계</td><td class="val" id="bs-total-le">—</td><td class="val">—</td></tr>
+          </tbody>
+        </table>
+        <div class="iasb-note">※ IAS 1 §54 규정에 따른 최소 표시 항목 기준 | 데이터 출처: 고팡 PDV (fs.bs.*) | 금액 단위: GDC (₮)</div>
+      </div>
+    </div>
+
+    <!-- ══ PL: 손익계산서 ════════════════════════════ -->
+    <div class="tab-pane" id="pane-pl">
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-hd-left"><span>포괄손익계산서 (Statement of Profit or Loss and OCI)</span></div>
+          <span class="panel-note">IASB IAS 1 준거</span>
+        </div>
+        <table class="fs">
+          <thead><tr><th>계정 과목</th><th>PDV 필드</th><th class="r">당기 (₮)</th><th class="r">전기 (₮)</th></tr></thead>
+          <tbody>
+            <tr class="section"><td colspan="4">영업손익 (Operating Profit/Loss)</td></tr>
+            <tr><td>매출액</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-revenue</td><td class="val pos" id="pl-rev">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>매출원가</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-cogs</td><td class="val neg" id="pl-cogs">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">매출총이익</td><td class="val" id="pl-gross">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>판매비와관리비</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-opex</td><td class="val neg" id="pl-opex">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">영업이익</td><td class="val" id="pl-opinc">—</td><td class="val">—</td></tr>
+
+            <tr class="section"><td colspan="4">영업외손익 (Non-operating)</td></tr>
+            <tr><td>이자수익</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-interest-income</td><td class="val pos" id="pl-iinc">—</td><td class="val">—</td></tr>
+            <tr><td>이자비용</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-interest-exp</td><td class="val neg" id="pl-iexp">—</td><td class="val">—</td></tr>
+            <tr><td>기타영업외수익</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-other-income</td><td class="val" id="pl-oth">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">법인세차감전순이익</td><td class="val" id="pl-ebt">—</td><td class="val">—</td></tr>
+            <tr><td>법인세비용</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-tax</td><td class="val neg" id="pl-tax">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td colspan="2">당기순이익</td><td class="val" id="pl-net">—</td><td class="val">—</td></tr>
+
+            <tr class="section"><td colspan="4">기타포괄손익 (OCI)</td></tr>
+            <tr><td>후속적으로 재분류되지 않는 항목</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-oci-nrec</td><td class="val" id="pl-oci1">—</td><td class="val">—</td></tr>
+            <tr><td>후속적으로 재분류되는 항목</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-oci-rec</td><td class="val" id="pl-oci2">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td colspan="2">총포괄이익</td><td class="val" id="pl-total-ci">—</td><td class="val">—</td></tr>
+          </tbody>
+        </table>
+        <div class="iasb-note">※ IAS 1 §81A 규정 준거 (기능별 분류법) | 데이터 출처: 고팡 PDV (fs.pl.*) | 금액 단위: GDC (₮)</div>
+      </div>
+    </div>
+
+    <!-- ══ CF: 현금흐름표 ════════════════════════════ -->
+    <div class="tab-pane" id="pane-cf">
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-hd-left"><span>현금흐름표 (Statement of Cash Flows)</span></div>
+          <span class="panel-note">IASB IAS 7 준거 · 간접법</span>
+        </div>
+        <table class="fs">
+          <thead><tr><th>계정 과목</th><th>PDV 필드</th><th class="r">당기 (₮)</th><th class="r">전기 (₮)</th></tr></thead>
+          <tbody>
+            <tr class="section"><td colspan="4">영업활동 현금흐름 (Operating Activities)</td></tr>
+            <tr><td>영업에서 창출된 현금</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-op</td><td class="val" id="cf-op">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>당기순이익 (조정 전)</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-net-income</td><td class="val" id="cf-net">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>비현금항목 조정 (감가상각 등)</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-noncash</td><td class="val" id="cf-noncash">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>운전자본 변동</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-wc-change</td><td class="val" id="cf-wc">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>이자수취</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-int-received</td><td class="val pos" id="cf-int-r">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>이자지급</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-int-paid</td><td class="val neg" id="cf-int-p">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">영업활동 현금흐름 합계</td><td class="val" id="cf-op-total">—</td><td class="val">—</td></tr>
+
+            <tr class="section"><td colspan="4">투자활동 현금흐름 (Investing Activities)</td></tr>
+            <tr><td>유형자산 취득</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-capex</td><td class="val neg" id="cf-capex">—</td><td class="val">—</td></tr>
+            <tr><td>투자자산 증감</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-invest</td><td class="val" id="cf-invest">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">투자활동 현금흐름 합계</td><td class="val" id="cf-inv-total">—</td><td class="val">—</td></tr>
+
+            <tr class="section"><td colspan="4">재무활동 현금흐름 (Financing Activities)</td></tr>
+            <tr><td>차입금 증감 (GDC 대출)</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-debt</td><td class="val" id="cf-debt">—</td><td class="val">—</td></tr>
+            <tr><td>배당금 지급</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-dividend</td><td class="val neg" id="cf-div">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">재무활동 현금흐름 합계</td><td class="val" id="cf-fin-total">—</td><td class="val">—</td></tr>
+
+            <tr class="total" style="font-size:13px"><td colspan="2">현금 및 현금성자산 순증감</td><td class="val" id="cf-net-change">—</td><td class="val">—</td></tr>
+            <tr><td>기초 현금 및 현금성자산</td><td style="font-size:10px;color:var(--brand)">fs.cf.cf-begin-cash</td><td class="val" id="cf-begin">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td colspan="2">기말 현금 및 현금성자산</td><td class="val pos" id="cf-end">—</td><td class="val">—</td></tr>
+          </tbody>
+        </table>
+        <div class="iasb-note">※ IAS 7 §10 준거 · 간접법(Indirect Method) | 데이터 출처: 고팡 PDV (fs.cf.*) | 금액 단위: GDC (₮)</div>
+      </div>
+    </div>
+
+    <!-- ══ EQ: 지분변동표 ════════════════════════════ -->
+    <div class="tab-pane" id="pane-eq">
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-hd-left"><span>자본변동표 (Statement of Changes in Equity)</span></div>
+          <span class="panel-note">IASB IAS 1 §106 준거</span>
+        </div>
+        <table class="fs">
+          <thead><tr>
+            <th>항 목</th>
+            <th class="r">자본금</th><th class="r">자본잉여금</th>
+            <th class="r">이익잉여금</th><th class="r">기타포괄손익</th>
+            <th class="r">자본 합계</th>
+          </tr></thead>
+          <tbody>
+            <tr><td>기초 잔액</td><td class="val">—</td><td class="val">—</td><td class="val">—</td><td class="val">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>총포괄이익</td><td class="val">—</td><td class="val">—</td><td class="val pos" id="eq-ci">—</td><td class="val" id="eq-oci">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>배당금</td><td class="val">—</td><td class="val">—</td><td class="val neg" id="eq-div">—</td><td class="val">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>자본 거래</td><td class="val" id="eq-capital-tx">—</td><td class="val">—</td><td class="val">—</td><td class="val">—</td><td class="val">—</td></tr>
+            <tr class="total" style="font-size:13px"><td>기말 잔액</td><td class="val" id="eq-cap-end">—</td><td class="val" id="eq-cs-end">—</td><td class="val" id="eq-re-end">—</td><td class="val" id="eq-oci-end">—</td><td class="val pos" id="eq-total-end">—</td></tr>
+          </tbody>
+        </table>
+        <div class="iasb-note">※ IAS 1 §106 규정 준거 | 데이터 출처: 고팡 PDV (fs.bs.*, fs.pl.*) | 금액 단위: GDC (₮)</div>
+      </div>
+    </div>
+
+    <!-- ══ RE: 자본잉여금처분내역서 ════════════════════ -->
+    <div class="tab-pane" id="pane-re">
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-hd-left"><span>이익잉여금처분계산서 (Appropriation of Retained Earnings)</span></div>
+          <span class="panel-note">K-IFRS 참조</span>
+        </div>
+        <table class="fs">
+          <thead><tr><th>항 목</th><th>PDV 필드</th><th class="r">당기 (₮)</th><th class="r">전기 (₮)</th></tr></thead>
+          <tbody>
+            <tr class="section"><td colspan="4">처분 전 이익잉여금</td></tr>
+            <tr><td>전기이월 이익잉여금</td><td style="font-size:10px;color:var(--brand)">fs.re.re-carryover</td><td class="val" id="re-carry">—</td><td class="val">—</td></tr>
+            <tr><td>당기순이익</td><td style="font-size:10px;color:var(--brand)">fs.pl.pl-net</td><td class="val pos" id="re-net">—</td><td class="val">—</td></tr>
+            <tr><td>회계정책 변경 효과</td><td style="font-size:10px;color:var(--brand)">fs.re.re-policy-adj</td><td class="val" id="re-adj">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">처분 전 이익잉여금 합계</td><td class="val" id="re-before">—</td><td class="val">—</td></tr>
+
+            <tr class="section"><td colspan="4">이익잉여금 처분액</td></tr>
+            <tr class="sub"><td>이익준비금</td><td style="font-size:10px;color:var(--brand)">fs.re.re-legal-reserve</td><td class="val neg" id="re-legal">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>임의적립금</td><td style="font-size:10px;color:var(--brand)">fs.re.re-voluntary</td><td class="val neg" id="re-vol">—</td><td class="val">—</td></tr>
+            <tr class="sub"><td>배당금</td><td style="font-size:10px;color:var(--brand)">fs.re.re-dividend</td><td class="val neg" id="re-div">—</td><td class="val">—</td></tr>
+            <tr class="total"><td colspan="2">이익잉여금 처분액 합계</td><td class="val neg" id="re-appro">—</td><td class="val">—</td></tr>
+
+            <tr class="total" style="font-size:13px"><td colspan="2">차기이월 이익잉여금</td><td class="val pos" id="re-next">—</td><td class="val">—</td></tr>
+          </tbody>
+        </table>
+        <div class="iasb-note">※ K-IFRS 1001호 참조 | 데이터 출처: 고팡 PDV (fs.re.*) | 금액 단위: GDC (₮)</div>
+      </div>
+    </div>
+
+    <!-- ══ RA: 재무분석 보고서 ═══════════════════════ -->
+    <div class="tab-pane" id="pane-ra">
+      <div class="two-col">
+        <!-- 유동성 -->
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-hd-left"><span>유동성 지표</span></div><span class="panel-note">Liquidity</span></div>
+          <table class="fs">
+            <thead><tr><th>지 표</th><th class="r">수 치</th><th class="r">평 가</th></tr></thead>
+            <tbody>
+              <tr><td>유동비율 (Current Ratio)</td><td class="val" id="ra-cr">—</td><td id="ra-cr-e" class="val">—</td></tr>
+              <tr><td>당좌비율 (Quick Ratio)</td><td class="val" id="ra-qr">—</td><td id="ra-qr-e" class="val">—</td></tr>
+              <tr><td>현금비율 (Cash Ratio)</td><td class="val" id="ra-cash-r">—</td><td id="ra-cash-re" class="val">—</td></tr>
+            </tbody>
+          </table>
+          <div style="padding:10px 14px">
+            <div style="font-size:11px;color:var(--t3);margin-bottom:4px">유동비율 / 목표 200%</div>
+            <div class="ratio-bar"><div class="ratio-fill" id="ra-cr-bar" style="width:0%"></div></div>
+            <div class="ratio-row"><span id="ra-cr-bar-val">—%</span><span>200%</span></div>
+          </div>
+        </div>
+        <!-- 수익성 -->
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-hd-left"><span>수익성 지표</span></div><span class="panel-note">Profitability</span></div>
+          <table class="fs">
+            <thead><tr><th>지 표</th><th class="r">수 치</th><th class="r">평 가</th></tr></thead>
+            <tbody>
+              <tr><td>영업이익률 (OPM)</td><td class="val" id="ra-opm">—</td><td id="ra-opm-e" class="val">—</td></tr>
+              <tr><td>순이익률 (NPM)</td><td class="val" id="ra-npm">—</td><td id="ra-npm-e" class="val">—</td></tr>
+              <tr><td>자기자본이익률 (ROE)</td><td class="val" id="ra-roe">—</td><td id="ra-roe-e" class="val">—</td></tr>
+              <tr><td>총자산이익률 (ROA)</td><td class="val" id="ra-roa">—</td><td id="ra-roa-e" class="val">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="two-col">
+        <!-- 안정성 -->
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-hd-left"><span>안정성 지표</span></div><span class="panel-note">Solvency</span></div>
+          <table class="fs">
+            <thead><tr><th>지 표</th><th class="r">수 치</th><th class="r">평 가</th></tr></thead>
+            <tbody>
+              <tr><td>부채비율 (D/E Ratio)</td><td class="val" id="ra-de">—</td><td id="ra-de-e" class="val">—</td></tr>
+              <tr><td>이자보상배율 (ICR)</td><td class="val" id="ra-icr">—</td><td id="ra-icr-e" class="val">—</td></tr>
+              <tr><td>현금흐름비율</td><td class="val" id="ra-cfr">—</td><td id="ra-cfr-e" class="val">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <!-- GDC 신용 -->
+        <div class="panel">
+          <div class="panel-hd"><div class="panel-hd-left"><span>GDC 신용평가</span></div><span class="panel-note">AI 0.1초 평가</span></div>
+          <table class="fs">
+            <thead><tr><th>항 목</th><th class="r">수 치</th></tr></thead>
+            <tbody>
+              <tr><td>신용점수 (0~1000)</td><td class="val" id="ra-score">—</td></tr>
+              <tr><td>신용등급</td><td class="val" id="ra-grade">—</td></tr>
+              <tr><td>적용 대출금리</td><td class="val" id="ra-rate">—</td></tr>
+              <tr><td>대출 한도 (순자산 ×배율)</td><td class="val" id="ra-limit">—</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="panel-hd"><div class="panel-hd-left"><span>종합 재무 진단 코멘트</span></div><span class="panel-note">PDV AI 분석</span></div>
+        <div style="padding:20px 16px;font-size:13px;color:var(--t2);line-height:1.8" id="ra-comment">
+          PDV 연동 후 AI가 자동으로 재무 상태를 진단하고 개선 방향을 제시합니다.<br>
+          <span style="color:var(--t3);font-size:11px">데이터 출처: 고팡 PDV (fs.*) · 분석 모델: DeepSeek V4 Pro</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ TX: 거래 내역 ══════════════════════════════ -->
+    <div class="tab-pane" id="pane-tx">
+      <!-- 필터 -->
+      <div class="filter-row">
+        <span style="font-size:11px;color:var(--t3);font-weight:500">분류:</span>
+        <button class="filter-btn act" onclick="filterTx('all',this)">전체</button>
+        <button class="filter-btn" onclick="filterTx('income',this)">수입</button>
+        <button class="filter-btn" onclick="filterTx('expense',this)">지출</button>
+        <button class="filter-btn" onclick="filterTx('transport',this)">교통비</button>
+        <button class="filter-btn" onclick="filterTx('food',this)">식비</button>
+        <button class="filter-btn" onclick="filterTx('medical',this)">의료비</button>
+        <button class="filter-btn" onclick="filterTx('edu',this)">교육·학습</button>
+        <button class="filter-btn" onclick="filterTx('living',this)">생활비</button>
+        <button class="filter-btn" onclick="filterTx('rd',this)">연구개발</button>
+        <button class="filter-btn" onclick="filterTx('transfer',this)">이체</button>
+      </div>
+
+      <!-- 요약 배너 -->
+      <div class="two-col" style="margin-bottom:12px">
+        <div class="stat-card" style="padding:12px 16px">
+          <div style="font-size:11px;color:var(--t3);margin-bottom:4px">기간 총 수입</div>
+          <div style="font-size:18px;font-weight:500;color:var(--brand)" id="tx-total-in">— ₮</div>
+        </div>
+        <div class="stat-card" style="padding:12px 16px">
+          <div style="font-size:11px;color:var(--t3);margin-bottom:4px">기간 총 지출</div>
+          <div style="font-size:18px;font-weight:500;color:var(--red)" id="tx-total-out">— ₮</div>
+        </div>
+      </div>
+
+      <!-- 카테고리별 지출 분포 -->
+      <div class="panel" style="margin-bottom:12px">
+        <div class="panel-hd"><div class="panel-hd-left"><span>지출 카테고리 분포</span></div></div>
+        <div style="padding:12px 16px;display:flex;flex-wrap:wrap;gap:12px" id="tx-cat-dist">
+          <span style="color:var(--t3);font-size:12px">PDV 연동 후 자동 분류됩니다</span>
+        </div>
+      </div>
+
+      <!-- 거래 목록 -->
+      <div class="panel">
+        <div class="panel-hd">
+          <div class="panel-hd-left"><span>거래 내역 (Transaction History)</span></div>
+          <span class="panel-note">PDV fs_ledger · 자동 분류</span>
+        </div>
+        <table class="tbl" id="tx-table">
+          <thead>
+            <tr>
+              <th>날 짜</th>
+              <th>분 류</th>
+              <th>거래처 / 내용</th>
+              <th>방 향</th>
+              <th class="r" style="text-align:right">금 액 (₮)</th>
+              <th>잔 액 (₮)</th>
+            </tr>
+          </thead>
+          <tbody id="tx-tbody">
+            <tr>
+              <td colspan="6" class="empty-note">
+                PDV 연동 후 거래 내역이 자동으로 표시되고 카테고리가 분류됩니다.<br>
+                <span style="font-size:10px">데이터 출처: fs_ledger · pdv_log (고팡 PDV)</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="iasb-note">※ 분류 기준: PDV pdv_log.category 필드 및 item_name 키워드 자동 분류 | 데이터 출처: 고팡 fs_ledger · pdv_log</div>
+      </div>
+
+      <!-- 목 데이터 안내 (PDV 연동 전) -->
+      <div class="panel" style="border-style:dashed;background:var(--brand-bg)">
+        <div style="padding:16px;font-size:12px;color:var(--t2);line-height:1.8">
+          <strong style="color:var(--brand)">PDV 연동 후 자동으로 동작하는 항목</strong><br>
+          거래 분류 규칙 (PDV pdv_log.category 및 item_name 키워드 매핑):
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px;font-size:11px">
+            <div><span class="cat-chip cat-transport">교통비</span> taxi, bus, 교통, 주유, KTX, 항공</div>
+            <div><span class="cat-chip cat-food">식비</span> 식당, 음식, 배달, cafe, 카페</div>
+            <div><span class="cat-chip cat-medical">의료비</span> 병원, 약국, 의원, clinic</div>
+            <div><span class="cat-chip cat-edu">교육·학습</span> 학원, 교육, 도서, 강의, tuition</div>
+            <div><span class="cat-chip cat-living">생활비</span> 마트, 편의점, 생활, utility</div>
+            <div><span class="cat-chip cat-rd">연구개발</span> 연구, R&D, 개발비, lab</div>
+            <div><span class="cat-chip cat-transfer">이체</span> gdc_transfer, 송금, remit</div>
+            <div><span class="cat-chip cat-income">수입</span> credit, 급여, salary, 매출</div>
+            <div><span class="cat-chip cat-other">기타</span> 위 항목 미해당</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-note">GDC 사용자 재무제표 · IASB 기준 · 데이터: 고팡 PDV (fs.*) · AI City Inc. 2026</div>
+  </div><!-- /scroll -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+/* ── 설정 ────────────────────────────────────────────────── */
+const S = 'https://ebbecjfrwaswbdybbgiu.supabase.co';
+const K = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
+const H = { 'apikey': K, 'Authorization': 'Bearer ' + K };
+
+/* ── 포맷 유틸 ───────────────────────────────────────────── */
+const fmt  = n => (+(n || 0)).toLocaleString('ko-KR', { maximumFractionDigits: 0 });
+const fmtT = n => fmt(n) + ' ₮';
+const fmtP = n => ((+(n || 0)) * 100).toFixed(1) + '%';
+const pct  = (a, b) => b ? ((a / b) * 100).toFixed(1) + '%' : '—';
+const num  = k => parseFloat(k || '0') || 0;
+
+/* ── 탭 전환 ─────────────────────────────────────────────── */
+const TAB_LABELS = {
+  bs:'대차대조표', pl:'손익계산서', cf:'현금흐름표',
+  eq:'지분변동표', re:'자본잉여금처분내역서', ra:'재무분석 보고서', tx:'거래 내역 (TX)'
+};
+function switchTab(id) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('act'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('act'));
+  document.getElementById('pane-' + id).classList.add('act');
+  document.querySelector('[data-tab="' + id + '"]').classList.add('act');
+  document.getElementById('bc-cur').textContent = TAB_LABELS[id] || id;
+  // 사이드바 활성 항목
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('act'));
+}
+
+/* ── 거래 분류 ───────────────────────────────────────────── */
+const CAT_RULES = [
+  { key:'transport', label:'교통비',    cls:'cat-transport', kw:['택시','버스','지하철','교통','주유','KTX','항공','기차','tram','taxi'] },
+  { key:'food',      label:'식비',      cls:'cat-food',      kw:['식당','음식','배달','카페','cafe','coffee','밥','점심','저녁','아침'] },
+  { key:'medical',   label:'의료비',    cls:'cat-medical',   kw:['병원','의원','약국','clinic','medical','치료','진료','처방'] },
+  { key:'edu',       label:'교육·학습', cls:'cat-edu',       kw:['학원','교육','도서','강의','tuition','수업','학습','공부','책'] },
+  { key:'living',    label:'생활비',    cls:'cat-living',    kw:['마트','편의점','생활','utility','전기','가스','수도','임대','월세'] },
+  { key:'rd',        label:'연구개발',  cls:'cat-rd',        kw:['연구','R&D','개발비','lab','실험','특허'] },
+  { key:'transfer',  label:'이체',      cls:'cat-transfer',  kw:['gdc_transfer','송금','이체','remit','transfer'] },
+  { key:'income',    label:'수입',      cls:'cat-income',    kw:['급여','salary','매출','revenue','수입','임금','보너스'] },
+];
+
+function classifyTx(row) {
+  const text = ((row.item_name || '') + ' ' + (row.memo || '') + ' ' + (row.fs_account || '')).toLowerCase();
+  if (row.direction === 'credit') {
+    for (const r of CAT_RULES) {
+      if (r.kw.some(k => text.includes(k.toLowerCase()))) return r;
+    }
+    return { key:'income', label:'수입', cls:'cat-income' };
+  }
+  for (const r of CAT_RULES.filter(r => r.key !== 'income')) {
+    if (r.kw.some(k => text.includes(k.toLowerCase()))) return r;
+  }
+  return { key:'other', label:'기타', cls:'cat-other' };
+}
+
+/* ── TX 필터 ─────────────────────────────────────────────── */
+let _allTx = [];
+function filterTx(key, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('act'));
+  btn.classList.add('act');
+  const rows = key === 'all'     ? _allTx
+             : key === 'income'  ? _allTx.filter(r => r._cat.key === 'income' || r.direction === 'credit')
+             : key === 'expense' ? _allTx.filter(r => r.direction === 'debit')
+             : _allTx.filter(r => r._cat.key === key);
+  renderTxRows(rows);
+}
+
+function renderTxRows(rows) {
+  const tbody = document.getElementById('tx-tbody');
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty-note">해당 거래 내역이 없습니다.</td></tr>';
+    return;
+  }
+  let balance = 0;
+  tbody.innerHTML = rows.map(r => {
+    const cat = r._cat;
+    const isIn = r.direction === 'credit';
+    const amt = num(r.amount);
+    balance += isIn ? amt : -amt;
+    const date = r.tx_at ? new Date(r.tx_at).toLocaleDateString('ko-KR', {month:'2-digit',day:'2-digit'}) : '—';
+    return `<tr data-cat="${cat.key}">
+      <td style="color:var(--t3)">${date}</td>
+      <td><span class="cat-chip ${cat.cls}">${cat.label}</span></td>
+      <td>${r.item_name || r.memo || '—'}</td>
+      <td><span class="${isIn ? 'dir-in' : 'dir-out'}">${isIn ? '↑ 수입' : '↓ 지출'}</span></td>
+      <td class="mono" style="text-align:right;${isIn ? 'color:var(--brand)' : 'color:var(--red)'}">
+        ${isIn ? '+' : '-'}${fmt(amt)}
+      </td>
+      <td class="mono" style="color:var(--t3)">${fmt(Math.abs(balance))}</td>
+    </tr>`;
+  }).join('');
+}
+
+/* ── 평가 뱃지 ───────────────────────────────────────────── */
+function evalBadge(val, good, ok) {
+  if (val === null || isNaN(val)) return '<span style="color:var(--t3)">—</span>';
+  if (val >= good) return `<span class="chip chip-grn">양호</span>`;
+  if (val >= ok)   return `<span class="chip chip-gld">보통</span>`;
+  return `<span class="chip chip-red">주의</span>`;
+}
+
+/* ── PDV 데이터 로드 ──────────────────────────────────────── */
+async function loadUserData(userGuid) {
+  try {
+    const res  = await fetch(`${S}/rest/v1/user_profiles?guid=eq.${userGuid}&select=extra,username&limit=1`, { headers: H });
+    const rows = await res.json();
+    if (!rows[0]) return;
+
+    const profile = rows[0];
+    const name    = profile.username || userGuid.slice(0, 8) + '…';
+    document.getElementById('user-name').textContent    = name;
+    document.getElementById('user-initial').textContent = name[0] || '?';
+
+    const fs = profile.extra?.fs || {};
+    const bs = fs.bs || {};
+    const pl = fs.pl || {};
+    const cf = fs.cf || {};
+
+    // ── 요약 카드 ──────────────────────────────────────
+    document.getElementById('s-cash').textContent    = fmtT(num(bs['bs-cash']));
+    document.getElementById('s-revenue').textContent = fmtT(num(pl['pl-revenue']));
+    document.getElementById('s-equity').textContent  = fmtT(num(bs['bs-equity']));
+
+    // ── 신용 등급 ──────────────────────────────────────
+    try {
+      const rc = await fetch(`${S}/rest/v1/gdc_credit_history?user_guid=eq.${userGuid}&order=evaluated_at.desc&limit=1`, { headers: H });
+      const cr = await rc.json();
+      if (cr[0]) {
+        document.getElementById('s-grade').innerHTML    = `<span class="grade g-${cr[0].credit_grade}">${cr[0].credit_grade}</span>`;
+        document.getElementById('s-grade-sub').textContent = `점수 ${cr[0].credit_score}`;
+        document.getElementById('ra-score').textContent = cr[0].credit_score;
+        document.getElementById('ra-grade').innerHTML   = `<span class="grade g-${cr[0].credit_grade}">${cr[0].credit_grade}</span>`;
+        document.getElementById('ra-rate').textContent  = fmtP(cr[0].loan_rate);
+        document.getElementById('ra-limit').textContent = fmtT(num(bs['bs-equity']) * 0.7);
+      }
+    } catch(e) {}
+
+    // ── BS 채우기 ──────────────────────────────────────
+    const bsCash = num(bs['bs-cash']), bsAr = num(bs['bs-ar']);
+    const bsInv  = num(bs['bs-inventory']), bsPpe = num(bs['bs-ppe']);
+    const bsInt  = num(bs['bs-intangible']), bsIvst = num(bs['bs-investment']);
+    const bsAp   = num(bs['bs-ap']),  bsSd  = num(bs['bs-short-debt']);
+    const bsDebt = num(bs['bs-debt']), bsEq  = num(bs['bs-equity']);
+    const bsCap  = num(bs['bs-capital']), bsCs = num(bs['bs-capital-surplus']);
+    const bsRe   = num(bs['bs-retained']), bsOci = num(bs['bs-oci']);
+    const totalCur  = bsCash + bsAr + bsInv;
+    const totalNCur = bsPpe + bsInt + bsIvst;
+    const totalAssets = totalCur + totalNCur;
+    const totalCL   = bsAp + bsSd;
+    const totalNCL  = bsDebt;
+    const totalLiab = totalCL + totalNCL;
+    const totalEq   = bsCap + bsCs + bsRe + bsOci;
+
+    const setV = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v === 0 ? '—' : fmtT(v); };
+    setV('bs-cash', bsCash); setV('bs-ar', bsAr); setV('bs-inv', bsInv);
+    setV('bs-total-cur', totalCur); setV('bs-ppe', bsPpe); setV('bs-int', bsInt);
+    setV('bs-invest', bsIvst); setV('bs-total-ncur', totalNCur);
+    setV('bs-total-assets', totalAssets); setV('bs-ap', bsAp); setV('bs-sdebt', bsSd);
+    setV('bs-total-cl', totalCL); setV('bs-debt', bsDebt); setV('bs-total-ncl', totalNCL);
+    setV('bs-total-liab', totalLiab); setV('bs-cap', bsCap); setV('bs-csurplus', bsCs);
+    setV('bs-retained', bsRe); setV('bs-oci', bsOci); setV('bs-equity', totalEq);
+    setV('bs-total-le', totalLiab + totalEq);
+
+    // ── PL 채우기 ──────────────────────────────────────
+    const plRev   = num(pl['pl-revenue']), plCogs = num(pl['pl-cogs']);
+    const plOpex  = num(pl['pl-opex']),   plGross = plRev - plCogs;
+    const plOpInc = plGross - plOpex;
+    const plIInc  = num(pl['pl-interest-income']), plIExp = num(pl['pl-interest-exp']);
+    const plOth   = num(pl['pl-other-income']),    plTax  = num(pl['pl-tax']);
+    const plEBT   = plOpInc + plIInc - plIExp + plOth;
+    const plNet   = plEBT - plTax;
+
+    const setPL = (id, v, pos) => {
+      const el = document.getElementById(id); if(!el) return;
+      el.textContent = v === 0 ? '—' : fmtT(v);
+      el.className = 'val ' + (v > 0 ? 'pos' : v < 0 ? 'neg' : '');
+    };
+    setPL('pl-rev', plRev); setPL('pl-cogs', -plCogs); setPL('pl-gross', plGross);
+    setPL('pl-opex', -plOpex); setPL('pl-opinc', plOpInc);
+    setPL('pl-iinc', plIInc); setPL('pl-iexp', -plIExp);
+    setPL('pl-oth', plOth); setPL('pl-ebt', plEBT);
+    setPL('pl-tax', -plTax); setPL('pl-net', plNet);
+
+    // ── CF 채우기 ──────────────────────────────────────
+    const cfOp   = num(cf['cf-op']), cfCapex = num(cf['cf-capex']);
+    const cfInvt = num(cf['cf-invest']), cfDebt = num(cf['cf-debt']);
+    const cfDiv  = num(cf['cf-dividend']), cfBegin = num(cf['cf-begin-cash']);
+    const cfOpTotal  = cfOp;
+    const cfInvTotal = -cfCapex + cfInvt;
+    const cfFinTotal = cfDebt - cfDiv;
+    const cfNetChange = cfOpTotal + cfInvTotal + cfFinTotal;
+    const cfEnd = cfBegin + cfNetChange;
+
+    const setCF = (id, v) => { const el = document.getElementById(id); if(el) el.textContent = v === 0 ? '—' : fmtT(v); };
+    setCF('cf-op', cfOp); setCF('cf-capex', -cfCapex); setCF('cf-invest', cfInvt);
+    setCF('cf-debt', cfDebt); setCF('cf-div', -cfDiv);
+    setCF('cf-op-total', cfOpTotal); setCF('cf-inv-total', cfInvTotal);
+    setCF('cf-fin-total', cfFinTotal); setCF('cf-net-change', cfNetChange);
+    setCF('cf-begin', cfBegin); setCF('cf-end', cfEnd);
+
+    // ── RA 비율 채우기 ─────────────────────────────────
+    const cr   = bsAp > 0 ? totalCur / bsAp : null;
+    const qr   = bsAp > 0 ? (bsCash + bsAr) / bsAp : null;
+    const opm  = plRev > 0 ? plOpInc / plRev : null;
+    const npm  = plRev > 0 ? plNet / plRev : null;
+    const roe  = totalEq > 0 ? plNet / totalEq : null;
+    const roa  = totalAssets > 0 ? plNet / totalAssets : null;
+    const de   = totalEq > 0 ? totalLiab / totalEq : null;
+    const icr  = plIExp > 0 ? plOpInc / plIExp : null;
+    const cfr  = bsDebt > 0 ? cfOp / bsDebt : null;
+
+    const setRA = (id, v, toStr) => { const el = document.getElementById(id); if(el) el.textContent = v !== null ? toStr(v) : '—'; };
+    setRA('ra-cr',   cr,  v => v.toFixed(2) + '배');
+    setRA('ra-qr',   qr,  v => v.toFixed(2) + '배');
+    setRA('ra-cash-r', bsAp > 0 ? bsCash / bsAp : null, v => v.toFixed(2) + '배');
+    setRA('ra-opm',  opm, v => (v*100).toFixed(1) + '%');
+    setRA('ra-npm',  npm, v => (v*100).toFixed(1) + '%');
+    setRA('ra-roe',  roe, v => (v*100).toFixed(1) + '%');
+    setRA('ra-roa',  roa, v => (v*100).toFixed(1) + '%');
+    setRA('ra-de',   de,  v => (v*100).toFixed(1) + '%');
+    setRA('ra-icr',  icr, v => v.toFixed(1) + '배');
+    setRA('ra-cfr',  cfr, v => (v*100).toFixed(1) + '%');
+
+    document.getElementById('ra-cr-e').innerHTML   = evalBadge(cr,  2.0, 1.0);
+    document.getElementById('ra-qr-e').innerHTML   = evalBadge(qr,  1.5, 0.8);
+    document.getElementById('ra-opm-e').innerHTML  = evalBadge(opm, 0.15, 0.05);
+    document.getElementById('ra-npm-e').innerHTML  = evalBadge(npm, 0.10, 0.03);
+    document.getElementById('ra-roe-e').innerHTML  = evalBadge(roe, 0.10, 0.05);
+    document.getElementById('ra-roa-e').innerHTML  = evalBadge(roa, 0.05, 0.02);
+    document.getElementById('ra-de-e').innerHTML   = evalBadge(de !== null ? 2.0 - de : null, 1.5, 0.5);
+    document.getElementById('ra-icr-e').innerHTML  = evalBadge(icr, 3.0, 1.5);
+    document.getElementById('ra-cfr-e').innerHTML  = evalBadge(cfr, 0.3, 0.1);
+
+    if (cr !== null) {
+      const pctVal = Math.min(cr / 2.0 * 100, 100);
+      document.getElementById('ra-cr-bar').style.width = pctVal + '%';
+      document.getElementById('ra-cr-bar').className   = 'ratio-fill' + (cr >= 2 ? '' : cr >= 1 ? ' warn' : ' bad');
+      document.getElementById('ra-cr-bar-val').textContent = (cr * 100).toFixed(0) + '%';
+    }
+
+  } catch(e) {
+    console.warn('[user-dashboard] 데이터 로드 실패:', e);
+  }
+}
+
+/* ── 거래 내역 로드 ──────────────────────────────────────── */
+async function loadTx(userGuid) {
+  try {
+    const res  = await fetch(
+      `${S}/rest/v1/fs_ledger?guid=eq.${userGuid}&order=tx_at.desc&limit=100`,
+      { headers: H }
+    );
+    const rows = await res.json();
+    if (!Array.isArray(rows) || !rows.length) return;
+
+    _allTx = rows.map(r => ({ ...r, _cat: classifyTx(r) }));
+
+    // 요약
+    const totalIn  = _allTx.filter(r => r.direction === 'credit').reduce((s, r) => s + num(r.amount), 0);
+    const totalOut = _allTx.filter(r => r.direction === 'debit').reduce((s, r) => s + num(r.amount), 0);
+    document.getElementById('tx-total-in').textContent  = fmtT(totalIn);
+    document.getElementById('tx-total-out').textContent = fmtT(totalOut);
+
+    // 카테고리 분포
+    const catMap = {};
+    _allTx.filter(r => r.direction === 'debit').forEach(r => {
+      const k = r._cat.key;
+      catMap[k] = (catMap[k] || 0) + num(r.amount);
+    });
+    const catTotal = Object.values(catMap).reduce((a, b) => a + b, 0);
+    document.getElementById('tx-cat-dist').innerHTML = Object.entries(catMap)
+      .sort((a, b) => b[1] - a[1])
+      .map(([k, v]) => {
+        const rule = CAT_RULES.find(r => r.key === k) || { label: k, cls: 'cat-other' };
+        return `<div style="display:flex;flex-direction:column;gap:3px;min-width:90px">
+          <span class="cat-chip ${rule.cls}">${rule.label}</span>
+          <span style="font-size:11px;font-weight:500">${fmtT(v)}</span>
+          <span style="font-size:10px;color:var(--t3)">${catTotal > 0 ? (v/catTotal*100).toFixed(1) : 0}%</span>
+        </div>`;
+      }).join('') || '<span style="color:var(--t3);font-size:12px">지출 내역 없음</span>';
+
+    renderTxRows(_allTx);
+  } catch(e) {
+    console.warn('[user-dashboard] 거래 내역 로드 실패:', e);
+  }
+}
+
+/* ── Gopang SSO 콜백 ──────────────────────────────────────── */
+window._onGopangAuth = async function(user) {
+  if (!user || !user.guid) return;
+  await loadUserData(user.guid);
+  await loadTx(user.guid);
+};
+
+/* ── 시계 ────────────────────────────────────────────────── */
+(function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+  setTimeout(tick, 1000);
+})();
+</script>
+
+<script type="module" src="https://gopang.net/auth/subsystem-auth.js"></script>
+</body>
+</html>

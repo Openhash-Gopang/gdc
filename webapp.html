@@ -441,7 +441,7 @@ const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im
 const H={'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'};
 const Hd={'apikey':K,'Authorization':'Bearer '+K};
 const P=new URLSearchParams(location.search);
-let GUID=P.get('guid')||'aaaaaaaa-test-4000-a000-000000000001';
+let GUID = P.get('guid') || null;  // SSO 인증 후 _onGopangAuth에서 설정
 let _profile={};
 let curS='scr-home',prevS='scr-home';
 const fmt=n=>(+(n||0)).toLocaleString('ko-KR',{maximumFractionDigits:0});
@@ -617,7 +617,71 @@ async function runCredit(){
   btn.disabled=false; txt.textContent='재평가';
 }
 
-loadHome();
+/* ────────────────────────────────────────────────────────────
+   Gopang SSO 인증 콜백 — subsystem-auth.js 로드 후 자동 호출
+   HANDOVER §4.2 표준 패턴
+   ──────────────────────────────────────────────────────────── */
+const PROXY_BASE = 'https://gopang-proxy.tensor-city.workers.dev';
+
+window._onGopangAuth = async function(user) {
+  if (!user || !user.guid) {
+    // 게스트(경로D) — 열람 전용, GUID 없이 홈 로드
+    console.log('[GDC] 게스트 접속');
+    document.getElementById('mp-name').textContent = '게스트';
+    document.getElementById('mp-guid').textContent = '로그인 필요';
+    loadHome();
+    return;
+  }
+
+  // 인증 완료 — GUID 설정
+  GUID = user.guid;
+  console.log('[GDC] 인증 완료:', user.guid.slice(0,12)+'…', '레벨:', user.level);
+
+  // UI 갱신
+  document.getElementById('mp-name').textContent =
+    user.name || user.guid.slice(0,8) + '…';
+  document.getElementById('mp-guid').textContent =
+    'L' + (user.level||'0') + ' · ' + user.guid.slice(0,16) + '…';
+
+  // 앱 초기화
+  await loadHome();
+
+  // PDV 기록 — GDC 앱 접속 이벤트 (T6 테스트 대상)
+  await sendPDV(user.guid, {
+    pdv_6w: {
+      who:   user.name || user.guid.slice(0,8),
+      what:  'GDC 앱 접속',
+      when:  new Date().toISOString().slice(0,10),
+      where: 'gdc.gopang.net/webapp.html',
+      why:   'GDC 지갑 및 금융 서비스 이용',
+      how:   '고팡 SSO 자동 인증 (경로: ' + (user.via || 'L0') + ')'
+    },
+    summary: { guid: user.guid, level: user.level, ua: navigator.userAgent.slice(0,40) },
+    pdv_type: 'event'
+  });
+};
+
+/* PDV 전송 — HANDOVER §5.2 표준 패턴 */
+async function sendPDV(user_guid, report) {
+  try {
+    const res = await fetch(PROXY_BASE + '/pdv/report', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_guid, source: 'gdc', report })
+    });
+    const data = await res.json();
+    console.log('[GDC PDV]', data.pdv_entry);
+    return data.pdv_entry;
+  } catch(e) {
+    console.warn('[GDC PDV] 전송 실패:', e.message);
+  }
+}
 </script>
+
+<script type="module"
+  src="https://gopang.net/auth/subsystem-auth.js">
+</script>
+</body>
+</html>
 </body>
 </html>

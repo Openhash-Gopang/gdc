@@ -42,8 +42,8 @@ a{text-decoration:none;color:inherit}
 .sb:hover .sb-sec{opacity:1}
 .sb-item{display:flex;align-items:center;gap:9px;padding:6px 9px;border-radius:var(--r);font-size:13px;color:var(--t2);cursor:pointer;transition:all .1s;white-space:nowrap;overflow:hidden;text-decoration:none}
 .sb-item:hover,.sb-item.act{background:var(--bg);color:var(--t1)}
-.sb-item .ti{flex-shrink:0;font-size:16px;opacity:.7}
-.sb-item.act .ti{opacity:1;color:var(--brand)}
+.sb-item svg{flex-shrink:0;opacity:.6;transition:opacity .1s}
+.sb-item:hover svg,.sb-item.act svg{opacity:1;color:var(--brand)}
 .sb-lbl{opacity:0;transition:opacity .1s .04s}
 .sb:hover .sb-lbl{opacity:1}
 
@@ -111,43 +111,43 @@ table.tbl tr:hover td{background:var(--bg)}
 
 <aside class="sb" id="sb">
   <a href="index.html" class="sb-brand">
-    <div class="sb-logo"><i class="ti ti-currency-dollar" aria-hidden="true"></i></div>
+    <div class="sb-logo"><svg viewBox="0 0 28 34" fill="currentColor" style="width:55%;height:55%" aria-label="T"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg></div>
     <div class="sb-name">GDC 대시보드<div class="sb-sub">관리자 전용</div></div>
   </a>
   <nav class="sb-nav">
     <div class="sb-sec">현황</div>
     <a class="sb-item act" href="dashboard.html">
-      <i class="ti ti-layout-dashboard" aria-hidden="true"></i><span class="sb-lbl">종합 대시보드</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/></svg><span class="sb-lbl">종합 대시보드</span>
     </a>
     <a class="sb-item" href="#">
-      <i class="ti ti-world" aria-hidden="true"></i><span class="sb-lbl">FIAT POOL</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg><span class="sb-lbl">FIAT POOL</span>
     </a>
     <a class="sb-item" href="#">
-      <i class="ti ti-coin" aria-hidden="true"></i><span class="sb-lbl">발행량 관리</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M14.8 9a2 2 0 0 0-1.8-1h-2a2 2 0 1 0 0 4h2a2 2 0 1 0 0 4h-2a2 2 0 0 1-1.8-1"/><path d="M12 7v10"/></svg><span class="sb-lbl">발행량 관리</span>
     </a>
     <div class="sb-sec">은행 업무</div>
     <a class="sb-item" href="#">
-      <i class="ti ti-building-bank" aria-hidden="true"></i><span class="sb-lbl">예금 현황</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7-3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/></svg><span class="sb-lbl">예금 현황</span>
     </a>
     <a class="sb-item" href="#">
-      <i class="ti ti-credit-card" aria-hidden="true"></i><span class="sb-lbl">대출 현황</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-12a3 3 0 0 1-3-3z"/><path d="M3 10l18 0"/><path d="M7 15l.01 0"/><path d="M11 15l2 0"/></svg><span class="sb-lbl">대출 현황</span>
     </a>
     <a class="sb-item" href="#">
-      <i class="ti ti-arrows-exchange" aria-hidden="true"></i><span class="sb-lbl">이체 원장</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h14l-4-4"/><path d="M17 14h-14l4 4"/></svg><span class="sb-lbl">이체 원장</span>
     </a>
     <div class="sb-sec">분석</div>
     <a class="sb-item" href="#">
-      <i class="ti ti-shield-check" aria-hidden="true"></i><span class="sb-lbl">신용평가 통계</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1-7.96-14.846a12 12 0 0 0 8.5-3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06"/><path d="M15 19l2 2l4-4"/></svg><span class="sb-lbl">신용평가 통계</span>
     </a>
     <a class="sb-item" href="#">
-      <i class="ti ti-chart-line" aria-hidden="true"></i><span class="sb-lbl">투자 수익률</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19l4-6l4 3l4-7l4 4"/></svg><span class="sb-lbl">투자 수익률</span>
     </a>
     <div class="sb-sec">이동</div>
     <a class="sb-item" href="index.html">
-      <i class="ti ti-home" aria-hidden="true"></i><span class="sb-lbl">GDC 홈</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9-9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/></svg><span class="sb-lbl">GDC 홈</span>
     </a>
     <a class="sb-item" href="webapp.html">
-      <i class="ti ti-device-mobile" aria-hidden="true"></i><span class="sb-lbl">사용자 앱</span>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6 5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-8a2 2 0 0 1-2-2v-14z"/><path d="M11 17h2"/></svg><span class="sb-lbl">사용자 앱</span>
     </a>
   </nav>
 </aside>
@@ -166,35 +166,35 @@ table.tbl tr:hover td{background:var(--bg)}
   <div class="scroll">
     <div class="stat-grid">
       <div class="stat-card">
-        <div class="stat-icon"><i class="ti ti-coin" aria-hidden="true"></i></div>
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M14.8 9a2 2 0 0 0-1.8-1h-2a2 2 0 1 0 0 4h2a2 2 0 1 0 0 4h-2a2 2 0 0 1-1.8-1"/><path d="M12 7v10"/></svg></div>
         <div class="stat-val" id="s-issued">—</div>
         <div class="stat-lbl">GDC 총 발행량</div>
         <div class="stat-sub ok">FIAT POOL 연동</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><i class="ti ti-building-bank" aria-hidden="true"></i></div>
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7-3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/></svg></div>
         <div class="stat-val" id="s-deposit">—</div>
         <div class="stat-lbl">총 예금 잔액 (₮)</div>
         <div class="stat-sub ok" id="s-dep-cnt">예금 계좌 —건</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><i class="ti ti-credit-card" aria-hidden="true"></i></div>
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-12a3 3 0 0 1-3-3z"/><path d="M3 10l18 0"/><path d="M7 15l.01 0"/><path d="M11 15l2 0"/></svg></div>
         <div class="stat-val" id="s-loan">—</div>
         <div class="stat-lbl">총 대출 잔액 (₮)</div>
         <div class="stat-sub warn" id="s-loan-cnt">대출 계좌 —건</div>
       </div>
       <div class="stat-card">
-        <div class="stat-icon"><i class="ti ti-users" aria-hidden="true"></i></div>
+        <div class="stat-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg></div>
         <div class="stat-val" id="s-users">—</div>
         <div class="stat-lbl">등록 사용자</div>
         <div class="stat-sub ok">고팡 PDV 연동</div>
       </div>
     </div>
 
-    <div class="sec-title"><i class="ti ti-world" aria-hidden="true"></i>FIAT POOL 현황</div>
+    <div class="sec-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>FIAT POOL 현황</div>
     <div class="panel">
       <div class="panel-hd">
-        <div class="panel-hd-left"><i class="ti ti-world" aria-hidden="true"></i><span>통화별 POOL 잔액</span></div>
+        <div class="panel-hd-left"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg><span>통화별 POOL 잔액</span></div>
         <span style="font-size:11px;color:var(--t3)" id="pool-updated">업데이트 중…</span>
       </div>
       <table class="tbl">
@@ -207,7 +207,7 @@ table.tbl tr:hover td{background:var(--bg)}
 
     <div class="two-col">
       <div>
-        <div class="sec-title"><i class="ti ti-building-bank" aria-hidden="true"></i>최근 예금 계좌</div>
+        <div class="sec-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7-3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/></svg>최근 예금 계좌</div>
         <div class="panel">
           <table class="tbl">
             <thead><tr><th>계좌 ID</th><th>상품</th><th>원금 (₮)</th><th>금리</th><th>상태</th></tr></thead>
@@ -216,7 +216,7 @@ table.tbl tr:hover td{background:var(--bg)}
         </div>
       </div>
       <div>
-        <div class="sec-title"><i class="ti ti-credit-card" aria-hidden="true"></i>최근 대출 계좌</div>
+        <div class="sec-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 5m0 3a3 3 0 0 1 3-3h12a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3h-12a3 3 0 0 1-3-3z"/><path d="M3 10l18 0"/><path d="M7 15l.01 0"/><path d="M11 15l2 0"/></svg>최근 대출 계좌</div>
         <div class="panel">
           <table class="tbl">
             <thead><tr><th>등급</th><th>원금 (₮)</th><th>잔여 (₮)</th><th>금리</th><th>상태</th></tr></thead>
@@ -226,7 +226,7 @@ table.tbl tr:hover td{background:var(--bg)}
       </div>
     </div>
 
-    <div class="sec-title"><i class="ti ti-shield-check" aria-hidden="true"></i>최근 신용평가 이력</div>
+    <div class="sec-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1-7.96-14.846a12 12 0 0 0 8.5-3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06"/><path d="M15 19l2 2l4-4"/></svg>최근 신용평가 이력</div>
     <div class="panel">
       <table class="tbl">
         <thead><tr><th>사용자</th><th>점수</th><th>등급</th><th>대출금리</th><th>유동비율</th><th>부채비율</th><th>영업이익률</th><th>평가시각</th></tr></thead>
@@ -234,7 +234,7 @@ table.tbl tr:hover td{background:var(--bg)}
       </table>
     </div>
 
-    <div class="sec-title"><i class="ti ti-arrows-exchange" aria-hidden="true"></i>최근 GDC 거래 원장</div>
+    <div class="sec-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h14l-4-4"/><path d="M17 14h-14l4 4"/></svg>최근 GDC 거래 원장</div>
     <div class="panel">
       <table class="tbl">
         <thead><tr><th>TX</th><th>사용자</th><th>상대방</th><th>방향</th><th>금액 (₮)</th><th>계정</th><th>시각</th></tr></thead>

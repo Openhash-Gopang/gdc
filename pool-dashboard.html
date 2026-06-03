@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>GDC FIAT POOL 대시보드</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #F8F9FA;
+  --sur:     #FFFFFF;
+  --sur2:    #F1F5F9;
+  --bd:      rgba(0,0,0,.09);
+  --bd2:     rgba(0,0,0,.16);
+  --t1:      #111827;
+  --t2:      #4A5578;
+  --t3:      #9898A6;
+  --brand:   #3ECF8E;
+  --brand2:  #2DB87A;
+  --mono:    'DM Mono', monospace;
+  --font:    'Noto Sans KR', -apple-system, sans-serif;
+  --r:       8px;
+  --r2:      12px;
+  --sb-rail: 48px;
+  --sb-full: 220px;
+  --top:     52px;
+
+  /* 통화 색상 */
+  --c-krw: #3ECF8E;
+  --c-usd: #60A5FA;
+  --c-eur: #A78BFA;
+  --c-jpy: #FB923C;
+  --c-cny: #F87171;
+  --c-gbp: #FBBF24;
+  --c-etc: #94A3B8;
+}
+
+*,*::before,*::after { box-sizing:border-box; margin:0; padding:0 }
+html,body { height:100%; overflow:hidden }
+body { font-family:var(--font); font-size:13px; color:var(--t1); background:var(--bg); -webkit-font-smoothing:antialiased }
+a { text-decoration:none; color:inherit }
+::-webkit-scrollbar { width:3px; height:3px }
+::-webkit-scrollbar-thumb { background:var(--bd2); border-radius:2px }
+
+/* ── LAYOUT ── */
+.app { display:flex; height:100vh; overflow:hidden }
+
+/* ── SIDEBAR ── */
+.sb { width:var(--sb-rail); flex-shrink:0; background:var(--sur); border-right:1px solid var(--bd); display:flex; flex-direction:column; overflow:hidden; transition:width .2s ease; z-index:200 }
+.sb:hover { width:var(--sb-full) }
+.sb-brand { height:var(--top); padding:0 12px; border-bottom:1px solid var(--bd); display:flex; align-items:center; gap:10px; overflow:hidden; flex-shrink:0 }
+.sb-logo { width:24px; height:24px; flex-shrink:0; background:var(--brand); border-radius:6px; display:flex; align-items:center; justify-content:center; color:#fff }
+.sb-name { font-size:13px; font-weight:500; color:var(--t1); white-space:nowrap; opacity:0; transition:opacity .1s .05s }
+.sb-sub { font-size:10px; color:var(--t3) }
+.sb:hover .sb-name { opacity:1 }
+.sb-nav { padding:6px; flex:1; overflow-y:auto; overflow-x:hidden }
+.sb-sec { padding:10px 10px 4px; font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.06em; color:var(--t3); white-space:nowrap; opacity:0; transition:opacity .1s }
+.sb:hover .sb-sec { opacity:1 }
+.sb-item { display:flex; align-items:center; gap:9px; padding:6px 9px; border-radius:6px; font-size:12px; color:var(--t2); cursor:pointer; transition:all .1s; white-space:nowrap; overflow:hidden; text-decoration:none }
+.sb-item:hover,.sb-item.act { background:rgba(62,207,142,.09); color:var(--brand2) }
+.sb-item svg { flex-shrink:0; opacity:.6; transition:opacity .1s }
+.sb-item:hover svg,.sb-item.act svg { opacity:1 }
+.sb-lbl { opacity:0; transition:opacity .15s .05s }
+.sb:hover .sb-lbl { opacity:1 }
+
+/* ── MAIN ── */
+.main { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0 }
+.topbar { height:var(--top); flex-shrink:0; background:var(--sur); border-bottom:1px solid var(--bd); display:flex; align-items:center; padding:0 20px; gap:14px }
+.breadcrumb { flex:1; font-size:12px; color:var(--t3); display:flex; align-items:center; gap:6px }
+.breadcrumb b { color:var(--t1); font-weight:500 }
+.bc-sep { color:var(--t3) }
+.live-pill { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--brand); padding:3px 9px; border-radius:20px; border:1px solid rgba(62,207,142,.25); background:rgba(62,207,142,.06) }
+.dot { width:6px; height:6px; border-radius:50%; background:var(--brand); animation:blink 2s infinite }
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+.clock { font-family:var(--mono); font-size:12px; color:var(--t3) }
+.scroll { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px }
+
+/* ── KPI ROW ── */
+.kpi-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px }
+@media(max-width:1100px) { .kpi-row { grid-template-columns:repeat(3,1fr) } }
+.kpi { background:var(--sur); border:1px solid var(--bd); border-radius:var(--r2); padding:16px 18px; position:relative; overflow:hidden }
+.kpi::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(62,207,142,.05) 0%,transparent 60%); pointer-events:none }
+.kpi-label { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.07em; color:var(--t3); margin-bottom:8px }
+.kpi-val { font-family:var(--mono); font-size:22px; font-weight:500; color:var(--t1); margin-bottom:4px }
+.kpi-val span { font-size:13px; color:var(--t3) }
+.kpi-sub { font-size:11px; color:var(--t3) }
+.kpi-sub.up { color:var(--brand) }
+.kpi-sub.down { color:#F87171 }
+.kpi-spark { position:absolute; right:12px; bottom:12px; opacity:.5 }
+
+/* ── GRID LAYOUTS ── */
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px }
+.grid-3 { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px }
+.grid-7-5 { display:grid; grid-template-columns:7fr 5fr; gap:16px }
+.grid-5-7 { display:grid; grid-template-columns:5fr 7fr; gap:16px }
+@media(max-width:1000px) { .grid-2,.grid-3,.grid-7-5,.grid-5-7 { grid-template-columns:1fr } }
+
+/* ── PANEL ── */
+.panel { background:var(--sur); border:1px solid var(--bd); border-radius:var(--r2); overflow:hidden }
+.ph { padding:12px 16px; border-bottom:1px solid var(--bd); display:flex; align-items:center; justify-content:space-between }
+.ph-l { display:flex; align-items:center; gap:8px; font-size:13px; font-weight:500; color:var(--t1) }
+.ph-l svg { color:var(--brand); opacity:.8 }
+.ph-r { font-size:11px; color:var(--t3) }
+.pb { padding:16px }
+
+/* ── DONUT CHART ── */
+.donut-wrap { position:relative; width:200px; height:200px; margin:0 auto }
+.donut-center { position:absolute; inset:0; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center }
+.donut-center .val { font-family:var(--mono); font-size:20px; font-weight:500; color:var(--t1) }
+.donut-center .lbl { font-size:10px; color:var(--t3); margin-top:2px }
+
+/* ── CURRENCY LEGEND ── */
+.legend { display:flex; flex-direction:column; gap:10px; padding:0 4px }
+.leg-item { display:flex; align-items:center; gap:10px }
+.leg-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0 }
+.leg-name { font-size:12px; color:var(--t2); flex:1 }
+.leg-flag { font-size:14px }
+.leg-val { font-family:var(--mono); font-size:12px; color:var(--t1); font-weight:500 }
+.leg-pct { font-size:11px; color:var(--t3); min-width:36px; text-align:right }
+.leg-bar { flex:1; height:3px; background:var(--bd); border-radius:2px; overflow:hidden; max-width:80px }
+.leg-bar-fill { height:100%; border-radius:2px; transition:width 1s ease }
+
+/* ── TREND CHART ── */
+.trend-wrap { position:relative; width:100%; overflow:hidden }
+.trend-label { display:flex; justify-content:space-between; font-size:10px; color:var(--t3); margin-top:6px; padding:0 2px }
+
+/* ── INVESTMENT TABLE ── */
+table.inv { width:100%; border-collapse:collapse }
+table.inv th { font-size:10px; font-weight:500; text-transform:uppercase; letter-spacing:.05em; color:var(--t3); padding:8px 12px; border-bottom:1px solid var(--bd); text-align:left }
+table.inv th.r { text-align:right }
+table.inv td { padding:10px 12px; border-bottom:1px solid var(--bd); font-size:12px; color:var(--t2) }
+table.inv tr:last-child td { border-bottom:none }
+table.inv tr:hover td { background:rgba(255,255,255,.02) }
+table.inv td.val { font-family:var(--mono); color:var(--t1); text-align:right }
+table.inv td.pos { font-family:var(--mono); color:var(--brand); text-align:right; font-weight:500 }
+table.inv td.neg { font-family:var(--mono); color:#F87171; text-align:right; font-weight:500 }
+
+/* ── CHIP ── */
+.chip { display:inline-flex; align-items:center; padding:2px 8px; border-radius:20px; font-size:10px; font-weight:500; border:1px solid }
+.chip-grn { color:#34D399; background:rgba(52,211,153,.1); border-color:rgba(52,211,153,.25) }
+.chip-red { color:#F87171; background:rgba(248,113,113,.1); border-color:rgba(248,113,113,.25) }
+.chip-gld { color:#FBBF24; background:rgba(251,191,36,.1); border-color:rgba(251,191,36,.25) }
+.chip-blue { color:#60A5FA; background:rgba(96,165,250,.1); border-color:rgba(96,165,250,.25) }
+
+/* ── WORLD MAP STYLE ── */
+.globe-wrap { position:relative; height:160px; display:flex; align-items:center; justify-content:center; overflow:hidden }
+.globe-ring { position:absolute; border-radius:50%; border:1px solid; animation:spin linear infinite }
+@keyframes spin { to { transform:rotate(360deg) } }
+
+/* ── RESERVE BAR ── */
+.reserve-bar { display:flex; height:10px; border-radius:5px; overflow:hidden; gap:1px }
+.reserve-seg { height:100%; transition:width .8s ease }
+
+/* ── PULSE NODES (visual decoration) ── */
+.nodes-wrap { position:relative; height:90px; overflow:hidden }
+.node { position:absolute; border-radius:50%; animation:nodePulse 3s ease-in-out infinite }
+@keyframes nodePulse { 0%,100%{transform:scale(1);opacity:.7} 50%{transform:scale(1.15);opacity:1} }
+
+/* ── FOOTER ── */
+.foot { text-align:center; font-size:10px; color:var(--t3); padding:8px 0 4px }
+
+/* ── ANIMATE IN ── */
+.panel, .kpi { animation:fadeUp .4s ease both }
+@keyframes fadeUp { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+.kpi:nth-child(1){animation-delay:.05s} .kpi:nth-child(2){animation-delay:.1s}
+.kpi:nth-child(3){animation-delay:.15s} .kpi:nth-child(4){animation-delay:.2s}
+.kpi:nth-child(5){animation-delay:.25s}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ══ SIDEBAR ══════════════════════════════════════════════ -->
+<aside class="sb">
+  <a href="desktop.html" class="sb-brand">
+    <div class="sb-logo">
+      <svg viewBox="0 0 28 34" fill="currentColor" style="width:55%;height:55%"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg>
+    </div>
+    <div class="sb-name">GDC POOL<div class="sb-sub">FIAT 현황</div></div>
+  </a>
+  <nav class="sb-nav">
+    <div class="sb-sec">POOL</div>
+    <a class="sb-item act" href="pool-dashboard.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>
+      <span class="sb-lbl">POOL 종합 현황</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M4 19l4-6l4 3l4-7l4 4"/></svg>
+      <span class="sb-lbl">투자 수익률</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10h14l-4-4"/><path d="M17 14h-14l4 4"/></svg>
+      <span class="sb-lbl">환율 흐름</span>
+    </a>
+    <a class="sb-item" href="#">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M14.8 9a2 2 0 0 0-1.8-1h-2a2 2 0 1 0 0 4h2a2 2 0 1 0 0 4h-2a2 2 0 0 1-1.8-1"/><path d="M12 7v10"/></svg>
+      <span class="sb-lbl">GDC 발행량</span>
+    </a>
+    <div class="sb-sec">이동</div>
+    <a class="sb-item" href="dashboard.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/></svg>
+      <span class="sb-lbl">관리자 대시보드</span>
+    </a>
+    <a class="sb-item" href="desktop.html">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9-9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/><path d="M9 21v-6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v6"/></svg>
+      <span class="sb-lbl">GDC 홈</span>
+    </a>
+  </nav>
+</aside>
+
+<!-- ══ MAIN ═══════════════════════════════════════════════ -->
+<div class="main">
+  <header class="topbar">
+    <nav class="breadcrumb">
+      <a href="desktop.html">GDC</a>
+      <span class="bc-sep">/</span>
+      <b>FIAT POOL 대시보드</b>
+    </nav>
+    <div class="live-pill"><span class="dot"></span>실시간 연동</div>
+    <span style="font-size:11px;color:var(--t3)" id="last-update">갱신 중…</span>
+    <span class="clock" id="clock">--:--:--</span>
+  </header>
+
+  <div class="scroll">
+
+    <!-- ── KPI ───────────────────────────────────────── -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-label">POOL 총 납입액</div>
+        <div class="kpi-val" id="k-total">—<span> ₮</span></div>
+        <div class="kpi-sub up" id="k-total-sub">193개국 통화</div>
+        <svg class="kpi-spark" width="60" height="30" viewBox="0 0 60 30">
+          <polyline id="spark-total" fill="none" stroke="var(--brand)" stroke-width="1.5" opacity=".4"/>
+        </svg>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">GDC 총 발행량</div>
+        <div class="kpi-val" id="k-issued">—<span> T</span></div>
+        <div class="kpi-sub up">OpenHash 원장 기록</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">지불준비금 (20%)</div>
+        <div class="kpi-val" id="k-reserve">—<span> ₮</span></div>
+        <div class="kpi-sub">즉시 출금 보장</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">투자 운용 (80%)</div>
+        <div class="kpi-val" id="k-invested">—<span> ₮</span></div>
+        <div class="kpi-sub up">Index ETF 운용 중</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-label">통화 종류</div>
+        <div class="kpi-val" id="k-currencies">—<span>개</span></div>
+        <div class="kpi-sub">UN 193개국 지원</div>
+      </div>
+    </div>
+
+    <!-- ── 도넛 + 범례 + 지불준비금 바 ─────────────── -->
+    <div class="grid-7-5">
+
+      <!-- 도넛 차트 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="9"/><path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0-6 0"/></svg>
+            통화별 POOL 비중
+          </div>
+          <span class="ph-r" id="donut-updated">—</span>
+        </div>
+        <div class="pb" style="display:flex;align-items:center;gap:24px;flex-wrap:wrap">
+          <div class="donut-wrap" style="flex-shrink:0">
+            <svg id="donut-svg" viewBox="0 0 120 120" width="200" height="200">
+              <!-- segments rendered by JS -->
+              <circle cx="60" cy="60" r="42" fill="none" stroke="var(--bd)" stroke-width="18"/>
+            </svg>
+            <div class="donut-center">
+              <div class="val" id="donut-center-val">—</div>
+              <div class="lbl">총 발행 GDC</div>
+            </div>
+          </div>
+          <div class="legend" id="pool-legend" style="flex:1;min-width:180px"></div>
+        </div>
+        <!-- 지불준비금 vs 투자 비율 바 -->
+        <div style="padding:0 16px 14px">
+          <div style="font-size:10px;color:var(--t3);margin-bottom:6px;text-transform:uppercase;letter-spacing:.06em">POOL 구성 비율</div>
+          <div class="reserve-bar" id="reserve-bar">
+            <div class="reserve-seg" style="width:20%;background:var(--brand);border-radius:5px 0 0 5px"></div>
+            <div class="reserve-seg" style="width:80%;background:#E2E8F0;border-radius:0 5px 5px 0"></div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-top:4px">
+            <span><span style="color:var(--brand)">■</span> 지불준비금 20%</span>
+            <span><span style="color:var(--t3)">■</span> 투자 운용 80%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 통화별 상세 카드 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>
+            통화별 납입액 & 발행 GDC
+          </div>
+        </div>
+        <div id="currency-cards" style="padding:12px;display:flex;flex-direction:column;gap:8px"></div>
+      </div>
+    </div>
+
+    <!-- ── 증감 추세선 ─────────────────────────────── -->
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-l">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 19l4-6l4 3l4-7l4 4"/></svg>
+          통화별 GDC 증감 추세선 (시뮬레이션 — PDV 연동 후 실데이터 대체)
+        </div>
+        <div style="display:flex;gap:8px" id="trend-legend"></div>
+      </div>
+      <div class="pb">
+        <div class="trend-wrap">
+          <canvas id="trend-canvas" height="130" style="width:100%;display:block"></canvas>
+          <div class="trend-label" id="trend-x-labels"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 투자 현황 + 수익률 ──────────────────────── -->
+    <div class="grid-5-7">
+
+      <!-- 투자 배분 도넛 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 19l4-6l4 3l4-7l4 4"/></svg>
+            투자처별 배분
+          </div>
+          <span class="ph-r">POOL 80% 운용</span>
+        </div>
+        <div class="pb">
+          <div class="donut-wrap" style="width:160px;height:160px">
+            <svg id="invest-donut" viewBox="0 0 120 120" width="160" height="160">
+              <circle cx="60" cy="60" r="42" fill="none" stroke="var(--bd)" stroke-width="18"/>
+            </svg>
+            <div class="donut-center">
+              <div class="val" style="font-size:14px">Index</div>
+              <div class="lbl">ETF 운용</div>
+            </div>
+          </div>
+          <div id="invest-legend" style="margin-top:12px;display:flex;flex-direction:column;gap:7px"></div>
+        </div>
+      </div>
+
+      <!-- 투자 테이블 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1-7.96-14.846a12 12 0 0 0 8.5-3a12 12 0 0 0 8.5 3a12 12 0 0 1-.09 7.06"/><path d="M15 19l2 2l4-4"/></svg>
+            Index 투자처 수익률 현황
+          </div>
+          <span class="ph-r">2026.01.02 → 2026.06.03</span>
+        </div>
+        <table class="inv">
+          <thead>
+            <tr>
+              <th>투자처</th><th>국가</th>
+              <th class="r">기준가 (연초)</th><th class="r">현재가</th>
+              <th class="r">수익률</th><th>상태</th>
+            </tr>
+          </thead>
+          <tbody id="invest-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── 실시간 환율 & GDC 가치 ─────────────────── -->
+    <div class="grid-2">
+      <!-- 환율 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M7 10h14l-4-4"/><path d="M17 14h-14l4 4"/></svg>
+            실시간 환율 (KRW 기준)
+          </div>
+          <span class="ph-r" id="fx-time">—</span>
+        </div>
+        <div id="fx-list" style="padding:8px 12px;display:flex;flex-direction:column;gap:0"></div>
+      </div>
+
+      <!-- GDC 가치 히스토리 + 시각화 -->
+      <div class="panel">
+        <div class="ph">
+          <div class="ph-l">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0-18 0"/><path d="M14.8 9a2 2 0 0 0-1.8-1h-2a2 2 0 1 0 0 4h2a2 2 0 1 0 0 4h-2a2 2 0 0 1-1.8-1"/><path d="M12 7v10"/></svg>
+            GDC 가치 추이 (₮ 당 KRW)
+          </div>
+          <span class="ph-r">시뮬레이션</span>
+        </div>
+        <div class="pb">
+          <!-- GDC 가치 바 차트 -->
+          <div style="display:flex;align-items:flex-end;gap:4px;height:90px;padding-bottom:4px" id="gdc-bar-chart"></div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--t3);margin-top:4px" id="gdc-bar-labels"></div>
+          <div style="margin-top:12px;display:flex;align-items:center;justify-content:space-between">
+            <div>
+              <div style="font-size:10px;color:var(--t3)">런칭 기준가</div>
+              <div style="font-family:var(--mono);font-size:16px;color:var(--t2)">₩1,000</div>
+            </div>
+            <div style="text-align:center">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </div>
+            <div style="text-align:right">
+              <div style="font-size:10px;color:var(--t3)">현재 추산가</div>
+              <div style="font-family:var(--mono);font-size:16px;color:var(--brand)" id="gdc-current-val">₩—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 글로벌 POOL 노드 시각화 ─────────────────── -->
+    <div class="panel">
+      <div class="ph">
+        <div class="ph-l">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>
+          글로벌 POOL 노드 (193개국 통화 흐름)
+        </div>
+        <span class="ph-r">OpenHash 원장 연동</span>
+      </div>
+      <div class="pb" style="position:relative;height:120px;overflow:hidden">
+        <canvas id="globe-canvas" style="width:100%;height:120px;display:block"></canvas>
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+          <div style="text-align:center">
+            <div style="font-family:var(--mono);font-size:28px;color:var(--brand);font-weight:500" id="globe-center-val">—</div>
+            <div style="font-size:11px;color:var(--t3)">총 발행 GDC (₮)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:0 0 10px;padding:10px 16px;background:var(--brand-bg);border:1px solid rgba(62,207,142,.2);border-radius:8px;font-size:12px;color:var(--t2)">💡 <strong style="color:var(--t1)">GDC 발행 메커니즘</strong> — GDC POOL의 초기 잔고는 0입니다. 사용자가 국적 통화를 입금하는 순간 교환비(₮1 = KRW 1,000)에 따라 GDC가 즉시 발행되어 발행량이 증가합니다. 발행량 = 누적 입금액 ÷ 교환비. POOL 잔고가 발행된 GDC의 유일한 담보입니다.</div>
+    <div class="foot">GDC FIAT POOL 대시보드 · OpenHash 분산원장 연동 · 투자 수익률은 PDV 실연동 이전 추산치 · AI City Inc. 2026</div>
+  </div><!-- /scroll -->
+</div><!-- /main -->
+</div><!-- /app -->
+
+<script>
+/* ── 설정 ────────────────────────────────────────────── */
+const S = 'https://ebbecjfrwaswbdybbgiu.supabase.co';
+const K = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
+const H = { 'apikey': K, 'Authorization': 'Bearer ' + K };
+
+/* ── 포맷 ────────────────────────────────────────────── */
+const fmt  = n => (+(n||0)).toLocaleString('ko-KR', { maximumFractionDigits:0 });
+const fmtT = n => '₮' + fmt(n);
+const fmtB = n => {
+  if (n >= 1e12) return (n/1e12).toFixed(2) + '조';
+  if (n >= 1e8)  return (n/1e8).toFixed(1)  + '억';
+  if (n >= 1e4)  return (n/1e4).toFixed(1)  + '만';
+  return fmt(n);
+};
+const num = k => parseFloat(k || '0') || 0;
+
+/* ── 통화 메타 ───────────────────────────────────────── */
+const CURRENCY_META = {
+  KRW: { name:'대한민국 원', flag:'🇰🇷', color:'#3ECF8E', symbol:'₩' },
+  USD: { name:'미국 달러',   flag:'🇺🇸', color:'#60A5FA', symbol:'$' },
+  EUR: { name:'유럽 유로',   flag:'🇪🇺', color:'#A78BFA', symbol:'€' },
+  JPY: { name:'일본 엔',     flag:'🇯🇵', color:'#FB923C', symbol:'¥' },
+  CNY: { name:'중국 위안',   flag:'🇨🇳', color:'#F87171', symbol:'¥' },
+  GBP: { name:'영국 파운드', flag:'🇬🇧', color:'#FBBF24', symbol:'£' },
+};
+
+/* ── 투자처 데이터 (2026 추산) ────────────────────────── */
+const INVESTMENTS = [
+  { name:'국민성장펀드', country:'🇰🇷 한국', open:1000, cur:1000, ret:0,     alloc:30, color:'#3ECF8E' },
+  { name:'KOSPI200 ETF', country:'🇰🇷 한국', open:4225, cur:8732, ret:106.7, alloc:25, color:'#34D399' },
+  { name:'S&P500 ETF',   country:'🇺🇸 미국', open:4769, cur:5716, ret:19.9,  alloc:20, color:'#60A5FA' },
+  { name:'FTSE100 ETF',  country:'🇬🇧 영국', open:7705, cur:8240, ret:6.9,   alloc:12, color:'#FBBF24' },
+  { name:'닛케이 ETF',   country:'🇯🇵 일본', open:39894,cur:38900,ret:-2.5,  alloc:8,  color:'#FB923C' },
+  { name:'기타 ETF',     country:'글로벌',   open:1000, cur:1060, ret:6.0,   alloc:5,  color:'#94A3B8' },
+];
+
+/* ── 환율 (KRW 기준, 추산) ──────────────────────────── */
+const FX_RATES = {
+  USD: { rate:1381, change:+0.3 },
+  EUR: { rate:1508, change:-0.1 },
+  JPY: { rate:8.82, change:+0.5 },
+  CNY: { rate:190,  change:-0.2 },
+  GBP: { rate:1746, change:+0.1 },
+};
+
+/* ── 도넛 차트 ──────────────────────────────────────── */
+function drawDonut(svgId, segments) {
+  // segments: [{pct, color}]
+  const svg = document.getElementById(svgId);
+  // 기존 세그먼트 제거
+  [...svg.querySelectorAll('.seg')].forEach(e => e.remove());
+  const cx = 60, cy = 60, r = 42, stroke = 18;
+  const circ = 2 * Math.PI * r;
+  let offset = -circ * 0.25; // 12시 방향 시작
+  segments.forEach(({ pct, color }, i) => {
+    const len  = circ * pct;
+    const gap  = circ - len + 1.5;
+    const el   = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+    el.setAttribute('class', 'seg');
+    el.setAttribute('cx', cx); el.setAttribute('cy', cy); el.setAttribute('r', r);
+    el.setAttribute('fill', 'none');
+    el.setAttribute('stroke', color);
+    el.setAttribute('stroke-width', stroke);
+    el.setAttribute('stroke-dasharray', `${len} ${gap}`);
+    el.setAttribute('stroke-dashoffset', -offset);
+    el.setAttribute('stroke-linecap', 'round');
+    el.style.transition = 'stroke-dasharray .8s ease';
+    svg.appendChild(el);
+    offset += len + 2;
+  });
+}
+
+/* ── 추세선 캔버스 ──────────────────────────────────── */
+function drawTrendLines(pools) {
+  const canvas = document.getElementById('trend-canvas');
+  const W = canvas.offsetWidth || 800;
+  const H = 130;
+  canvas.width  = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
+
+  // 월별 시뮬레이션 데이터 생성
+  const months = 12;
+  const labels = ['1월','2월','3월','4월','5월','6월','7월','8월','9월','10월','11월','12월'];
+  const currencies = pools.slice(0, 6);
+
+  // 격자
+  ctx.strokeStyle = 'rgba(0,0,0,.06)';
+  ctx.lineWidth = 1;
+  for (let i = 0; i <= 4; i++) {
+    const y = H * 0.1 + (H * 0.8) * i / 4;
+    ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+  }
+
+  // 각 통화 추세선
+  currencies.forEach((p, ci) => {
+    const meta  = CURRENCY_META[p.currency_code] || { color: '#94A3B8' };
+    const base  = num(p.total_deposited) || (Math.random() * 5e9 + 1e9);
+    const data  = Array.from({ length: months }, (_, i) => {
+      const growth = 1 + (Math.random() - 0.3) * 0.15;
+      return base * Math.pow(growth, i / months);
+    });
+
+    const maxV = Math.max(...data);
+    const minV = Math.min(...data);
+    const norm = v => H * 0.1 + (H * 0.8) * (1 - (v - minV) / (maxV - minV || 1));
+
+    ctx.beginPath();
+    ctx.strokeStyle = meta.color;
+    ctx.lineWidth = 2;
+    ctx.shadowColor = meta.color;
+    ctx.shadowBlur = 6;
+    data.forEach((v, i) => {
+      const x = (W / (months - 1)) * i;
+      const y = norm(v);
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+    ctx.shadowBlur = 0;
+
+    // 마지막 점
+    const lx = W, ly = norm(data[months - 1]);
+    ctx.beginPath();
+    ctx.arc(lx - 2, ly, 3, 0, Math.PI * 2);
+    ctx.fillStyle = meta.color;
+    ctx.fill();
+  });
+
+  // X축 레이블
+  const xl = document.getElementById('trend-x-labels');
+  xl.innerHTML = labels.map(l => `<span>${l}</span>`).join('');
+
+  // 범례
+  const tl = document.getElementById('trend-legend');
+  tl.innerHTML = currencies.slice(0, 6).map(p => {
+    const m = CURRENCY_META[p.currency_code] || { color:'#94A3B8' };
+    return `<span style="display:flex;align-items:center;gap:4px;font-size:10px;color:var(--t2)">
+      <span style="width:14px;height:2px;background:${m.color};display:inline-block;border-radius:2px"></span>
+      ${p.currency_code}
+    </span>`;
+  }).join('');
+}
+
+/* ── GDC 가치 바 차트 ────────────────────────────────── */
+function drawGDCBars() {
+  // 시뮬레이션: 월별 GDC 가치 (₩)
+  const months = ['1월','2월','3월','4월','5월','6월'];
+  const values = [1000, 1120, 1380, 1620, 1890, 2070];
+  const maxV   = Math.max(...values);
+
+  const container = document.getElementById('gdc-bar-chart');
+  const labels    = document.getElementById('gdc-bar-labels');
+
+  container.innerHTML = values.map((v, i) => {
+    const h     = Math.round((v / maxV) * 85);
+    const alpha = 0.4 + (i / values.length) * 0.6;
+    return `<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:3px">
+      <div style="font-size:9px;color:var(--brand);opacity:${alpha}">${(v/1000).toFixed(1)}k</div>
+      <div style="width:100%;background:var(--brand);height:${h}px;border-radius:3px 3px 0 0;opacity:${alpha};transition:height .6s ease;max-width:32px"></div>
+    </div>`;
+  }).join('');
+
+  labels.innerHTML = months.map(m => `<span>${m}</span>`).join('');
+  document.getElementById('gdc-current-val').textContent = '₩' + fmt(values[values.length - 1]);
+}
+
+/* ── 글로브 캔버스 애니메이션 ──────────────────────── */
+function drawGlobe() {
+  const canvas = document.getElementById('globe-canvas');
+  const W = canvas.offsetWidth || 800;
+  canvas.width  = W;
+  canvas.height = 120;
+  const ctx = canvas.getContext('2d');
+  let t = 0;
+
+  const nodes = Array.from({ length: 24 }, () => ({
+    x: Math.random() * W,
+    y: Math.random() * 120,
+    r: Math.random() * 3 + 1.5,
+    color: Object.values(CURRENCY_META)[Math.floor(Math.random() * 6)].color,
+    vx: (Math.random() - 0.5) * 0.4,
+    vy: (Math.random() - 0.5) * 0.3,
+    phase: Math.random() * Math.PI * 2,
+  }));
+
+  function frame() {
+    ctx.clearRect(0, 0, W, 120);
+    t += 0.012;
+
+    // 연결선
+    nodes.forEach((a, i) => {
+      nodes.slice(i + 1).forEach(b => {
+        const dx = a.x - b.x, dy = a.y - b.y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 140) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(62,207,142,${0.22 * (1 - dist / 140)})`;
+          ctx.lineWidth = 0.8;
+          ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
+          ctx.stroke();
+        }
+      });
+    });
+
+    // 노드
+    nodes.forEach(n => {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > 120) n.vy *= -1;
+      const pulse = n.r + Math.sin(t + n.phase) * 0.8;
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, pulse, 0, Math.PI * 2);
+      ctx.fillStyle = n.color;
+      ctx.globalAlpha = 0.85;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    });
+
+    requestAnimationFrame(frame);
+  }
+  frame();
+}
+
+/* ── 메인 데이터 로드 ────────────────────────────────── */
+async function load() {
+  try {
+    const res   = await fetch(`${S}/rest/v1/gdc_pool?select=*&order=gdc_issued.desc`, { headers: H });
+    const pools = await res.json();
+
+    if (!Array.isArray(pools) || !pools.length) {
+      // 데이터 없을 때 시뮬레이션 데이터 사용
+      renderSimulation();
+      return;
+    }
+
+    const totalDeposited = pools.reduce((s, p) => s + num(p.total_deposited), 0);
+    const totalIssued    = pools.reduce((s, p) => s + num(p.gdc_issued), 0);
+    const totalReserve   = pools.reduce((s, p) => s + num(p.reserve_amount), 0);
+    const totalInvested  = pools.reduce((s, p) => s + num(p.invested_amount), 0);
+
+    // KPI
+    document.getElementById('k-total').innerHTML     = fmtB(totalDeposited) + '<span> 납입</span>';
+    document.getElementById('k-issued').innerHTML    = fmtB(totalIssued) + '<span> T</span>';
+    document.getElementById('k-reserve').innerHTML   = fmtB(totalReserve) + '<span> ₮</span>';
+    document.getElementById('k-invested').innerHTML  = fmtB(totalInvested) + '<span> ₮</span>';
+    document.getElementById('k-currencies').innerHTML = pools.length + '<span>개</span>';
+    document.getElementById('donut-center-val').textContent = fmtB(totalIssued);
+    document.getElementById('globe-center-val').textContent = fmtB(totalIssued);
+    document.getElementById('k-total-sub').textContent = pools.length + '개 통화 연동';
+    document.getElementById('donut-updated').textContent = '갱신: ' + new Date().toLocaleTimeString('ko-KR');
+
+    // 도넛 세그먼트
+    const segs = pools.map(p => ({
+      pct:   totalIssued > 0 ? num(p.gdc_issued) / totalIssued : 0,
+      color: (CURRENCY_META[p.currency_code] || { color:'#94A3B8' }).color,
+      code:  p.currency_code,
+    }));
+    drawDonut('donut-svg', segs);
+
+    // 범례
+    document.getElementById('pool-legend').innerHTML = pools.map(p => {
+      const meta  = CURRENCY_META[p.currency_code] || { name: p.currency_code, flag:'🌐', color:'#94A3B8' };
+      const share = totalIssued > 0 ? (num(p.gdc_issued) / totalIssued * 100).toFixed(1) : 0;
+      return `<div class="leg-item">
+        <div class="leg-dot" style="background:${meta.color}"></div>
+        <span class="leg-flag">${meta.flag}</span>
+        <span class="leg-name">${p.currency_code}</span>
+        <div class="leg-bar"><div class="leg-bar-fill" style="width:${share}%;background:${meta.color}"></div></div>
+        <span class="leg-val">${fmtB(num(p.gdc_issued))}</span>
+        <span class="leg-pct">${share}%</span>
+      </div>`;
+    }).join('');
+
+    // 통화 카드
+    document.getElementById('currency-cards').innerHTML = pools.map(p => {
+      const meta  = CURRENCY_META[p.currency_code] || { name: p.currency_code, flag:'🌐', color:'#94A3B8', symbol:'' };
+      const rr    = num(p.reserve_ratio) * 100;
+      const share = totalIssued > 0 ? (num(p.gdc_issued) / totalIssued * 100).toFixed(1) : 0;
+      return `<div style="background:var(--sur2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;border-left:3px solid ${meta.color}">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:7px">
+            <span style="font-size:16px">${meta.flag}</span>
+            <div>
+              <div style="font-size:12px;font-weight:500;color:var(--t1)">${p.currency_code} <span style="font-size:10px;color:var(--t3)">${meta.name}</span></div>
+              <div style="font-family:var(--mono);font-size:11px;color:${meta.color}">₮${fmtB(num(p.gdc_issued))} GDC</div>
+            </div>
+          </div>
+          <div style="text-align:right">
+            <div style="font-size:10px;color:var(--t3)">POOL 비중</div>
+            <div style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--t1)">${share}%</div>
+          </div>
+        </div>
+        <div style="height:3px;background:var(--bd);border-radius:2px;overflow:hidden">
+          <div style="height:100%;background:${meta.color};width:${share}%;border-radius:2px;transition:width .8s ease"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--t3)">
+          <span>납입 ${fmtB(num(p.total_deposited))}</span>
+          <span>준비금 ${fmtB(num(p.reserve_amount))} | 투자 ${fmtB(num(p.invested_amount))}</span>
+        </div>
+      </div>`;
+    }).join('');
+
+    // 추세선
+    drawTrendLines(pools);
+
+  } catch(e) {
+    console.warn('[pool-dashboard]', e);
+    renderSimulation();
+  }
+
+  // 투자 테이블 (항상 추산 데이터)
+  renderInvestments();
+  // 환율
+  renderFX();
+  // GDC 바
+  drawGDCBars();
+  document.getElementById('last-update').textContent = '갱신: ' + new Date().toLocaleTimeString('ko-KR');
+}
+
+/* ── 시뮬레이션 렌더 (DB 없을 때) ──────────────────── */
+function renderSimulation() {
+  const simPools = [
+    { currency_code:'KRW', currency_name:'대한민국 원', total_deposited:580e10, reserve_amount:116e10, invested_amount:464e10, gdc_issued:580e7, reserve_ratio:0.2 },
+    { currency_code:'USD', currency_name:'미국 달러',   total_deposited:140e9,  reserve_amount:28e9,   invested_amount:112e9,  gdc_issued:140e7,  reserve_ratio:0.2 },
+    { currency_code:'EUR', currency_name:'유럽 유로',   total_deposited:95e9,   reserve_amount:19e9,   invested_amount:76e9,   gdc_issued:95e7,   reserve_ratio:0.2 },
+    { currency_code:'JPY', currency_name:'일본 엔',     total_deposited:12e12,  reserve_amount:24e11,  invested_amount:96e11,  gdc_issued:80e7,   reserve_ratio:0.2 },
+    { currency_code:'CNY', currency_name:'중국 위안',   total_deposited:420e9,  reserve_amount:84e9,   invested_amount:336e9,  gdc_issued:60e7,   reserve_ratio:0.2 },
+    { currency_code:'GBP', currency_name:'영국 파운드', total_deposited:35e9,   reserve_amount:7e9,    invested_amount:28e9,   gdc_issued:40e7,   reserve_ratio:0.2 },
+  ];
+
+  const totalIssued = simPools.reduce((s, p) => s + num(p.gdc_issued), 0);
+  const totalDep    = simPools.reduce((s, p) => s + num(p.total_deposited), 0);
+
+  document.getElementById('k-total').innerHTML     = fmtB(totalDep) + '<span> 납입 (추산)</span>';
+  document.getElementById('k-issued').innerHTML    = fmtB(totalIssued) + '<span> T</span>';
+  document.getElementById('k-reserve').innerHTML   = fmtB(totalDep * 0.2) + '<span> ₮</span>';
+  document.getElementById('k-invested').innerHTML  = fmtB(totalDep * 0.8) + '<span> ₮</span>';
+  document.getElementById('k-currencies').innerHTML = '193<span>개국</span>';
+  document.getElementById('donut-center-val').textContent = fmtB(totalIssued);
+  document.getElementById('globe-center-val').textContent = fmtB(totalIssued);
+  document.getElementById('k-total-sub').textContent = '시뮬레이션 데이터';
+  document.getElementById('donut-updated').textContent = '시뮬레이션';
+
+  const segs = simPools.map(p => ({
+    pct:   num(p.gdc_issued) / totalIssued,
+    color: (CURRENCY_META[p.currency_code] || { color:'#94A3B8' }).color,
+  }));
+  drawDonut('donut-svg', segs);
+
+  document.getElementById('pool-legend').innerHTML = simPools.map(p => {
+    const meta  = CURRENCY_META[p.currency_code] || { name:p.currency_code, flag:'🌐', color:'#94A3B8' };
+    const share = (num(p.gdc_issued) / totalIssued * 100).toFixed(1);
+    return `<div class="leg-item">
+      <div class="leg-dot" style="background:${meta.color}"></div>
+      <span class="leg-flag">${meta.flag}</span>
+      <span class="leg-name">${p.currency_code}</span>
+      <div class="leg-bar"><div class="leg-bar-fill" style="width:${share}%;background:${meta.color}"></div></div>
+      <span class="leg-val">${fmtB(num(p.gdc_issued))}</span>
+      <span class="leg-pct">${share}%</span>
+    </div>`;
+  }).join('');
+
+  document.getElementById('currency-cards').innerHTML = simPools.map(p => {
+    const meta  = CURRENCY_META[p.currency_code] || { name:p.currency_code, flag:'🌐', color:'#94A3B8' };
+    const share = (num(p.gdc_issued) / totalIssued * 100).toFixed(1);
+    return `<div style="background:var(--sur2);border:1px solid var(--bd);border-radius:8px;padding:10px 12px;border-left:3px solid ${meta.color}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <div style="display:flex;align-items:center;gap:7px">
+          <span style="font-size:16px">${meta.flag}</span>
+          <div>
+            <div style="font-size:12px;font-weight:500;color:var(--t1)">${p.currency_code} <span style="font-size:10px;color:var(--t3)">${meta.name}</span></div>
+            <div style="font-family:var(--mono);font-size:11px;color:${meta.color}">₮${fmtB(num(p.gdc_issued))} GDC</div>
+          </div>
+        </div>
+        <div style="text-align:right">
+          <div style="font-size:10px;color:var(--t3)">POOL 비중</div>
+          <div style="font-family:var(--mono);font-size:14px;font-weight:500;color:var(--t1)">${share}%</div>
+        </div>
+      </div>
+      <div style="height:3px;background:var(--bd);border-radius:2px;overflow:hidden">
+        <div style="height:100%;background:${meta.color};width:${share}%;border-radius:2px;transition:width .8s ease"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:4px;font-size:10px;color:var(--t3)">
+        <span>납입 ${fmtB(num(p.total_deposited))}</span>
+        <span>준비금 ${fmtB(num(p.reserve_amount))} | 투자 ${fmtB(num(p.invested_amount))}</span>
+      </div>
+    </div>`;
+  }).join('');
+
+  drawTrendLines(simPools);
+}
+
+/* ── 투자처 테이블 & 도넛 ────────────────────────────── */
+function renderInvestments() {
+  const tbody = document.getElementById('invest-tbody');
+  tbody.innerHTML = INVESTMENTS.map(inv => {
+    const ret    = inv.ret;
+    const cls    = ret > 0 ? 'pos' : ret < 0 ? 'neg' : 'val';
+    const retStr = ret === 0 ? '—' : (ret > 0 ? '+' : '') + ret.toFixed(1) + '%';
+    const chip   = ret > 30 ? 'chip-grn' : ret > 0 ? 'chip-blue' : 'chip-red';
+    const label  = ret > 30 ? '고수익' : ret > 0 ? '수익' : '손실';
+    return `<tr>
+      <td style="font-weight:500;color:var(--t1)">${inv.name}</td>
+      <td>${inv.country}</td>
+      <td class="val">${fmt(inv.open)}</td>
+      <td class="val">${fmt(inv.cur)}</td>
+      <td class="${cls}">${retStr}</td>
+      <td><span class="chip ${chip}">${label}</span></td>
+    </tr>`;
+  }).join('');
+
+  // 투자 도넛
+  const total = INVESTMENTS.reduce((s, i) => s + i.alloc, 0);
+  drawDonut('invest-donut', INVESTMENTS.map(i => ({ pct: i.alloc / total, color: i.color })));
+
+  document.getElementById('invest-legend').innerHTML = INVESTMENTS.map(i =>
+    `<div style="display:flex;align-items:center;gap:8px">
+      <div style="width:8px;height:8px;border-radius:50%;background:${i.color};flex-shrink:0"></div>
+      <span style="font-size:11px;color:var(--t2);flex:1">${i.name}</span>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--t1);font-weight:500">${i.alloc}%</span>
+      <span style="font-family:var(--mono);font-size:11px;${i.ret>0?'color:var(--brand)':i.ret<0?'color:#F87171':'color:var(--t3)'}">${i.ret>0?'+':''}${i.ret.toFixed(1)}%</span>
+    </div>`
+  ).join('');
+}
+
+/* ── 환율 표 ─────────────────────────────────────────── */
+function renderFX() {
+  const list = document.getElementById('fx-list');
+  list.innerHTML = Object.entries(FX_RATES).map(([code, fx]) => {
+    const meta = CURRENCY_META[code] || { flag:'🌐', symbol:'', color:'#94A3B8' };
+    const up   = fx.change >= 0;
+    return `<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd)">
+      <span style="font-size:15px">${meta.flag}</span>
+      <span style="font-size:12px;color:var(--t2);width:36px">${code}</span>
+      <div style="flex:1;height:1px;background:linear-gradient(to right,${meta.color}40,transparent)"></div>
+      <span style="font-family:var(--mono);font-size:13px;font-weight:500;color:var(--t1)">
+        ₩${fx.rate.toLocaleString('ko-KR', {maximumFractionDigits:2})}
+      </span>
+      <span style="font-family:var(--mono);font-size:11px;${up?'color:var(--brand)':'color:#F87171'}">
+        ${up?'▲':'▼'}${Math.abs(fx.change).toFixed(1)}%
+      </span>
+    </div>`;
+  }).join('');
+  document.getElementById('fx-time').textContent = new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}) + ' 기준 (추산)';
+}
+
+/* ── 시계 & 초기화 ───────────────────────────────────── */
+(function tick() {
+  document.getElementById('clock').textContent =
+    new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  setTimeout(tick, 1000);
+})();
+
+// 캔버스 크기 설정 후 실행
+window.addEventListener('load', () => {
+  load();
+  drawGlobe();
+  setInterval(load, 60000);
+});
+</script>
+</body>
+</html>
