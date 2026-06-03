@@ -2,455 +2,86 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GDC">
+<meta name="theme-color" content="#1A1F29">
+<link rel="manifest" href="/manifest.json">
 <title>GDC — Gopang Digital Currency</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
-:root{
-  --bg:#f8f9fa;--sur:#fff;
-  --bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
-  --t1:#1c1c1e;--t2:#4a4a55;--t3:#9898a6;
-  --brand:#3ecf8e;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.25);
-  --font:'Noto Sans KR',-apple-system,sans-serif;
-  --r:6px;--r2:10px;
-}
-@media(prefers-color-scheme:dark){
-  :root{--bg:#0f0f0f;--sur:#1c1c1e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.2);--t1:#f5f5f7;--t2:#a1a1aa;--t3:#52525b}
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:var(--font);font-size:14px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6}
-a{text-decoration:none;color:inherit}
-.ti{line-height:1}
-
-/* NAV */
-.nav{background:var(--sur);border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:100}
-.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:32px}
-.logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--t1)}
-.logo-mark{width:28px;height:28px;background:var(--brand);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500}
-.nav-links{display:flex;gap:0;flex:1}
-.nav-links a{padding:6px 12px;border-radius:var(--r);font-size:13px;color:var(--t2);transition:color .12s,background .12s}
-.nav-links a:hover{color:var(--t1);background:rgba(0,0,0,.04)}
-@media(prefers-color-scheme:dark){.nav-links a:hover{background:rgba(255,255,255,.06)}}
-.nav-right{display:flex;gap:8px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;border:.5px solid var(--bd2);background:var(--sur);color:var(--t1);transition:all .12s}
-.btn:hover{background:var(--bg)}
-.btn-brand{background:var(--brand);border-color:var(--brand);color:#fff}
-.btn-brand:hover{background:#2db87a;border-color:#2db87a}
-
-/* HERO */
-.hero{max-width:1080px;margin:0 auto;padding:80px 24px 64px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;border:.5px solid var(--brand-bd);background:var(--brand-bg);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--brand);margin-bottom:24px}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:40px;font-weight:500;letter-spacing:-.5px;line-height:1.2;color:var(--t1);margin-bottom:16px}
-.hero-sub{font-size:16px;color:var(--t2);max-width:480px;margin:0 auto 32px;line-height:1.6}
-.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
-.hero-actions .btn{padding:9px 20px;font-size:14px}
-
-/* STAT STRIP */
-.stat-strip{border:.5px solid var(--bd);border-radius:var(--r2);background:var(--sur);display:grid;grid-template-columns:repeat(4,1fr);max-width:700px;margin:0 auto 72px;overflow:hidden}
-.stat{padding:20px 24px;border-right:.5px solid var(--bd)}
-.stat:last-child{border-right:none}
-.stat-val{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:3px}
-.stat-val em{color:var(--brand);font-style:normal}
-.stat-lbl{font-size:12px;color:var(--t3)}
-
-/* SECTION */
-.container{max-width:1080px;margin:0 auto;padding:0 24px}
-.section{padding:64px 0}
-.section-hd{margin-bottom:40px}
-.section-hd h2{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:8px}
-.section-hd p{font-size:14px;color:var(--t2);max-width:440px}
-.divider{border:none;border-top:.5px solid var(--bd);margin:0}
-
-/* FEATURE GRID */
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
-@media(max-width:720px){.feature-grid{grid-template-columns:1fr}}
-.feature-cell{background:var(--sur);padding:24px}
-.feature-icon{width:36px;height:36px;border:.5px solid var(--bd);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--t2);margin-bottom:16px;font-size:18px}
-.feature-title{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:6px}
-.feature-desc{font-size:13px;color:var(--t2);line-height:1.55}
-.feature-badge{display:inline-block;margin-top:10px;font-size:11px;padding:2px 8px;border-radius:20px;border:.5px solid var(--brand-bd);color:var(--brand);background:var(--brand-bg)}
-
-/* RATE TABLE */
-.rate-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.rate-grid{grid-template-columns:1fr}}
-.panel{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
-.panel-hd{padding:14px 18px;border-bottom:.5px solid var(--bd);font-size:13px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:8px}
-.panel-hd .ti{font-size:16px;color:var(--t3)}
-table.rt{width:100%;border-collapse:collapse}
-table.rt tr{border-bottom:.5px solid var(--bd)}
-table.rt tr:last-child{border-bottom:none}
-table.rt td{padding:10px 18px;font-size:13px;color:var(--t2)}
-table.rt td:last-child{text-align:right;color:var(--t1);font-variant-numeric:tabular-nums}
-table.rt td.grn{color:var(--brand)!important}
-.grade-chip{display:inline-flex;align-items:center;justify-content:center;width:32px;height:18px;border-radius:3px;font-size:11px;font-weight:500;border:.5px solid;line-height:1}
-.g-AAA{color:#1B6B3A;background:#E6F4EC;border-color:#A3D9B8}
-.g-AA{color:#0047AB;background:#E8F0FE;border-color:#93C4F7}
-.g-A{color:#0369A1;background:#E0F2FE;border-color:#93C9F7}
-.g-BBB{color:#92400E;background:#FEF9E7;border-color:#FCD34D}
-.g-BB{color:#C05621;background:#FEF3E2;border-color:#FCA47A}
-.g-C{color:#9B1C1C;background:#FEE2E2;border-color:#FCA5A5}
-
-/* POOL */
-.pool-box{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:24px}
-.pool-currencies{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.flag-chip{display:flex;align-items:center;gap:6px;border:.5px solid var(--bd);border-radius:var(--r);padding:6px 10px;font-size:12px;color:var(--t2)}
-.pool-bars{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.pool-bar-item{border:.5px solid var(--bd);border-radius:var(--r);padding:14px 16px}
-.pool-bar-label{font-size:11px;color:var(--t3);margin-bottom:4px}
-.pool-bar-pct{font-size:20px;font-weight:500;color:var(--t1)}
-.pool-bar-desc{font-size:11px;color:var(--t3);margin-top:2px}
-.pool-bar-track{height:4px;background:var(--bg);border-radius:2px;margin-top:8px;overflow:hidden}
-.pool-bar-fill{height:100%;border-radius:2px}
-.fill-brand{background:var(--brand);width:20%}
-.fill-muted{background:var(--bd2);width:80%}
-
-/* FLOW */
-.flow-row{display:flex;align-items:flex-start;gap:0;margin-bottom:0}
-.flow-step{flex:1;padding:20px 16px;border-right:.5px solid var(--bd);position:relative}
-.flow-step:last-child{border-right:none}
-.flow-num{width:24px;height:24px;border:.5px solid var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);margin-bottom:10px}
-.flow-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:4px}
-.flow-desc{font-size:12px;color:var(--t3);line-height:1.5}
-
-/* ACCESS */
-.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.access-grid{grid-template-columns:1fr}}
-.access-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:24px}
-.access-card h3{font-size:15px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.access-card h3 .ti{font-size:18px;color:var(--t3)}
-.access-card p{font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.55}
-.access-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
-.access-list li{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:7px}
-.access-list li .ti{font-size:14px;color:var(--t3)}
-
-/* FOOTER */
-.footer{border-top:.5px solid var(--bd);background:var(--sur);padding:40px 0 24px}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
-@media(max-width:720px){.footer-grid{grid-template-columns:1fr 1fr}}
-.footer-brand{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.footer-brand .ti{font-size:16px;color:var(--t3)}
-.footer-desc{font-size:12px;color:var(--t3);line-height:1.6}
-.footer-col-title{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
-.footer-links{list-style:none}
-.footer-links li a{display:block;font-size:13px;color:var(--t2);padding:3px 0;transition:color .12s}
-.footer-links li a:hover{color:var(--t1)}
-.footer-bottom{border-top:.5px solid var(--bd);padding-top:16px;font-size:12px;color:var(--t3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
-
-/* FLOAT */
-.float{position:fixed;bottom:24px;right:24px;z-index:99;display:flex;flex-direction:column;align-items:center;gap:5px}
-.float-btn{width:48px;height:48px;border-radius:50%;background:var(--brand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 2px 8px rgba(62,207,142,.35);transition:transform .15s}
-.float-btn:hover{transform:scale(1.06)}
-.float-label{font-size:10px;color:var(--t3);white-space:nowrap}
-
-/* MOBILE */
-.nav-links-desktop{display:flex}
-@media(max-width:720px){.nav-links-desktop{display:none}.hero h1{font-size:28px}.stat-strip{grid-template-columns:1fr 1fr}.section{padding:40px 0}}
+  /* 리디렉션 대기 중 화면 — 짧은 플래시 방지 */
+  html, body {
+    margin: 0; padding: 0;
+    background: #1A1F29;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+  }
+  .splash {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    opacity: 0;
+    animation: fadeIn 0.25s ease 0.05s forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+  .logo-mark {
+    width: 48px; height: 48px;
+    background: #3ECF8E;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    color: #fff;
+    font-weight: 600;
+  }
+  .logo-text {
+    font-size: 14px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.04em;
+  }
 </style>
 </head>
 <body>
-
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" class="logo">
-      <div class="logo-mark"><i class="ti ti-currency-dollar" aria-hidden="true"></i></div>
-      GDC
-    </a>
-    <div class="nav-links nav-links-desktop">
-      <a href="#features">서비스</a>
-      <a href="#rates">금리</a>
-      <a href="#credit">신용평가</a>
-      <a href="#pool">FIAT POOL</a>
-      <a href="dashboard.html">대시보드</a>
-    </div>
-    <div class="nav-right">
-      <a href="dashboard.html" class="btn"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>대시보드</a>
-      <a href="webapp.html" class="btn btn-brand"><i class="ti ti-wallet" aria-hidden="true"></i>GDC 앱 열기</a>
-    </div>
-  </div>
-</nav>
-
-<div class="hero">
-  <div class="hero-badge"><span class="pulse"></span>OpenHash 원장 연동 중</div>
-  <h1>재무제표가 곧<br>신용이 되는 디지털 화폐</h1>
-  <p class="hero-sub">GDC(₮)는 고팡 재무제표 현금 계정에 연동된 디지털 화폐입니다. 은행·예금·대출·이체·투자를 하나의 지갑으로. 지점도 직원도 없어 금리는 현저히 유리합니다.</p>
-  <div class="hero-actions">
-    <a href="webapp.html" class="btn btn-brand"><i class="ti ti-wallet" aria-hidden="true"></i>GDC 앱 열기</a>
-    <a href="dashboard.html" class="btn"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>관리자 대시보드</a>
-  </div>
-  <div class="stat-strip">
-    <div class="stat"><div class="stat-val"><em>₮1</em></div><div class="stat-lbl">= KRW 1,000원 기준가</div></div>
-    <div class="stat"><div class="stat-val"><em>연 6.5%</em></div><div class="stat-lbl">최고 예금 금리</div></div>
-    <div class="stat"><div class="stat-val"><em>0.1초</em></div><div class="stat-lbl">AI 신용평가</div></div>
-    <div class="stat"><div class="stat-val"><em>6개</em></div><div class="stat-lbl">지원 통화</div></div>
-  </div>
+<div class="splash">
+  <div class="logo-mark">₮</div>
+  <div class="logo-text">GDC</div>
 </div>
 
-<hr class="divider">
+<script>
+  /**
+   * GDC 진입점 라우터 (index.html)
+   * ─────────────────────────────────────────────────────────
+   * 규칙  ① 화면 너비 ≤ 768px   → webapp.html  (모바일 PWA)
+   *       ② 화면 너비 >  768px   → desktop.html (랜딩 페이지)
+   *
+   * GWP 파라미터 (?gwp=1&ctx=...) 는 항상 webapp.html 로 전달.
+   * 쿼리스트링·해시는 리디렉션 대상으로 그대로 전달한다.
+   * ─────────────────────────────────────────────────────────
+   */
+  (function () {
+    var qs     = location.search;   // e.g. "?gwp=1&ctx=..."
+    var hash   = location.hash;     // e.g. "#rates"
+    var isGWP  = qs.indexOf('gwp=1') !== -1;
 
-<section id="features" class="section">
-  <div class="container">
-    <div class="section-hd">
-      <h2>핵심 서비스</h2>
-      <p>중앙은행과 시중은행의 기능을 하나로. 24시간 운영, 지점·직원 없음.</p>
-    </div>
-    <div class="feature-grid">
-      <div class="feature-cell">
-        <div class="feature-icon"><i class="ti ti-wallet" aria-hidden="true"></i></div>
-        <div class="feature-title">GDC 지갑·이체</div>
-        <p class="feature-desc">재무제표 bs-cash가 GDC 잔액. ED25519 디지털 서명으로 위변조 불가 이체. 수수료 없음.</p>
-        <span class="feature-badge">수수료 0%</span>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-icon"><i class="ti ti-building-bank" aria-hidden="true"></i></div>
-        <div class="feature-title">예금·이자</div>
-        <p class="feature-desc">요구불 연 3.0%부터 365일 정기 연 6.5%까지. 일복리 자동 지급. 시중은행 평균의 5배.</p>
-        <span class="feature-badge">최고 연 6.5%</span>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-icon"><i class="ti ti-credit-card" aria-hidden="true"></i></div>
-        <div class="feature-title">대출·신용평가</div>
-        <p class="feature-desc">재무제표 4지표 분석으로 0.1초 신용평가. AAA 연 2.0%~C 연 8.0%. 순자산의 최대 70%.</p>
-        <span class="feature-badge">AI 0.1초 심사</span>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-icon"><i class="ti ti-world" aria-hidden="true"></i></div>
-        <div class="feature-title">FIAT POOL·환전</div>
-        <p class="feature-desc">KRW·USD·EUR·JPY 등 각국 통화를 POOL에 통합. 실시간 환율로 즉시 교환. 별도 환전 없음.</p>
-        <span class="feature-badge">6개 통화 지원</span>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-icon"><i class="ti ti-chart-line" aria-hidden="true"></i></div>
-        <div class="feature-title">투자·국민성장펀드</div>
-        <p class="feature-desc">POOL 자산의 80%를 각국 인덱스 ETF 및 국민성장펀드에 투자. 사용자 위험성향 맞춤 추천.</p>
-        <span class="feature-badge">기본: 국민성장펀드</span>
-      </div>
-      <div class="feature-cell">
-        <div class="feature-icon"><i class="ti ti-lock" aria-hidden="true"></i></div>
-        <div class="feature-title">OpenHash 원장</div>
-        <p class="feature-desc">모든 GDC 거래는 확률론적 계층 분산원장에 기록. 어떤 기관도 수정·삭제 불가.</p>
-        <span class="feature-badge">위변조 불가</span>
-      </div>
-    </div>
-  </div>
-</section>
+    // GWP 호출이면 항상 webapp으로
+    if (isGWP) {
+      location.replace('webapp.html' + qs + hash);
+      return;
+    }
 
-<hr class="divider">
+    // 화면 너비 기준 라우팅
+    // window.innerWidth 는 페인트 전에도 신뢰할 수 있음
+    var isMobile = window.innerWidth <= 768;
+    var target   = isMobile ? 'webapp.html' : 'desktop.html';
 
-<section id="rates" class="section">
-  <div class="container">
-    <div class="section-hd">
-      <h2>금리 안내</h2>
-      <p>지점도 직원도 없으니 금리가 다릅니다.</p>
-    </div>
-    <div class="rate-grid">
-      <div class="panel">
-        <div class="panel-hd"><i class="ti ti-building-bank" aria-hidden="true"></i>예금 금리</div>
-        <table class="rt">
-          <tr><td>요구불예금</td><td class="grn">연 3.0%</td></tr>
-          <tr><td>7일 정기예금</td><td class="grn">연 4.0%</td></tr>
-          <tr><td>30일 정기예금</td><td class="grn">연 5.0%</td></tr>
-          <tr><td>365일 정기예금</td><td class="grn">연 6.5%</td></tr>
-          <tr><td>이자 지급</td><td>일복리 자동</td></tr>
-        </table>
-      </div>
-      <div class="panel">
-        <div class="panel-hd"><i class="ti ti-credit-card" aria-hidden="true"></i>대출 금리 (신용등급별)</div>
-        <table class="rt">
-          <tr><td><span class="grade-chip g-AAA">AAA</span></td><td class="grn">연 2.0%</td></tr>
-          <tr><td><span class="grade-chip g-AA">AA</span></td><td class="grn">연 3.0%</td></tr>
-          <tr><td><span class="grade-chip g-A">A</span></td><td>연 4.0%</td></tr>
-          <tr><td><span class="grade-chip g-BBB">BBB</span></td><td>연 5.5%</td></tr>
-          <tr><td><span class="grade-chip g-BB">BB</span></td><td>연 7.0%</td></tr>
-          <tr><td><span class="grade-chip g-C">C</span></td><td>연 8.0%</td></tr>
-        </table>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section id="credit" class="section">
-  <div class="container">
-    <div class="section-hd">
-      <h2>AI 신용평가</h2>
-      <p>재무제표만으로 0.1초 안에 신용을 증명합니다.</p>
-    </div>
-    <div class="panel">
-      <div class="panel-hd"><i class="ti ti-shield-check" aria-hidden="true"></i>4대 평가 지표</div>
-      <table class="rt">
-        <tr><td>유동비율 (25%)</td><td>(bs-cash + bs-ar) ÷ bs-ap</td></tr>
-        <tr><td>부채비율 (25%)</td><td>bs-debt ÷ bs-equity</td></tr>
-        <tr><td>영업이익률 (30%)</td><td>(매출 − 원가 − 판관비) ÷ 매출</td></tr>
-        <tr><td>현금흐름비율 (20%)</td><td>cf-op ÷ bs-debt</td></tr>
-        <tr><td>평가 시간</td><td class="grn">0.1초 (목표)</td></tr>
-      </table>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section id="pool" class="section">
-  <div class="container">
-    <div class="section-hd">
-      <h2>FIAT POOL</h2>
-      <p>환전 없이 전 세계와 즉시 거래합니다.</p>
-    </div>
-    <div class="pool-box">
-      <div class="pool-currencies">
-        <div class="flag-chip"><i class="ti ti-flag" aria-hidden="true"></i>KRW 대한민국 원</div>
-        <div class="flag-chip"><i class="ti ti-flag" aria-hidden="true"></i>USD 미국 달러</div>
-        <div class="flag-chip"><i class="ti ti-flag" aria-hidden="true"></i>EUR 유럽 유로</div>
-        <div class="flag-chip"><i class="ti ti-flag" aria-hidden="true"></i>JPY 일본 엔</div>
-        <div class="flag-chip"><i class="ti ti-flag" aria-hidden="true"></i>CNY 중국 위안</div>
-        <div class="flag-chip"><i class="ti ti-flag" aria-hidden="true"></i>GBP 영국 파운드</div>
-      </div>
-      <div class="pool-bars">
-        <div class="pool-bar-item">
-          <div class="pool-bar-label">지불준비금</div>
-          <div class="pool-bar-pct" style="color:var(--brand)">20%</div>
-          <div class="pool-bar-desc">즉시 출금 보장</div>
-          <div class="pool-bar-track"><div class="pool-bar-fill fill-brand"></div></div>
-        </div>
-        <div class="pool-bar-item">
-          <div class="pool-bar-label">투자 운용</div>
-          <div class="pool-bar-pct">80%</div>
-          <div class="pool-bar-desc">인덱스 ETF · 국민성장펀드</div>
-          <div class="pool-bar-track"><div class="pool-bar-fill fill-muted"></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section class="section">
-  <div class="container">
-    <div class="section-hd">
-      <h2>이체 흐름</h2>
-      <p>ED25519 디지털 서명으로 보호되는 GDC 이체.</p>
-    </div>
-    <div class="panel">
-      <div class="flow-row">
-        <div class="flow-step">
-          <div class="flow-num">1</div>
-          <div class="flow-title">이체 요청</div>
-          <div class="flow-desc">수신자 GUID + 금액 입력</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">2</div>
-          <div class="flow-title">ED25519 서명</div>
-          <div class="flow-desc">브라우저 내 개인키로 서명. 서버 미전송.</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">3</div>
-          <div class="flow-title">서명 검증</div>
-          <div class="flow-desc">공개키로 유효성 확인</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">4</div>
-          <div class="flow-title">원장 기록</div>
-          <div class="flow-desc">fs_ledger · OpenHash 동시 기록</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">5</div>
-          <div class="flow-title">PDV 기록</div>
-          <div class="flow-desc">송수신자 PDV에 6하 원칙 기록</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<hr class="divider">
-
-<section class="section">
-  <div class="container">
-    <div class="section-hd"><h2>접근</h2></div>
-    <div class="access-grid">
-      <div class="access-card">
-        <h3><i class="ti ti-wallet" aria-hidden="true"></i>GDC 사용자 앱</h3>
-        <p>스마트폰 최적화 · 모든 금융 서비스</p>
-        <ul class="access-list">
-          <li><i class="ti ti-check" aria-hidden="true"></i>GDC 잔액 조회 및 이체</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>예금 개설·이자 내역</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>AI 신용평가 및 대출 신청</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>FIAT POOL 환율 조회</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>OpenHash 원장 거래 내역</li>
-        </ul>
-        <a href="webapp.html" class="btn btn-brand"><i class="ti ti-wallet" aria-hidden="true"></i>GDC 앱 열기</a>
-      </div>
-      <div class="access-card">
-        <h3><i class="ti ti-layout-dashboard" aria-hidden="true"></i>관리자 대시보드</h3>
-        <p>POOL 현황·발행량·투자 집계</p>
-        <ul class="access-list">
-          <li><i class="ti ti-check" aria-hidden="true"></i>GDC 총 발행량 실시간 추적</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>FIAT POOL 통화별 현황</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>예금·대출 포트폴리오</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>투자 수익률 집계</li>
-          <li><i class="ti ti-check" aria-hidden="true"></i>신용평가 통계</li>
-        </ul>
-        <a href="dashboard.html" class="btn"><i class="ti ti-layout-dashboard" aria-hidden="true"></i>대시보드 열기</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer class="footer">
-  <div class="container">
-    <div class="footer-grid">
-      <div>
-        <div class="footer-brand"><i class="ti ti-currency-dollar" aria-hidden="true"></i>GDC 은행</div>
-        <p class="footer-desc">Gopang Digital Currency — OpenHash 분산원장 기반<br>중앙은행·시중은행 통합 디지털 금융 플랫폼</p>
-      </div>
-      <div>
-        <div class="footer-col-title">서비스</div>
-        <ul class="footer-links">
-          <li><a href="webapp.html">GDC 앱</a></li>
-          <li><a href="dashboard.html">대시보드</a></li>
-          <li><a href="#rates">금리 안내</a></li>
-          <li><a href="https://gopang.net">고팡 홈</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">연동 서비스</div>
-        <ul class="footer-links">
-          <li><a href="https://market.gopang.net">고팡 마켓</a></li>
-          <li><a href="https://tax.gopang.net">고팡 세무</a></li>
-          <li><a href="https://klaw.openhash.kr">K-Law</a></li>
-          <li><a href="https://openhash.kr">OpenHash</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">법적 안내</div>
-        <ul class="footer-links">
-          <li><a href="#">이용 약관</a></li>
-          <li><a href="#">개인정보처리방침</a></li>
-          <li><a href="#">GDC 백서</a></li>
-          <li><a href="#">면책 조항</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <span>© 2026 GDC · AI City Inc.</span>
-      <span>Powered by OpenHash Network · 제주 시범 서비스</span>
-    </div>
-  </div>
-</footer>
-
-<div class="float">
-  <button class="float-btn" onclick="location.href='webapp.html'" aria-label="GDC 앱 열기">
-    <i class="ti ti-wallet" aria-hidden="true"></i>
-  </button>
-  <span class="float-label">GDC 앱</span>
-</div>
-
+    location.replace(target + qs + hash);
+  })();
+</script>
 </body>
 </html>
