@@ -282,7 +282,7 @@ svg.ic{display:block;flex-shrink:0}
       </div>
       <div class="form-row">
         <span class="form-lbl">예치 금액</span>
-        <input class="form-input" id="dep-amt" placeholder="0" type="number" min="1000" oninput="calcDep()">
+        <input class="form-input" id="dep-amt" placeholder="0" type="number" min="1" oninput="calcDep()">
         <span class="form-unit">₮</span>
       </div>
     </div>
@@ -589,7 +589,6 @@ function calcDep(){
 async function openDep(){
   const p=document.getElementById('dep-prod').value;
   const a=parseFloat(document.getElementById('dep-amt').value)||0;
-  if(a<1000){alert('최소 예치금은 ₮1,000 입니다.');return;}
   const cash=parseFloat(_profile.extra?.fs?.bs?.['bs-cash']||'0')||0;
   if(a>cash){alert(`잔액 부족: ${fmtT(cash)}`);return;}
   try{
