@@ -550,6 +550,27 @@ async function doTransfer(){
   ex.fs.bs['bs-cash']=String(Math.max(0,cash-amt));
   await fetch(`${S}/rest/v1/user_profiles?guid=eq.${GUID}`,{method:'PATCH',headers:H,body:JSON.stringify({extra:ex})});
   btn.disabled=false; txt.textContent='이체 실행';
+
+  // PDV — 이체 거래 기록
+  await sendPDV(GUID, {
+    ipv6: GUID, level: '확인필요', via: 'transfer'
+  }, {
+    svc:  'gdc',
+    type: 'transaction',
+    who: {
+      ipv6: GUID, role: 'user',
+      level: 'L0', recipients: ['gopang-pdv'],
+    },
+    when: { period_start: now, period_end: now },
+    where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+    what: {
+      summary: `GDC 이체 ₮${amt.toLocaleString()} → ${to.slice(0,16)}…`,
+    },
+    how:  { method: 'GDC 이체 (fs_ledger 차변·대변)' },
+    why:  { goal: memo || 'GDC 이체' },
+    content_hash: txId,
+  });
+
   alert(`이체 완료\n${fmtT(amt)} → ${to.slice(0,16)}…`);
   goScr('scr-home');
 }
@@ -574,15 +595,65 @@ async function openDep(){
   try{
     const r=await fetch(`${S}/rest/v1/gdc_deposits`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},
       body:JSON.stringify({user_guid:GUID,product_type:p,principal:a,interest_rate:DEP[p]})});
-    if(r.ok||r.status===201){alert('예금 개설 완료');goScr('scr-home');}
+    if(r.ok||r.status===201){
+      // PDV — 예금 개설 기록
+      const depNow = new Date().toISOString();
+      await sendPDV(GUID, { ipv6: GUID, level: 'L0', via: 'deposit' }, {
+        svc:  'gdc',
+        type: 'transaction',
+        who: {
+          ipv6: GUID, role: 'user',
+          level: 'L0', recipients: ['gopang-pdv'],
+        },
+        when: { period_start: depNow, period_end: depNow },
+        where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+        what: {
+          summary: `GDC 예금 개설 ₮${a.toLocaleString()} (${p})`,
+        },
+        how:  { method: 'GDC 예금 개설 (gdc_deposits)' },
+        why:  { goal: '이자 수익 목적 예금' },
+      });
+      alert('예금 개설 완료');
+      goScr('scr-home');
+    }
     else alert('gdc_deposits 테이블 적용 필요\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.');
   }catch(e){alert('오류: '+e.message);}
 }
 
-function applyLoan(){
+async function applyLoan(){
   const a=parseFloat(document.getElementById('ln-amt').value)||0;
+  const term=parseInt(document.getElementById('ln-term')?.value||'12');
   if(a<=0){alert('대출 금액을 입력하세요.');return;}
-  alert('대출 신청 기능은 gdc_loans 테이블 적용 후 사용 가능합니다.');
+  const equity=parseFloat(_profile.extra?.fs?.bs?.['bs-equity']||'0')||0;
+  const maxLoan=Math.floor(equity*0.7);
+  if(maxLoan<=0){
+    alert('재무제표(bs-equity)가 없어 대출 한도를 계산할 수 없습니다.');
+    return;
+  }
+  if(a>maxLoan){
+    alert(`대출 한도 초과\n최대 ${fmtT(maxLoan)} (순자산의 70%)`);
+    return;
+  }
+
+  // PDV — 대출 신청 기록
+  const loanNow = new Date().toISOString();
+  await sendPDV(GUID, { ipv6: GUID, level: 'L0', via: 'loan' }, {
+    svc:  'gdc',
+    type: 'transaction',
+    who: {
+      ipv6: GUID, role: 'user',
+      level: 'L0', recipients: ['gopang-pdv'],
+    },
+    when: { period_start: loanNow, period_end: loanNow },
+    where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+    what: {
+      summary: `GDC 대출 신청 ₮${a.toLocaleString()} (${term}개월)`,
+    },
+    how:  { method: 'GDC 대출 신청 (재무제표 신용평가)' },
+    why:  { goal: '대출 자금 조달' },
+  });
+
+  alert(`대출 신청이 기록됐습니다.\n금액: ${fmtT(a)}\n기간: ${term}개월\n한도: ${fmtT(maxLoan)}\n\ngdc_loans 테이블 적용 후 실행됩니다.`);
 }
 
 async function runCredit(){
@@ -677,40 +748,31 @@ window._onGopangAuth = async function(user) {
 })();
 
 /* PDV 전송 — HANDOVER §5.2 표준 패턴 */
-async function sendPDV(ipv6, user) {
+async function sendPDV(ipv6, user, reportOverride = null) {
   try {
     const now = new Date().toISOString();
+    // reportOverride가 있으면 거래 전용 report 사용
+    // 없으면 기본 접속 이벤트 report 사용
+    const report = reportOverride || {
+      svc:  'gdc',
+      type: 'event',
+      who: {
+        ipv6:       ipv6,
+        role:       'user',
+        level:      user?.level || 'L0',
+        recipients: ['gopang-pdv'],
+      },
+      when: { period_start: now, period_end: now },
+      where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+      what:  { summary: 'GDC 앱 접속 — 지갑·금융 서비스 이용' },
+      how:   { method: '고팡 SSO 자동 인증 (경로: ' + (user?.via || 'session') + ')' },
+      why:   { goal: 'GDC 잔액 조회 및 금융 서비스 이용' },
+    };
+
     const res = await fetch(PROXY_BASE + '/pdv/report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        report: {
-          svc:  'gdc',
-          type: 'event',
-          who: {
-            ipv6:       ipv6,
-            role:       'user',
-            level:      user.level || 'L0',
-            recipients: ['gopang-pdv'],
-          },
-          when: {
-            period_start: now,
-            period_end:   now,
-          },
-          where: {
-            svc_url: 'https://gdc.gopang.net/webapp.html',
-          },
-          what: {
-            summary: 'GDC 앱 접속 — 지갑·금융 서비스 이용',
-          },
-          how: {
-            method: '고팡 SSO 자동 인증 (경로: ' + (user.via || 'session') + ')',
-          },
-          why: {
-            goal: 'GDC 잔액 조회 및 금융 서비스 이용',
-          },
-        }
-      })
+      body: JSON.stringify({ report })
     });
     const data = await res.json();
     console.log('[GDC PDV]', data.pdv_entry, data.message);
