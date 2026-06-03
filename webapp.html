@@ -629,8 +629,7 @@ window._onGopangAuth = async function(user) {
   console.log('[GDC] _onGopangAuth raw user:', JSON.stringify(user));
 
   // guid 필드 후보 — subsystem-auth.js 버전에 따라 다를 수 있음
-  const guid = user?.guid || user?.id || user?.userId
-             || user?.userGuid || user?.sub || user?.ipv6 || null;
+  const guid = user?.ipv6 || user?.guid || user?.id || user?.sub || null;
 
   if (!guid) {
     console.log('[GDC] 게스트 접속 (guid 없음)');
@@ -645,10 +644,8 @@ window._onGopangAuth = async function(user) {
   console.log('[GDC] 인증 완료:', guid.slice(0,12)+'…', '레벨:', user.level||user.lv||'L0');
 
   // UI 갱신
-  document.getElementById('mp-name').textContent =
-    user.name || user.username || guid.slice(0,8) + '…';
-  document.getElementById('mp-guid').textContent =
-    'L' + (user.level||user.lv||'0') + ' · ' + guid.slice(0,16) + '…';
+  document.getElementById('mp-name').textContent = guid.slice(0,16) + '…';
+  document.getElementById('mp-guid').textContent = 'L' + (user.level||'0') + ' · ' + guid.slice(0,20) + '…';
 
   // 앱 초기화
   await loadHome();
@@ -656,14 +653,14 @@ window._onGopangAuth = async function(user) {
   // PDV 기록 — GDC 앱 접속 이벤트 (T6 테스트 대상)
   await sendPDV(user.guid, {
     pdv_6w: {
-      who:   user.name || user.guid.slice(0,8),
+      who:   guid.slice(0,16),
       what:  'GDC 앱 접속',
       when:  new Date().toISOString().slice(0,10),
       where: 'gdc.gopang.net/webapp.html',
       why:   'GDC 지갑 및 금융 서비스 이용',
       how:   '고팡 SSO 자동 인증 (경로: ' + (user.via || 'L0') + ')'
     },
-    summary: { guid: user.guid, level: user.level, ua: navigator.userAgent.slice(0,40) },
+    summary: { guid: guid, level: user.level, ua: navigator.userAgent.slice(0,40) },
     pdv_type: 'event'
   });
 };
