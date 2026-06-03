@@ -151,6 +151,10 @@ svg.ic{display:block;flex-shrink:0}
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="#fff" stroke="none"/></svg>
     </div>
     <div style="flex:1"><div class="tb-title">GDC 지갑</div><div class="tb-sub">Gopang Digital Currency</div></div>
+    <a id="btn-gopang-back" class="btn-gopang-back" href="https://gopang.net" title="고팡으로 돌아가기">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+      고팡
+    </a>
     <div class="tb-badge"><span class="dot-live"></span>연동</div>
   </div>
 
@@ -653,6 +657,24 @@ window._onGopangAuth = async function(user) {
   // PDV 기록 — GDC 앱 접속 이벤트 (T5 테스트 대상)
   await sendPDV(guid, user);
 };
+
+/* GWP 감지 — 고팡 앱에서 호출된 경우 복귀 버튼 표시 */
+(function detectGWP() {
+  const params   = new URLSearchParams(location.search);
+  const isGWP    = params.get('gwp') === '1';
+  const returnTo = params.get('return') || 'https://gopang.net';
+  const btn      = document.getElementById('btn-gopang-back');
+  if (!btn) return;
+  if (isGWP) {
+    // GWP 호출: 복귀 URL을 return 파라미터로 설정
+    btn.href = returnTo;
+    btn.classList.add('visible');
+  } else {
+    // 직접 접속: 항상 gopang.net으로 (항상 표시)
+    btn.href = 'https://gopang.net';
+    btn.classList.add('visible');
+  }
+})();
 
 /* PDV 전송 — HANDOVER §5.2 표준 패턴 */
 async function sendPDV(ipv6, user) {
