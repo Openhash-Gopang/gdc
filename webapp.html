@@ -482,6 +482,7 @@ function ledgerIcSvg(account){
 }
 
 async function loadHome(){
+  if (!GUID) { return; } // GUID 없으면 대기
   const ex=await getExtra();
   const cash=parseFloat(ex?.fs?.bs?.['bs-cash']||'0')||0;
   document.getElementById('w-bal').textContent=fmtT(cash);
@@ -624,9 +625,15 @@ async function runCredit(){
 const PROXY_BASE = 'https://gopang-proxy.tensor-city.workers.dev';
 
 window._onGopangAuth = async function(user) {
-  if (!user || !user.guid) {
-    // 게스트(경로D) — 열람 전용, GUID 없이 홈 로드
-    console.log('[GDC] 게스트 접속');
+  // 디버그: user 객체 전체 출력 (구조 파악용)
+  console.log('[GDC] _onGopangAuth raw user:', JSON.stringify(user));
+
+  // guid 필드 후보 — subsystem-auth.js 버전에 따라 다를 수 있음
+  const guid = user?.guid || user?.id || user?.userId
+             || user?.userGuid || user?.sub || user?.ipv6 || null;
+
+  if (!guid) {
+    console.log('[GDC] 게스트 접속 (guid 없음)');
     document.getElementById('mp-name').textContent = '게스트';
     document.getElementById('mp-guid').textContent = '로그인 필요';
     loadHome();
@@ -634,14 +641,14 @@ window._onGopangAuth = async function(user) {
   }
 
   // 인증 완료 — GUID 설정
-  GUID = user.guid;
-  console.log('[GDC] 인증 완료:', user.guid.slice(0,12)+'…', '레벨:', user.level);
+  GUID = guid;
+  console.log('[GDC] 인증 완료:', guid.slice(0,12)+'…', '레벨:', user.level||user.lv||'L0');
 
   // UI 갱신
   document.getElementById('mp-name').textContent =
-    user.name || user.guid.slice(0,8) + '…';
+    user.name || user.username || guid.slice(0,8) + '…';
   document.getElementById('mp-guid').textContent =
-    'L' + (user.level||'0') + ' · ' + user.guid.slice(0,16) + '…';
+    'L' + (user.level||user.lv||'0') + ' · ' + guid.slice(0,16) + '…';
 
   // 앱 초기화
   await loadHome();
