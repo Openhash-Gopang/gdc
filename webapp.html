@@ -644,37 +644,54 @@ window._onGopangAuth = async function(user) {
   console.log('[GDC] 인증 완료:', guid.slice(0,12)+'…', '레벨:', user.level||user.lv||'L0');
 
   // UI 갱신
-  document.getElementById('mp-name').textContent = guid.slice(0,16) + '…';
+  document.getElementById('mp-name').textContent = _profile?.name || guid.slice(0,16) + '…';
   document.getElementById('mp-guid').textContent = 'L' + (user.level||'0') + ' · ' + guid.slice(0,20) + '…';
 
   // 앱 초기화
   await loadHome();
 
-  // PDV 기록 — GDC 앱 접속 이벤트 (T6 테스트 대상)
-  await sendPDV(user.guid, {
-    pdv_6w: {
-      who:   guid.slice(0,16),
-      what:  'GDC 앱 접속',
-      when:  new Date().toISOString().slice(0,10),
-      where: 'gdc.gopang.net/webapp.html',
-      why:   'GDC 지갑 및 금융 서비스 이용',
-      how:   '고팡 SSO 자동 인증 (경로: ' + (user.via || 'L0') + ')'
-    },
-    summary: { guid: guid, level: user.level, ua: navigator.userAgent.slice(0,40) },
-    pdv_type: 'event'
-  });
+  // PDV 기록 — GDC 앱 접속 이벤트 (T5 테스트 대상)
+  await sendPDV(guid, user);
 };
 
 /* PDV 전송 — HANDOVER §5.2 표준 패턴 */
-async function sendPDV(user_guid, report) {
+async function sendPDV(ipv6, user) {
   try {
+    const now = new Date().toISOString();
     const res = await fetch(PROXY_BASE + '/pdv/report', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ user_guid, source: 'gdc', report })
+      body: JSON.stringify({
+        report: {
+          svc:  'gdc',
+          type: 'event',
+          who: {
+            ipv6:       ipv6,
+            role:       'user',
+            level:      user.level || 'L0',
+            recipients: ['gopang-pdv'],
+          },
+          when: {
+            period_start: now,
+            period_end:   now,
+          },
+          where: {
+            svc_url: 'https://gdc.gopang.net/webapp.html',
+          },
+          what: {
+            summary: 'GDC 앱 접속 — 지갑·금융 서비스 이용',
+          },
+          how: {
+            method: '고팡 SSO 자동 인증 (경로: ' + (user.via || 'session') + ')',
+          },
+          why: {
+            goal: 'GDC 잔액 조회 및 금융 서비스 이용',
+          },
+        }
+      })
     });
     const data = await res.json();
-    console.log('[GDC PDV]', data.pdv_entry);
+    console.log('[GDC PDV]', data.pdv_entry, data.message);
     return data.pdv_entry;
   } catch(e) {
     console.warn('[GDC PDV] 전송 실패:', e.message);
