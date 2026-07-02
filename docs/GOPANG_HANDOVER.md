@@ -14,10 +14,10 @@
 
 | 구성 요소 | 값 | 비고 |
 |-----------|-----|------|
-| 고팡 메인 | gopang.net (Openhash-Gopang/gopang_v2) | GWP 허브 |
+| 고팡 메인 | hondi.net (Openhash-Gopang/gopang_v2) | GWP 허브 |
 | Supabase | ebbecjfrwaswbdybbgiu.supabase.co | 공통 DB |
 | Cloudflare Worker | gopang-proxy.tensor-city.workers.dev | AI 프록시·PDV 게이트웨이 |
-| 고팡 SSO | gopang.net/auth/subsystem-auth.js | 모든 서브서비스 공용 |
+| 고팡 SSO | hondi.net/auth/subsystem-auth.js | 모든 서브서비스 공용 |
 | PDV 엔드포인트 | gopang-proxy.../pdv/report (POST) | 공통 PDV 기록 |
 | AI 모델 | deepseek-chat (기본) | gopang-proxy/deepseek 경유 |
 
@@ -31,29 +31,29 @@
 
 | 시스템 | 도메인 | GitHub 레포 | 완료 항목 |
 |--------|--------|-------------|----------|
-| **K-Police** | police.gopang.net | Openhash-Gopang/police | 인증·PDV·디자인 |
-| **K-Health** | health.gopang.net | Openhash-Gopang/health | 인증·PDV·디자인 |
-| **K-School** | school.gopang.net | Openhash-Gopang/school | 인증·PDV(T2~T7)·디자인 |
-| **K-Law** | klaw.gopang.net / openhash.kr/law | Openhash-Gopang/klaw | 인증·PDV·디자인 |
-| **K-Market** | market.gopang.net | Openhash-Gopang/market | 인증·PDV·디자인 |
-| **K-Traffic** | traffic.gopang.net | Openhash-Gopang/traffic | 인증·PDV·디자인 |
+| **K-Police** | police.hondi.net | Openhash-Gopang/police | 인증·PDV·디자인 |
+| **K-Health** | health.hondi.net | Openhash-Gopang/health | 인증·PDV·디자인 |
+| **K-School** | school.hondi.net | Openhash-Gopang/school | 인증·PDV(T2~T7)·디자인 |
+| **K-Law** | klaw.hondi.net / openhash.kr/law | Openhash-Gopang/klaw | 인증·PDV·디자인 |
+| **K-Market** | market.hondi.net | Openhash-Gopang/market | 인증·PDV·디자인 |
+| **K-Traffic** | traffic.hondi.net | Openhash-Gopang/traffic | 인증·PDV·디자인 |
 
 ### ❌ 미완료 (작업 필요)
 
 | 우선순위 | 시스템 | 예정 도메인 | 특이사항 |
 |----------|--------|-------------|---------|
-| 1 | **K-Tax** | tax.gopang.net | K-Market·K-School과 연동 예정 |
-| 2 | **K-Finance** | finance.gopang.net | SEOM 디지털 화폐 연동 |
-| 3 | **K-Labor** | labor.gopang.net | K-Tax 의존 |
-| 4 | **K-Welfare** | welfare.gopang.net | K-Health·K-Labor 연동 |
-| 5 | **K-Patent** | patent.gopang.net | K-Law 연동 |
-| 6 | **K-Environment** | environment.gopang.net | |
-| 7 | **K-Gov** | gov.gopang.net | 행정 민원 통합 |
-| 8 | **K-Immigration** | immigration.gopang.net | |
-| 9 | **K-Customs** | customs.gopang.net | K-Market 연동 |
-| 10 | **K-Energy** | energy.gopang.net | K-Environment 연동 |
-| 11 | **K-Defense** | defense.gopang.net | |
-| 12 | **K-Diplomacy** | diplomacy.gopang.net | |
+| 1 | **K-Tax** | tax.hondi.net | K-Market·K-School과 연동 예정 |
+| 2 | **K-Finance** | finance.hondi.net | SEOM 디지털 화폐 연동 |
+| 3 | **K-Labor** | labor.hondi.net | K-Tax 의존 |
+| 4 | **K-Welfare** | welfare.hondi.net | K-Health·K-Labor 연동 |
+| 5 | **K-Patent** | patent.hondi.net | K-Law 연동 |
+| 6 | **K-Environment** | environment.hondi.net | |
+| 7 | **K-Gov** | gov.hondi.net | 행정 민원 통합 |
+| 8 | **K-Immigration** | immigration.hondi.net | |
+| 9 | **K-Customs** | customs.hondi.net | K-Market 연동 |
+| 10 | **K-Energy** | energy.hondi.net | K-Environment 연동 |
+| 11 | **K-Defense** | defense.hondi.net | |
+| 12 | **K-Diplomacy** | diplomacy.hondi.net | |
 
 ---
 
@@ -64,9 +64,9 @@
 ### 3.1 디렉토리 구조 표준
 
 ```
-{service}.gopang.net/  (Openhash-Gopang/{service})
+{service}.hondi.net/  (Openhash-Gopang/{service})
 ├── .nojekyll
-├── CNAME                     → {service}.gopang.net
+├── CNAME                     → {service}.hondi.net
 ├── LICENSE                   → GPL-3.0
 ├── index.html                → 리디렉터 (PWA 진입점)
 ├── desktop.html              → 랜딩 페이지
@@ -97,7 +97,7 @@
 
 ```html
 <script type="module"
-  src="https://gopang.net/auth/subsystem-auth.js">
+  src="https://hondi.net/auth/subsystem-auth.js">
 </script>
 ```
 
@@ -122,10 +122,10 @@ window._onGopangAuth = async function(user) {
 
 | 경로 | 트리거 | 설명 |
 |------|--------|------|
-| 경로 2B | Silent iframe | gopang.net 세션 쿠키 자동 검증 — 가장 일반적 |
+| 경로 2B | Silent iframe | hondi.net 세션 쿠키 자동 검증 — 가장 일반적 |
 | 경로 2A | 세션 캐시 | localStorage 토큰 (30일 유효) |
 | 경로 D | 게스트 | 비로그인, 열람 전용 |
-| 경로 GWP | GWP 토큰 | gopang.net에서 GWP로 호출 시 자동 전달 |
+| 경로 GWP | GWP 토큰 | hondi.net에서 GWP로 호출 시 자동 전달 |
 
 ### 4.4 인증 레벨 요구 설정
 
@@ -169,7 +169,7 @@ async function sendPDVReport(user_guid, reportData) {
             who:   '사용자명 (직군/나이)',
             what:  '핵심 처리 내용',
             when:  '처리 기간 (YYYY-MM-DD ~ YYYY-MM-DD)',
-            where: '{service}.gopang.net',
+            where: '{service}.hondi.net',
             why:   '처리 목적',
             how:   '처리 방식 요약'
           },
@@ -390,7 +390,7 @@ async function saveToServiceDB(user_guid, reportData) {
   </nav>
 
   <div class="sidebar-bottom">
-    <a class="sidebar-item" href="https://gopang.net">
+    <a class="sidebar-item" href="https://hondi.net">
       <svg class="icon"><!-- 홈 아이콘 --></svg>
       <span class="label">고팡으로 돌아가기</span>
     </a>
@@ -440,7 +440,7 @@ async function saveToServiceDB(user_guid, reportData) {
 # 로컬 폴더 생성
 mkdir {service}; cd {service}
 git init
-echo "school.gopang.net" | Out-File CNAME -Encoding utf8  # 도메인 교체
+echo "school.hondi.net" | Out-File CNAME -Encoding utf8  # 도메인 교체
 
 # .nojekyll (GitHub Pages Jekyll 비활성화)
 New-Item .nojekyll
@@ -509,7 +509,7 @@ K-Market 패턴 권장 — **올인원 단일 파일** (외부 JS 모듈 없음)
 2. HTML: 좌측 사이드바 + 상단 바 + 채팅 영역
 3. JS Block 1: config 인라인 + PDV 인라인 + AI callAI() 함수
 4. JS Block 2: UI 핸들러 + `window._onGopangAuth` 콜백
-5. `<script type="module" src="https://gopang.net/auth/subsystem-auth.js">`
+5. `<script type="module" src="https://hondi.net/auth/subsystem-auth.js">`
 
 ### Step 6 — desktop.html 작성
 
@@ -533,7 +533,7 @@ K-School T2~T7 결과에서 확정된 테스트 항목:
 | T4 | AI 채팅 (DeepSeek 응답) | webapp 대화 테스트 |
 | T5 | Supabase INSERT | SQL Editor에서 수동 실행 |
 | T6 | PDV 전송 | Console: `pdv_entry: PDV-...` 확인 |
-| T7 | GWP 연동 | gopang.net에서 키워드 입력 |
+| T7 | GWP 연동 | hondi.net에서 키워드 입력 |
 
 ### Step 8 — GWP_REGISTRY 등록
 
@@ -544,7 +544,7 @@ K-School T2~T7 결과에서 확정된 테스트 항목:
 const GWP_REGISTRY = {
   // 기존 서비스들...
   '{service}': {
-    url: 'https://{service}.gopang.net/webapp.html?gwp=1&ctx=',
+    url: 'https://{service}.hondi.net/webapp.html?gwp=1&ctx=',
     name: 'K-{Service}',
     keywords: ['키워드1', '키워드2', ...]
   }

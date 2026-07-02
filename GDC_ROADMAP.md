@@ -2,7 +2,7 @@
 ## Gopang Digital Currency — Development Roadmap v1.1
 
 > **저장소:** `Openhash-Gopang/gdc`  
-> **도메인:** `gdc.gopang.net`  
+> **도메인:** `gdc.hondi.net`  
 > **작성일:** 2026-06-03  
 > **작성자:** AI City Inc. (팀 주피터)  
 > **현재 버전:** v1.0 (T1~T6 테스트 완료)
@@ -280,4 +280,4 @@ gdc/
 ---
 
 *GDC is powered by OpenHash — Probabilistic Hierarchical Distributed Ledger*  
-*DAWN: Democracy is All We Need — democracy.gopang.net*
+*DAWN: Democracy is All We Need — democracy.hondi.net*

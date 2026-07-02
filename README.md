@@ -2,7 +2,7 @@
 ## 중앙은행 + 시중은행 통합 모듈 v1.0
 
 > **저장소:** `Openhash-Gopang/gdc`  
-> **도메인:** `gdc.gopang.net`  
+> **도메인:** `gdc.hondi.net`  
 > **운영:** AI City Inc. / OpenHash Network  
 > **최초 발행:** 2026년 (제주 시범)  
 > **법적 성격:** 고팡 플랫폼 내 결제·저축·대출 단위 (GDC = ₮)
@@ -80,7 +80,7 @@ gdc/
 ├── api/
 │   └── gdc-proxy.js        ← Cloudflare Worker (환율 API 프록시)
 │
-├── CNAME                   ← gdc.gopang.net
+├── CNAME                   ← gdc.hondi.net
 └── docs/
     ├── DESIGN.md           ← 상세 설계 (본 문서)
     ├── WHITEPAPER.md       ← GDC 백서

@@ -2,7 +2,7 @@
 ## Gopang Digital Currency — Global Digital Currency
 
 > **발행:** AI City Inc. / OpenHash Network  
-> **도메인:** `gdc.gopang.net`  
+> **도메인:** `gdc.hondi.net`  
 > **저장소:** `Openhash-Gopang/gdc`  
 > **최초 발행:** 2026년 6월  
 > **v1.1 갱신:** 2026년 6월 4일 — market→gdc→tax 3시스템 연동 파이프라인 추가  
@@ -38,7 +38,7 @@
 
 ### 1-1. GDC란?
 
-GDC(Global Digital Currency / Gopang Digital Currency)는 고팡(gopang.net) 생태계의 글로벌 디지털 통화입니다.
+GDC(Global Digital Currency / Gopang Digital Currency)는 고팡(hondi.net) 생태계의 글로벌 디지털 통화입니다.
 
 ```
 T (GDC) = Gopang Digital Currency
@@ -69,20 +69,20 @@ T (GDC) = Gopang Digital Currency
 ### 1-3. 고팡 생태계에서의 위치 (v1.1 갱신)
 
 ```
-고팡(gopang.net) — 현실 세계의 AI 쌍둥이들로 구성된 평행 세계
+고팡(hondi.net) — 현실 세계의 AI 쌍둥이들로 구성된 평행 세계
         │
-        ├─ market.gopang.net — 거래 발생 → fs_ledger 기록
+        ├─ market.hondi.net — 거래 발생 → fs_ledger 기록
         │         │
         │         ▼ INSERT (revenue/purchase/opex)
         │    Supabase: fs_ledger  ←──────────────────────┐
         │         │ READ (집계)                           │
         │         ▼                                       │
-        ├─ GDC(gdc.gopang.net)                           │
+        ├─ GDC(gdc.hondi.net)                           │
         │    settleLedger()                               │
         │    → user_profiles.extra.fs PATCH              │
         │         │ READ                                  │
         │         ▼                                       │
-        └─ tax.gopang.net                                │
+        └─ tax.hondi.net                                │
              세금 계산 → 납세 → fs_ledger INSERT ────────┘
 ```
 
@@ -462,7 +462,7 @@ GDC는 고팡 SSO(`subsystem-auth.js`)를 사용하며, HTML에 **한 줄**만 �
 
 ```html
 <script type="module"
-  src="https://gopang.net/auth/subsystem-auth.js">
+  src="https://hondi.net/auth/subsystem-auth.js">
 </script>
 ```
 
@@ -474,7 +474,7 @@ gopangAuth.require('L0') 호출
 ├─ ① GWP 토큰 확인     (URL ?gwp_token= 파싱 + HMAC 검증)
 ├─ ② 세션 캐시 확인    (sessionStorage['gopang_sso_token'])
 ├─ ③ 로컬 기기 확인    (localStorage['gopang_user_v3'] + 기기 핑거프린트)
-├─ ④ Silent iframe     (gopang.net/auth/silent-auth.html, postMessage)
+├─ ④ Silent iframe     (hondi.net/auth/silent-auth.html, postMessage)
 └─ ⑤ 리다이렉트        (최후 수단)
 ```
 
@@ -517,7 +517,7 @@ async function sendPDV(ipv6, user, reportOverride = null) {
       recipients: ['gopang-pdv'],
     },
     when:  { period_start: now, period_end: now },
-    where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+    where: { svc_url: 'https://gdc.hondi.net/webapp.html' },
     what:  { summary: 'GDC 앱 접속 — 지갑·금융 서비스 이용' },
     how:   { method: '고팡 SSO 자동 인증' },
     why:   { goal: 'GDC 잔액 조회 및 금융 서비스 이용' },
@@ -726,7 +726,7 @@ Supabase (PostgreSQL)
   id:          'kgdc',           // gwp-registry.js ID
   name:        'GDC',
   category:    'ECO',
-  url:         'https://gdc.gopang.net/webapp.html',
+  url:         'https://gdc.hondi.net/webapp.html',
   minAuth:     'L0',
   pdv:         true,
   priority:    4,
@@ -755,10 +755,10 @@ const SVC_ALIAS = {
 
 | 대시보드 | URL | 대상 |
 |---------|-----|------|
-| 관리자 | `gdc.gopang.net/dashboard.html` | 운영자 |
-| 사용자 재무제표 | `gdc.gopang.net/user-dashboard.html` | 개인 사용자 |
-| FIAT POOL | `gdc.gopang.net/pool-dashboard.html` | 운영자·정책 담당자 |
-| 국가 통화정책 | `gdc.gopang.net/nation-dashboard.html` | 통화정책 담당자 |
+| 관리자 | `gdc.hondi.net/dashboard.html` | 운영자 |
+| 사용자 재무제표 | `gdc.hondi.net/user-dashboard.html` | 개인 사용자 |
+| FIAT POOL | `gdc.hondi.net/pool-dashboard.html` | 운영자·정책 담당자 |
+| 국가 통화정책 | `gdc.hondi.net/nation-dashboard.html` | 통화정책 담당자 |
 
 ### 13-2. 국가 대시보드 특징
 
@@ -872,8 +872,8 @@ tax 세금 계산:
 
 ```javascript
 // ALLOWED_ORIGINS
-'https://gdc.gopang.net'  // Level 3 서비스
-// *.gopang.net 패턴 자동 허용
+'https://gdc.hondi.net'  // Level 3 서비스
+// *.hondi.net 패턴 자동 허용
 // SVC_ALIAS: 'kgdc' → 'gdc' 자동 변환
 ```
 

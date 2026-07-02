@@ -152,7 +152,7 @@ svg.ic{display:block;flex-shrink:0}
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r=".5" fill="#fff" stroke="none"/></svg>
     </div>
     <div style="flex:1"><div class="tb-title">GDC 지갑</div><div class="tb-sub">Gopang Digital Currency</div></div>
-    <a id="btn-gopang-back" class="btn-gopang-back" href="https://gopang.net" title="고팡으로 돌아가기">
+    <a id="btn-gopang-back" class="btn-gopang-back" href="https://hondi.net" title="고팡으로 돌아가기">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
       고팡
     </a>
@@ -565,7 +565,7 @@ async function doTransfer(){
       level: 'L0', recipients: ['gopang-pdv'],
     },
     when: { period_start: now, period_end: now },
-    where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+    where: { svc_url: 'https://gdc.hondi.net/webapp.html' },
     what: {
       summary: `GDC 이체 ₮${amt.toLocaleString()} → ${to.slice(0,16)}…`,
     },
@@ -608,7 +608,7 @@ async function openDep(){
           level: 'L0', recipients: ['gopang-pdv'],
         },
         when: { period_start: depNow, period_end: depNow },
-        where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+        where: { svc_url: 'https://gdc.hondi.net/webapp.html' },
         what: {
           summary: `GDC 예금 개설 ₮${a.toLocaleString()} (${p})`,
         },
@@ -647,7 +647,7 @@ async function applyLoan(){
       level: 'L0', recipients: ['gopang-pdv'],
     },
     when: { period_start: loanNow, period_end: loanNow },
-    where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+    where: { svc_url: 'https://gdc.hondi.net/webapp.html' },
     what: {
       summary: `GDC 대출 신청 ₮${a.toLocaleString()} (${term}개월)`,
     },
@@ -735,7 +735,7 @@ window._onGopangAuth = async function(user) {
 (function detectGWP() {
   const params   = new URLSearchParams(location.search);
   const isGWP    = params.get('gwp') === '1';
-  const returnTo = params.get('return') || 'https://gopang.net';
+  const returnTo = params.get('return') || 'https://hondi.net';
   const btn      = document.getElementById('btn-gopang-back');
   if (!btn) return;
   if (isGWP) {
@@ -743,8 +743,8 @@ window._onGopangAuth = async function(user) {
     btn.href = returnTo;
     btn.classList.add('visible');
   } else {
-    // 직접 접속: 항상 gopang.net으로 (항상 표시)
-    btn.href = 'https://gopang.net';
+    // 직접 접속: 항상 hondi.net으로 (항상 표시)
+    btn.href = 'https://hondi.net';
     btn.classList.add('visible');
   }
 })();
@@ -848,7 +848,7 @@ async function sendPDV(ipv6, user, reportOverride = null) {
         recipients: ['gopang-pdv'],
       },
       when: { period_start: now, period_end: now },
-      where: { svc_url: 'https://gdc.gopang.net/webapp.html' },
+      where: { svc_url: 'https://gdc.hondi.net/webapp.html' },
       what:  { summary: 'GDC 앱 접속 — 지갑·금융 서비스 이용' },
       how:   { method: '고팡 SSO 자동 인증 (경로: ' + (user?.via || 'session') + ')' },
       why:   { goal: 'GDC 잔액 조회 및 금융 서비스 이용' },
@@ -869,7 +869,7 @@ async function sendPDV(ipv6, user, reportOverride = null) {
 </script>
 
 <script type="module"
-  src="https://gopang.net/auth/subsystem-auth.js">
+  src="https://hondi.net/auth/subsystem-auth.js">
 </script>
 </body>
 </html>

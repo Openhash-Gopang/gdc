@@ -2,7 +2,7 @@
 ## Gopang Digital Currency — Global Digital Currency
 
 > **발행:** AI City Inc. / OpenHash Network  
-> **도메인:** `gdc.gopang.net`  
+> **도메인:** `gdc.hondi.net`  
 > **저장소:** `Openhash-Gopang/gdc`  
 > **최초 발행:** 2026년 6월  
 > **법적 성격:** 고팡 플랫폼 내 결제·저축·대출·투자 단위  
@@ -36,7 +36,7 @@
 
 ### 1-1. GDC란?
 
-GDC(Global Digital Currency / Gopang Digital Currency)는 고팡(gopang.net) 생태계의 글로벌 디지털 통화입니다.
+GDC(Global Digital Currency / Gopang Digital Currency)는 고팡(hondi.net) 생태계의 글로벌 디지털 통화입니다.
 
 ```
 T (GDC) = Gopang Digital Currency
@@ -66,14 +66,14 @@ T (GDC) = Gopang Digital Currency
 ### 1-3. 고팡 생태계에서의 위치
 
 ```
-고팡(gopang.net) — 현실 세계의 AI 쌍둥이들로 구성된 평행 세계
+고팡(hondi.net) — 현실 세계의 AI 쌍둥이들로 구성된 평행 세계
         │
-        ├─ 고팡 마켓(market.gopang.net) — 현실의 모든 시장을 통합한 AI 쌍둥이
+        ├─ 고팡 마켓(market.hondi.net) — 현실의 모든 시장을 통합한 AI 쌍둥이
         │         └─ GDC — 고팡 마켓의 결제 통화
         │
         ├─ K-Law, K-Health, K-School, K-Police ...
         │
-        └─ GDC(gdc.gopang.net) — 글로벌 디지털 통화 플랫폼
+        └─ GDC(gdc.hondi.net) — 글로벌 디지털 통화 플랫폼
 ```
 
 ---
@@ -330,7 +330,7 @@ GDC는 고팡 SSO(`subsystem-auth.js`)를 사용하며, HTML에 **한 줄**만 �
 
 ```html
 <script type="module"
-  src="https://gopang.net/auth/subsystem-auth.js">
+  src="https://hondi.net/auth/subsystem-auth.js">
 </script>
 ```
 
@@ -342,8 +342,8 @@ gopangAuth.require('L0') 호출
 ├─ ① GWP 토큰 확인     (URL ?gwp_token= 파싱 + HMAC 검증)
 ├─ ② 세션 캐시 확인    (sessionStorage['gopang_sso_token'])
 ├─ ③ 로컬 기기 확인    (localStorage['gopang_user_v3'] + 기기 핑거프린트)
-├─ ④ Silent iframe     (gopang.net/auth/silent-auth.html, postMessage)
-└─ ⑤ 리다이렉트        (최후 수단: gopang.net/auth/silent-auth.html?return=현재URL)
+├─ ④ Silent iframe     (hondi.net/auth/silent-auth.html, postMessage)
+└─ ⑤ 리다이렉트        (최후 수단: hondi.net/auth/silent-auth.html?return=현재URL)
 ```
 
 ### 7-3. 인증 콜백
@@ -414,7 +414,7 @@ PDV(Personal Data Vault)는 고팡의 개인 데이터 저장소입니다. 모�
       "period_start": "2026-06-03T16:55:48Z",
       "period_end":   "2026-06-03T16:55:48Z"
     },
-    "where": { "svc_url": "https://gdc.gopang.net/webapp.html" },
+    "where": { "svc_url": "https://gdc.hondi.net/webapp.html" },
     "what":  { "summary": "GDC 이체 ₮100 → 2601:db80:0000:0…" },
     "how":   { "method": "GDC 이체 (fs_ledger 차변·대변)" },
     "why":   { "goal": "PDV 이체 테스트" }
@@ -430,7 +430,7 @@ Content-Type: application/json
 ```
 
 - Cloudflare Worker `gopang-proxy` v4.1 경유
-- `gdc.gopang.net` → Level 3 서비스로 등록
+- `gdc.hondi.net` → Level 3 서비스로 등록
 - PDV 저장: Supabase `pdv_log` 테이블
 
 ### 8-4. 거래별 PDV 기록
@@ -567,7 +567,7 @@ Supabase (PostgreSQL)
   id:          'kgdc',
   name:        'GDC',
   category:    'ECO',
-  url:         'https://gdc.gopang.net/webapp.html',
+  url:         'https://gdc.hondi.net/webapp.html',
   minAuth:     'L0',
   pdv:         true,
   priority:    4,
@@ -594,21 +594,21 @@ SP-00-ROUTER-v4_0.txt (알고리즘 전용)
         │  kgdc.triggers에 '잔액' 매칭
         ▼
 service_id: "kgdc"
-service_url: "https://gdc.gopang.net/webapp.html"
+service_url: "https://gdc.hondi.net/webapp.html"
         │
         ▼
-GWP 토큰 + ctx → gdc.gopang.net/webapp.html?gwp=1
+GWP 토큰 + ctx → gdc.hondi.net/webapp.html?gwp=1
 ```
 
 ### 11-3. GWP 파라미터
 
 ```
-https://gdc.gopang.net/webapp.html
+https://gdc.hondi.net/webapp.html
   ?gwp=1                          ← GWP 호출 표시
   &gwp_token=HMAC-SHA256-TOKEN    ← 인증 토큰
   &svc=kgdc                       ← 서비스 ID
   &ctx=잔액%20얼마야              ← 사용자 원문
-  &return=https://gopang.net      ← 복귀 URL
+  &return=https://hondi.net      ← 복귀 URL
 ```
 
 ---
@@ -619,10 +619,10 @@ https://gdc.gopang.net/webapp.html
 
 | 대시보드 | URL | 대상 |
 |---------|-----|------|
-| 관리자 | `gdc.gopang.net/dashboard.html` | 운영자 |
-| 사용자 재무제표 | `gdc.gopang.net/user-dashboard.html` | 개인 사용자 |
-| FIAT POOL | `gdc.gopang.net/pool-dashboard.html` | 운영자·정책 담당자 |
-| 국가 통화정책 | `gdc.gopang.net/nation-dashboard.html` | 통화정책 담당자 |
+| 관리자 | `gdc.hondi.net/dashboard.html` | 운영자 |
+| 사용자 재무제표 | `gdc.hondi.net/user-dashboard.html` | 개인 사용자 |
+| FIAT POOL | `gdc.hondi.net/pool-dashboard.html` | 운영자·정책 담당자 |
+| 국가 통화정책 | `gdc.hondi.net/nation-dashboard.html` | 통화정책 담당자 |
 
 ### 12-2. 국가 대시보드 특징
 
@@ -651,7 +651,7 @@ https://gdc.gopang.net/webapp.html
 |------|------|
 | 테스트 일시 | 2026-06-03 |
 | 브라우저 | MS Edge (PC) |
-| 접속 URL | `https://gdc.gopang.net/webapp.html` |
+| 접속 URL | `https://gdc.hondi.net/webapp.html` |
 | GUID | `2601:db80:8995:1e1f:bc7e:764f:502a:f231` |
 | 인증 레벨 | L0 |
 
@@ -676,7 +676,7 @@ https://gdc.gopang.net/webapp.html
 | `user.guid` 없음 | `subsystem-auth.js`가 `ipv6` 필드 사용 | `user?.ipv6 \|\| user?.guid`로 수정 |
 | PDV 403 Forbidden | Worker가 `report.who.ipv6` 요구하는데 구조 불일치 | Worker 표준 구조로 `sendPDV` 재작성 |
 | `loadHome()` null 오류 | GUID null인 채로 Supabase 호출 | `if (!GUID) return` 가드 추가 |
-| `file://` 리다이렉트 | 로컬 파일을 브라우저로 직접 열어 테스트 | `https://gdc.gopang.net`으로 접속 |
+| `file://` 리다이렉트 | 로컬 파일을 브라우저로 직접 열어 테스트 | `https://gdc.hondi.net`으로 접속 |
 | `username` 컬럼 없음 | `user_profiles`에 `name` 컬럼 사용 | `user.name`으로 수정 |
 
 ### 13-4. Supabase pdv_log 실제 기록
@@ -730,8 +730,8 @@ https://gdc.gopang.net/webapp.html
 
 ```javascript
 // gopang-proxy ALLOWED_ORIGINS
-'https://gdc.gopang.net'  ← Level 3 서비스
-// *.gopang.net 패턴 자동 허용
+'https://gdc.hondi.net'  ← Level 3 서비스
+// *.hondi.net 패턴 자동 허용
 ```
 
 ### 14-4. PDV 보안
@@ -751,7 +751,7 @@ https://gdc.gopang.net/webapp.html
 - ✅ 5종 대시보드 (관리자·사용자·POOL·국가·재무제표)
 - ✅ GWP 레지스트리 자기 서술 구조
 - ✅ DeepSeek V4 Pro AI 상담 채팅
-- ✅ GitHub Pages 배포 (`gdc.gopang.net`)
+- ✅ GitHub Pages 배포 (`gdc.hondi.net`)
 
 ### Phase 2 — 단기 (2026 Q3)
 - 🔲 `user_profiles` 최초 SSO 시 자동 생성
@@ -787,7 +787,7 @@ GDC(Global Digital Currency)는 오픈소스 공동체이며, 누구나 기능 �
 GDC는 사람이 아니라, 지침(Guideline)에 의해 동작하며, 누구나 언제나 어디서나 해당 지침의 개정과 갱신에 참여할 수 있습니다.
 
 **DAWN: Democracy is All We Need**  
-→ `https://democracy.gopang.net`
+→ `https://democracy.hondi.net`
 
 ### 16-3. 이상의 모든 과정
 
