@@ -1,8 +1,10 @@
-// ══════════════════════════════════════════════════════════════
-// gdc-core.js — GDC 핵심 모듈 (잔액·이체·서명)
+﻿// ══════════════════════════════════════════════════════════════
+// gdc-core.js — GDC 핵심 모듈 v2.0
+// v2.0: fs_account 표준 코드, source 추가, 서명검증 제거
+//       PDV는 Worker /pdv/report 경유, gdc_settle_ledger RPC 사용
 // ══════════════════════════════════════════════════════════════
 
-import { SUPABASE_URL, SUPABASE_KEY } from '../config.js';
+import { SUPABASE_URL, SUPABASE_KEY, WORKER_URL } from '../config.js';
 
 const H = {
   'apikey': SUPABASE_KEY,
@@ -13,124 +15,126 @@ const H = {
 // ── 잔액 조회 ─────────────────────────────────────────────────
 export async function getBalance(userGuid) {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/user_profiles?guid=eq.${userGuid}&select=extra&limit=1`,
+    `${SUPABASE_URL}/rest/v1/user_profiles?primary_guid=eq.${userGuid}&select=extra&limit=1`,
     { headers: H }
   );
   const rows = await res.json();
   if (!rows[0]) return 0;
-  return parseFloat(rows[0].extra?.fs?.bs?.['bs-cash'] || '0') || 0;
+  return parseFloat(rows[0].extra?.fs?.['bs-cash'] ?? '0') || 0;
 }
 
 // ── 재무제표 전체 조회 ────────────────────────────────────────
 export async function getFinancials(userGuid) {
   const res = await fetch(
-    `${SUPABASE_URL}/rest/v1/user_profiles?guid=eq.${userGuid}&select=extra&limit=1`,
+    `${SUPABASE_URL}/rest/v1/user_profiles?primary_guid=eq.${userGuid}&select=extra&limit=1`,
     { headers: H }
   );
   const rows = await res.json();
-  return rows[0]?.extra?.fs || { bs: {}, pl: {}, cf: {} };
+  return rows[0]?.extra?.fs || {};
+}
+
+// ── 재무제표 갱신 (gdc_settle_ledger RPC 호출) ───────────────
+// P6: 서버는 청구권 발행에 그침. Phase 1 타협으로 RPC가 bs-cash 갱신.
+export async function settleLedger(userGuid) {
+  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/gdc_settle_ledger`, {
+    method: 'POST',
+    headers: H,
+    body: JSON.stringify({ p_guid: userGuid }),
+  });
+  return res.json();
 }
 
 // ── GDC 이체 (메인) ──────────────────────────────────────────
-// 전제: 디지털 서명 검증 완료 후 호출
-export async function transfer({ fromGuid, toGuid, amount, memo, signature, publicKey }) {
+// v2.0: 서명 검증 제거 (L1 담당), fsAccount 표준 코드 사용
+export async function transfer({ fromGuid, toGuid, amount, memo, sessionId }) {
   if (amount <= 0) throw new Error('이체 금액은 0보다 커야 합니다.');
 
-  // 1. 잔액 확인
   const fromBalance = await getBalance(fromGuid);
   if (fromBalance < amount) throw new Error(`잔액 부족: 보유 ₮${fromBalance.toLocaleString()}`);
 
-  const txId  = crypto.randomUUID();
-  const now   = new Date().toISOString();
+  const txId = await _sha256(`${fromGuid}${toGuid}${amount}${Date.now()}`);
+  const now  = new Date().toISOString();
 
-  // 2. 서명 기록
-  await _recordSignature({ txId, userGuid: fromGuid, publicKey, signature,
-    messageHash: await _sha256(`${fromGuid}${toGuid}${amount}${now}`) });
+  // fs_ledger 차변 (송신자)
+  await _ledger({
+    txId, guid: fromGuid, counterpart: toGuid,
+    direction: 'debit', amount,
+    fsAccount: 'bs-cash', source: 'gdc',
+    memo: memo || 'GDC 이체', txAt: now,
+  });
 
-  // 3. fs_ledger 차변 (송신자)
-  await _ledger({ txId, guid: fromGuid, counterpart: toGuid,
-    direction: 'debit', amount, fsAccount: 'cash',
-    memo: memo || 'GDC 이체', txAt: now });
+  // fs_ledger 대변 (수신자)
+  await _ledger({
+    txId, guid: toGuid, counterpart: fromGuid,
+    direction: 'credit', amount,
+    fsAccount: 'bs-cash', source: 'gdc',
+    memo: memo || 'GDC 이체 수신', txAt: now,
+  });
 
-  // 4. fs_ledger 대변 (수신자)
-  await _ledger({ txId, guid: toGuid, counterpart: fromGuid,
-    direction: 'credit', amount, fsAccount: 'cash',
-    memo: memo || 'GDC 이체 수신', txAt: now });
+  // 재무제표 갱신 (RPC)
+  await Promise.all([
+    settleLedger(fromGuid),
+    settleLedger(toGuid),
+  ]);
 
-  // 5. user_profiles.extra.fs.bs.bs-cash 업데이트
-  await _updateBalance(fromGuid, -amount);
-  await _updateBalance(toGuid,    amount);
-
-  // 6. PDV 기록 (송신자)
-  await _pdv({ userGuid: fromGuid, recordType: 'gdc_transfer',
-    summary: `GDC 이체 ₮${amount.toLocaleString()} → ${toGuid.slice(0,8)}…`,
-    what: 'GDC 이체', how: 'ED25519 디지털 서명', why: memo || '이체',
-    extra: { txId, fromGuid, toGuid, amount, currency: 'GDC',
-             signature: signature?.slice(0,16)+'…', ophashBlock: null } });
-
-  // 7. PDV 기록 (수신자)
-  await _pdv({ userGuid: toGuid, recordType: 'gdc_transfer_receive',
-    summary: `GDC 수신 ₮${amount.toLocaleString()} ← ${fromGuid.slice(0,8)}…`,
-    what: 'GDC 수신', how: 'GDC 이체', why: '수신',
-    extra: { txId, fromGuid, toGuid, amount, currency: 'GDC' } });
+  // PDV 기록 — Worker /pdv/report 경유 (P2 원칙)
+  await _pdvViaWorker({
+    ipv6:      fromGuid,
+    sessionId: sessionId || txId,
+    summary:   `GDC 이체 ₮${amount.toLocaleString()} → ${toGuid.slice(0,8)}…`,
+    what:      `GDC 이체 ₮${amount.toLocaleString()}`,
+    how:       'GDC 이체 트랜잭션',
+    why:       memo || 'GDC 이체',
+    svc:       'kgdc',
+  });
 
   return { txId, from: fromGuid, to: toGuid, amount, timestamp: now };
 }
 
-// ── 잔액 업데이트 (내부) ─────────────────────────────────────
-async function _updateBalance(guid, delta) {
-  const res  = await fetch(
-    `${SUPABASE_URL}/rest/v1/user_profiles?guid=eq.${guid}&select=extra&limit=1`,
-    { headers: H }
-  );
-  const rows = await res.json();
-  const extra = rows[0]?.extra || {};
-  const fs    = extra.fs || {};
-  const bs    = fs.bs || {};
-  const cur   = parseFloat(bs['bs-cash'] || '0') || 0;
-  bs['bs-cash'] = String(Math.max(0, cur + delta));
-  fs.bs = bs; extra.fs = fs;
-  await fetch(`${SUPABASE_URL}/rest/v1/user_profiles?guid=eq.${guid}`,
-    { method: 'PATCH', headers: H, body: JSON.stringify({ extra }) });
-}
-
-// ── fs_ledger 기록 (내부) ─────────────────────────────────────
-async function _ledger({ txId, guid, counterpart, direction, amount, fsAccount, memo, txAt }) {
+// ── fs_ledger 기록 (내부) — 표준 코드 사용 ───────────────────
+async function _ledger({ txId, guid, counterpart, direction, amount, fsAccount, source, memo, txAt }) {
   return fetch(`${SUPABASE_URL}/rest/v1/fs_ledger`, {
     method: 'POST',
     headers: { ...H, 'Prefer': 'return=minimal' },
     body: JSON.stringify({
-      tx_id: txId, guid, counterpart, direction, amount,
-      item_name: memo, item_id: null, quantity: 1,
-      pdv_log_id: null, fs_account: fsAccount, memo, tx_at: txAt
-    })
+      tx_id:     txId,
+      guid,
+      counterpart,
+      direction,
+      amount,
+      fs_account: fsAccount,   // 표준 코드: bs-cash, pl-revenue 등
+      source:     source || 'gdc',
+      item_name:  memo,
+      quantity:   1,
+      memo,
+      tx_at:      txAt,
+    }),
   });
 }
 
-// ── PDV 기록 (내부) ───────────────────────────────────────────
-async function _pdv({ userGuid, recordType, summary, what, how, why, extra }) {
-  return fetch(`${SUPABASE_URL}/rest/v1/pdv_log`, {
+// ── PDV 기록 — Worker /pdv/report 경유 (P2 원칙) ─────────────
+async function _pdvViaWorker({ ipv6, sessionId, summary, what, how, why, svc, blockHash, blockId }) {
+  const now = new Date().toISOString();
+  return fetch(`${WORKER_URL}/pdv/report`, {
     method: 'POST',
-    headers: { ...H, 'Prefer': 'return=minimal' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      user_guid: userGuid, service_id: 'gopang-gdc',
-      record_type: recordType, summary, what, how, why,
-      category: 'gdc', extra
-    })
-  });
-}
-
-// ── 서명 기록 (내부) ─────────────────────────────────────────
-async function _recordSignature({ txId, userGuid, publicKey, signature, messageHash }) {
-  return fetch(`${SUPABASE_URL}/rest/v1/gdc_signatures`, {
-    method: 'POST',
-    headers: { ...H, 'Prefer': 'return=minimal' },
-    body: JSON.stringify({
-      tx_id: txId, user_guid: userGuid,
-      public_key: publicKey, signature, message_hash: messageHash,
-      verified: true, verified_at: new Date().toISOString()
-    })
-  });
+      report: {
+        svc,
+        session_id:   sessionId,
+        reporter_svc: 'kgdc',
+        who:  { ipv6, role: 'user' },
+        when: { period_start: now, period_end: now },
+        where:{ svc_url: 'https://gdc.gopang.net' },
+        what: { summary },
+        how:  { method: how },
+        why:  { goal: why },
+        // STEP 09: block_hash 있으면 동기 앵커링
+        block_hash: blockHash || null,
+        block_id:   blockId   || null,
+      },
+    }),
+  }).catch(e => console.warn('[GDC] PDV 기록 실패:', e.message));
 }
 
 // ── SHA-256 해시 ─────────────────────────────────────────────
@@ -140,3 +144,6 @@ async function _sha256(str) {
   return Array.from(new Uint8Array(buf))
     .map(b => b.toString(16).padStart(2,'0')).join('');
 }
+
+// ── export (외부 모듈용) ──────────────────────────────────────
+export { _pdvViaWorker, _ledger };

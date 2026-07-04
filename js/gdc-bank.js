@@ -1,9 +1,9 @@
-// ══════════════════════════════════════════════════════════════
+﻿// ══════════════════════════════════════════════════════════════
 // gdc-bank.js — GDC 예금·대출·이자 모듈
 // ══════════════════════════════════════════════════════════════
 
 import { SUPABASE_URL, SUPABASE_KEY } from '../config.js';
-import { getBalance, _updateBalance } from './gdc-core.js';
+import { getBalance, settleLedger, _pdvViaWorker, _ledger } from './gdc-core.js';
 import { evaluateCredit } from './gdc-credit.js';
 
 const H = {
@@ -88,7 +88,8 @@ export async function accrueInterest() {
       body: JSON.stringify({
         tx_id: txId, guid: dep.user_guid, counterpart: 'gdc-bank',
         direction: 'credit', amount: dailyInterest,
-        item_name: '예금 이자', fs_account: 'interest_income',
+        item_name: '예금 이자', fs_account: 'pl-interest_income',
+        source: 'gdc',
         memo: `${dep.account_id.slice(0,8)}… 일일 이자`, tx_at: new Date().toISOString(),
       })
     });
@@ -144,7 +145,8 @@ export async function applyLoan({ userGuid, amount, termMonths, repayMethod = 'e
     body: JSON.stringify({
       tx_id: txId, guid: userGuid, counterpart: 'gdc-bank',
       direction: 'credit', amount, item_name: 'GDC 대출 실행',
-      fs_account: 'loan_proceeds', memo: `대출 ${loan.loan_id.slice(0,8)}…`,
+      fs_account: 'bs-loan',
+      source: 'gdc', memo: `대출 ${loan.loan_id.slice(0,8)}…`,
       tx_at: new Date().toISOString(),
     })
   });
@@ -154,6 +156,7 @@ export async function applyLoan({ userGuid, amount, termMonths, repayMethod = 'e
     { loanId: loan.loan_id, amount, termMonths, rate, grade: credit.grade,
       monthlyPayment, creditScore: credit.creditScore });
 
+  await settleLedger(userGuid);
   return { loan, credit };
 }
 
@@ -208,7 +211,8 @@ export async function repayLoan({ userGuid, loanId, paymentSeq }) {
     body: JSON.stringify({
       tx_id: txId, guid: userGuid, counterpart: 'gdc-bank',
       direction: 'debit', amount: total, item_name: `대출 상환 ${paymentSeq}회차`,
-      fs_account: 'loan_repayment', memo: loanId.slice(0,8)+'…',
+      fs_account: 'pl-loan_repayment',
+      source: 'gdc', memo: loanId.slice(0,8)+'…',
       tx_at: new Date().toISOString(),
     })
   });
@@ -217,6 +221,7 @@ export async function repayLoan({ userGuid, loanId, paymentSeq }) {
     `대출 상환 ${paymentSeq}회차 ₮${total.toLocaleString()} (원금 ₮${principal.toLocaleString()} / 이자 ₮${interest.toLocaleString()})`,
     { loanId, paymentSeq, principal, interest, total, remaining: newOutstanding });
 
+  await settleLedger(userGuid);
   return { loanId, paymentSeq, principal, interest, total,
            remaining: newOutstanding, status: newStatus };
 }
@@ -229,10 +234,16 @@ function _productLabel(t) {
   return { demand:'요구불', time_7:'7일 정기', time_30:'30일 정기', time_365:'365일 정기' }[t] || t;
 }
 async function _pdv(userGuid, recordType, summary, extra) {
-  return fetch(`${SUPABASE_URL}/rest/v1/pdv_log`, {
-    method: 'POST', headers: { ...H, 'Prefer': 'return=minimal' },
-    body: JSON.stringify({ user_guid: userGuid, service_id: 'gopang-gdc',
-      record_type: recordType, summary, what: summary.split(' ')[0],
-      how: 'GDC 자동', why: '은행 거래', category: 'gdc', extra })
+  return _pdvViaWorker({
+    ipv6:      userGuid,
+    sessionId: extra?.txId || extra?.loanId || extra?.accountId || null,
+    summary,
+    what:      summary.split(' ')[0],
+    how:       'GDC 자동',
+    why:       '은행 거래',
+    svc:       'kgdc',
   });
 }
+
+
+
