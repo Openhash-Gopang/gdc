@@ -1125,6 +1125,7 @@ async function sendChat() {
         messages: chatHistory.slice(-12), // 최근 12턴 유지
         max_tokens: 800,
         temperature: 0.6,
+        service_id: 'kgdc', // 2026-07-05: worker.js가 UNIVERSAL 레이어 강제 주입
         // Worker가 env.DEEPSEEK_API_KEY를 Authorization 헤더에 주입
         _use_env_key: 'DEEPSEEK_API_KEY',
       })
