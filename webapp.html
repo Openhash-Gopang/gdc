@@ -861,11 +861,38 @@ async function sendPDV(ipv6, user, reportOverride = null) {
     });
     const data = await res.json();
     console.log('[GDC PDV]', data.pdv_entry, data.message);
+
+    // GWP_DONE 보고용 세션 내 거래 로그 축적(2026-07-10 신설) — 실제 거래
+    // (reportOverride 지정)만 쌓는다. 기본 접속 이벤트는 "거래"가 아니므로 제외.
+    if (reportOverride && report?.what?.summary) {
+      window._gdcActionLog = window._gdcActionLog || [];
+      window._gdcActionLog.push(report.what.summary);
+    }
+
     return data.pdv_entry;
   } catch(e) {
     console.warn('[GDC PDV] 전송 실패:', e.message);
   }
 }
+
+// ── GWP_DONE 보고(2026-07-10 신설) ────────────────────────────────
+// gdc는 대화형이 아니라 거래형 UI라 "세션 종료" 시점이 곧 사용자가 탭을
+// 떠나는 순간(pagehide)뿐이다. 이 세션에서 실제 거래가 하나라도 있었을
+// 때만 발신 — 잔액 조회만 하고 나간 경우까지 보고하면 노이즈만 늘어난다.
+window.addEventListener('pagehide', () => {
+  if (!window.opener || !window._gdcActionLog || !window._gdcActionLog.length) return;
+  import('https://hondi.net/src/gopang/gwp/gwp-report-client.js')
+    .then(({ reportGwpSessionEnd }) => reportGwpSessionEnd({
+      agencyId: 'gdc',
+      guid: GUID || 'anonymous',
+      messages: [],
+      resultText: window._gdcActionLog.join(' / '),
+      summaryLine: 'GDC 지갑 이용 완료: ' + window._gdcActionLog.join(' / '),
+      gwpMode: true,
+      gwpOrigin: 'https://hondi.net',
+    }))
+    .catch(() => {});
+});
 </script>
 
 <script type="module"
