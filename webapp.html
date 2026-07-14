@@ -750,83 +750,58 @@ window._onGopangAuth = async function(user) {
 })();
 
 // ══════════════════════════════════════════════════════════════
-// settleLedger — fs_ledger 집계 → extra.fs 재무제표 갱신
-// 설계 원칙: gdc만 extra.fs를 씁니다.
-//   market: fs_ledger INSERT만
-//   tax:    extra.fs READ + fs_ledger INSERT(납세)
-//   gdc:    fs_ledger READ → extra.fs WRITE (여기)
+// settleLedger — L1 PocketBase pending_claims 집계 → 재무제표 갱신
+// 2026-07-14 재작성 — Supabase fs_ledger 기반 집계를 걷어낸다. K-Market
+// 주문 파이프라인이 2026-07-07 L1 이관으로 Supabase fs_ledger에 더 이상
+// revenue/purchase/opex/cogs를 기록하지 않게 되면서, 이 함수가 계속
+// 공허한 결과만 읽고 있었다(2026-07-14 검증에서 발견 — 실거래가 있어도
+// 재무제표가 갱신되지 않는 상태였다). 이제 Worker의 새 엔드포인트
+// POST /biz/settle-ledger를 호출한다 — 집계·PATCH는 L1 admin 토큰을 쥔
+// Worker가 서버 측에서 수행하고, 여기서는 서명된 요청만 보낸다.
+// 2026-07-14 추가 지시 반영 — "Supabase는 더 이상 사용하면 안됩니다":
+// Worker의 /biz/settle-ledger는 이제 L1 profiles.extra.fs.pl에만 쓴다
+// (Supabase 병행 쓰기 없음). 설계 원칙 갱신: gdc는 extra.fs를 직접
+// 쓰지 않는다 — Worker가 L1만 정본으로 관리한다.
 // ══════════════════════════════════════════════════════════════
 async function settleLedger(guid) {
   if (!guid) return;
   try {
-    // ① fs_ledger에서 revenue/purchase/opex 거래 전체 집계
-    //    gdc_transfer / tax_payment 제외 (별도 처리)
-    const res = await fetch(
-      `${S}/rest/v1/fs_ledger`
-      + `?guid=eq.${guid}`
-      + `&fs_account=in.(revenue,purchase,opex,cogs,service_fee,interest_income)`
-      + `&select=direction,amount,fs_account`,
-      { headers: Hd }
-    );
-    const rows = await res.json();
-    if (!Array.isArray(rows)) {
-      console.warn('[GDC Settle] fs_ledger 조회 실패');
+    // window.gopangWallet은 /gopang-wallet.js가 비동기 자동초기화한다
+    // (이 페이지 상단에서 이미 로드됨) — 초기화 완료를 잠깐 기다린다.
+    let wallet = window.gopangWallet;
+    for (let i = 0; i < 20 && !wallet; i++) {
+      await new Promise(r => setTimeout(r, 100));
+      wallet = window.gopangWallet;
+    }
+    if (!wallet || typeof wallet.signPayload !== 'function') {
+      console.warn('[GDC Settle] 지갑 미초기화 — 재무제표 갱신 건너뜀');
       return;
     }
 
-    // ② 집계
-    let revenue = 0, opex = 0, cogs = 0;
-    for (const r of rows) {
-      const amt = parseFloat(r.amount) || 0;
-      if (r.direction === 'credit') {
-        revenue += amt;
-      } else {
-        // debit: 계정과목별 분류
-        if (r.fs_account === 'cogs')     cogs += amt;
-        else                             opex += amt;
-      }
-    }
-    const grossProfit = Math.max(0, revenue - cogs);
-    const netIncome   = Math.max(0, grossProfit - opex);
+    const ts = String(Date.now());
+    const sigMsg = `settle:${guid}:${wallet.publicKeyB64u}:${ts}`;
+    const signature = await wallet.signPayload(sigMsg);
 
-    // ③ 현재 extra 읽기 (bs-cash는 이체로 이미 갱신됨 — 덮어쓰지 않음)
-    const profRes  = await fetch(
-      `${S}/rest/v1/user_profiles?guid=eq.${guid}&select=extra`,
-      { headers: Hd }
-    );
-    const profRows = await profRes.json();
-    if (!profRows?.length) return;
-
-    const ex = profRows[0].extra || {};
-    ex.fs    = ex.fs    || {};
-    ex.fs.pl = ex.fs.pl || {};
-    ex.fs.bs = ex.fs.bs || {};
-
-    // ④ PL 갱신 (BS cash는 건드리지 않음 — gdc_transfer로 이미 관리)
-    ex.fs.pl['pl-revenue']      = String(revenue);
-    ex.fs.pl['pl-opex']         = String(opex);
-    ex.fs.pl['pl-cogs']         = String(cogs);
-    ex.fs.pl['pl-gross-profit'] = String(grossProfit);
-    ex.fs.pl['pl-net-income']   = String(netIncome);
-
-    // ⑤ PATCH
-    const patchRes = await fetch(
-      `${S}/rest/v1/user_profiles?guid=eq.${guid}`,
-      { method: 'PATCH', headers: H, body: JSON.stringify({ extra: ex }) }
-    );
-
-    if (patchRes.ok) {
-      console.log(
-        '[GDC Settle] ✅',
-        `revenue ₮${revenue.toLocaleString()}`,
-        `opex ₮${opex.toLocaleString()}`,
-        `net ₮${netIncome.toLocaleString()}`
-      );
-    } else {
-      console.warn('[GDC Settle] PATCH 실패:', patchRes.status);
+    const res = await fetch(`${PROXY_BASE}/biz/settle-ledger`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ guid, pubkey: wallet.publicKeyB64u, signature, ts }),
+    });
+    const data = await res.json().catch(() => null);
+    if (!data?.ok) {
+      console.warn('[GDC Settle] 실패:', data?.detail || res.status);
+      return;
     }
 
-    return { revenue, opex, cogs, grossProfit, netIncome };
+    console.log(
+      '[GDC Settle] ✅',
+      `revenue ₮${data.pl.revenue.toLocaleString()}`,
+      `cogs ₮${data.pl.cogs.toLocaleString()}`,
+      `net ₮${data.pl.net_income.toLocaleString()}`,
+      data.truncated ? '(부분집계 — 페이지 상한 도달)' : ''
+    );
+
+    return data.pl;
   } catch(e) {
     console.warn('[GDC Settle] 오류:', e.message);
   }
