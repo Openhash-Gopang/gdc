@@ -441,10 +441,8 @@ svg.ic{display:block;flex-shrink:0}
 </div><!-- /app -->
 
 <script>
-const S='https://ebbecjfrwaswbdybbgiu.supabase.co';
-const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
-const H={'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json'};
-const Hd={'apikey':K,'Authorization':'Bearer '+K};
+// (2026-07-15 삭제 — S/K/H/Hd. Supabase 완전 폐기로 더 이상 안 쓰임.
+//  K는 Supabase anon key 원문이었다 — 이 삭제로 그 노출도 같이 없어진다.)
 const P=new URLSearchParams(location.search);
 let GUID = P.get('guid') || null;  // SSO 인증 후 _onGopangAuth에서 설정
 let _profile={};
@@ -484,11 +482,13 @@ async function getExtra(){
   // 2026-07-14 재작성 — bs-cash/pl-revenue의 정본을 L1로 옮긴다(2026-07-14
   // 검증에서 발견: 이 함수가 반환하던 값이 doTransfer()의 클라이언트
   // 신뢰 PATCH를 그대로 반영하고 있었다 — 서버 검증이 전혀 없는 값이었다).
-  // 이름 등 표시용 메타데이터는 L1 profiles의 동등 필드를 아직 확인 못해
-  // Supabase 조회를 그대로 둔다 — fs.bs/fs.pl만 L1 값으로 덮어쓴다.
-  const r=await fetch(`${S}/rest/v1/user_profiles?guid=eq.${GUID}&select=*&limit=1`,{headers:Hd});
-  const rows=await r.json();
-  _profile=rows[0]||{};
+  // (2026-07-15 재작성 — 표시용 메타데이터(이름 등)도 Supabase user_profiles
+  // 대신 기존 공개 조회 엔드포인트(GET /profile?guid=, worker.js
+  // handleProfileGet)로 교체. 이건 profile.html도 쓰는, 이미 검증된
+  // 경로다 — 익명 조회 시에도 name은 공개 필드라 마스킹 안 된다.)
+  const r=await fetch(`${PROXY_BASE}/profile?guid=${encodeURIComponent(GUID)}`);
+  const data=await r.json().catch(()=>({ok:false}));
+  _profile = data.ok ? { ...data.profile, guid: GUID } : { guid: GUID };
   _profile.extra = _profile.extra || {};
   _profile.extra.fs = _profile.extra.fs || {};
 
@@ -777,12 +777,16 @@ async function openDep(){
     }
 
     // ② 이체가 실제로 성공한 뒤에만 예금 메타데이터 기록
-    const r=await fetch(`${S}/rest/v1/gdc_deposits`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},
+    // (2026-07-15: Supabase gdc_deposits → L1 이관. 클라이언트가 직접
+    //  L1 컬렉션에 못 쓰므로 신규 Worker 엔드포인트(/biz/gdc-deposit)를
+    //  거친다 — 이 엔드포인트가 vault_tx_hash를 blocks 원장과 대조해
+    //  검증한 뒤에만 기록한다.)
+    const r=await fetch(`${PROXY_BASE}/biz/gdc-deposit`,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
         user_guid:GUID, product_type:p, principal:a, interest_rate:DEP[p],
         vault_tx_hash: txData.tx_hash,
       })});
-    if(r.ok||r.status===201){
+    if(r.ok){
       // PDV — 예금 개설 기록
       const depNow = new Date().toISOString();
       await sendPDV(GUID, { ipv6: GUID, level: 'L0', via: 'deposit' }, {
@@ -808,7 +812,6 @@ async function openDep(){
       // 안전하게 vault에 있지만(잃어버리지 않음) 예금 목록에 안 뜬다.
       // 조용히 넘기지 않고 tx_hash를 명확히 보여준다(수동 대사용).
       alert(`⚠️ 이체는 완료됐지만(tx: ${txData.tx_hash}) 예금 기록 저장에 실패했습니다.\n` +
-            'gdc_deposits 테이블 적용 필요\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.\n' +
             '이 tx_hash를 기록해두고 문의해 주세요 — 자금은 안전합니다.');
     }
   }catch(e){alert('오류: '+e.message);}

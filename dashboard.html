@@ -248,9 +248,19 @@ table.tbl tr:hover td{background:var(--bg)}
 </div>
 
 <script>
+// (2026-07-15 부분 이관 — user_profiles/gdc_deposits/fs_ledger만 L1로
+// 교체. gdc_pool/gdc_loans/gdc_credit_history는 의도적으로 그대로 둔다
+// — 이 셋을 실제로 채워 넣는 코드(js/gdc-pool.js 등)가 애초에 어떤
+// HTML에서도 로드된 적 없는 죽은 모듈이라(../config.js가 저장소에
+// 존재하지도 않아 import 자체가 깨져 있었음), 지금도 항상 빈 결과라
+// "gdc_pool 테이블 미생성" 같은 안내만 계속 뜬다 — 대출/신용평가/
+// 통화풀 기능을 이번에 완성하지 않기로 확정했으므로 그대로 둔다.
+// 이 셋만 Supabase 상수(S/K/H)가 남아있는 이유이기도 하다.
 const S='https://ebbecjfrwaswbdybbgiu.supabase.co';
 const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
 const H={'apikey':K,'Authorization':'Bearer '+K};
+const PROXY_BASE='https://hondi-proxy.tensor-city.workers.dev';
+const ADMIN_TOKEN=new URLSearchParams(location.search).get('token')||'';
 const fmt=n=>(+(n||0)).toLocaleString('ko-KR',{maximumFractionDigits:0});
 const fmtT=n=>'₮'+fmt(n);
 const fmtPct=n=>((+(n||0))*100).toFixed(1)+'%';
@@ -258,9 +268,18 @@ const PROD={demand:'요구불',time_7:'7일 정기',time_30:'30일 정기',time_
 const STATUS={active:'<span class="chip chip-grn">활성</span>',matured:'<span class="chip chip-gld">만기</span>',closed:'<span class="chip chip-gray">종료</span>',repaid:'<span class="chip chip-grn">상환완료</span>',overdue:'<span class="chip chip-red">연체</span>'};
 
 async function load(){
-  const ru=await fetch(S+'/rest/v1/user_profiles?select=guid&limit=1',{headers:{...H,'Prefer':'count=exact','Range':'0-0'}});
-  const cnt=ru.headers.get('content-range')?.split('/')?.[1]||'—';
-  document.getElementById('s-users').textContent=parseInt(cnt).toLocaleString()||'—';
+  // (2026-07-15: Supabase user_profiles → L1 이관. 기존 /admin/stats를
+  //  재사용한다 — dashboard.html에 원래 인증 체계가 전혀 없었는데,
+  //  이제 admin/stats와 동일하게 ?token= 쿼리파라미터가 필요하다.)
+  if(!ADMIN_TOKEN){
+    document.getElementById('s-users').textContent='토큰 필요';
+  } else {
+    try{
+      const rs=await fetch(`${PROXY_BASE}/admin/stats?token=${encodeURIComponent(ADMIN_TOKEN)}`);
+      const sd=await rs.json();
+      document.getElementById('s-users').textContent=sd.ok!==false&&sd.total!=null?sd.total.toLocaleString():'—';
+    }catch(e){ document.getElementById('s-users').textContent='—'; }
+  }
 
   try{
     const rp=await fetch(S+'/rest/v1/gdc_pool?select=*&order=gdc_issued.desc',{headers:H});
@@ -289,15 +308,17 @@ async function load(){
     document.getElementById('pool-tbody').innerHTML='<tr><td colspan="6" style="text-align:center;padding:20px;color:var(--t3)">gdc_pool 테이블 미생성</td></tr>';
   }
 
+  // (2026-07-15: Supabase gdc_deposits → L1 이관)
   try{
-    const rd=await fetch(S+'/rest/v1/gdc_deposits?select=*&order=opened_at.desc&limit=10',{headers:H});
-    const deps=await rd.json();
-    const sum=Array.isArray(deps)?deps.reduce((s,d)=>s+(+d.principal||0),0):0;
+    const rd=await fetch(`${PROXY_BASE}/biz/gdc-deposits?limit=10`);
+    const dd=await rd.json();
+    const deps=dd.ok?dd.items:[];
+    const sum=deps.reduce((s,d)=>s+(+d.principal||0),0);
     document.getElementById('s-deposit').textContent=fmtT(sum);
-    document.getElementById('s-dep-cnt').textContent='예금 계좌 '+(Array.isArray(deps)?deps.length:0)+'건';
-    document.getElementById('dep-tbody').innerHTML=Array.isArray(deps)&&deps.length
+    document.getElementById('s-dep-cnt').textContent='예금 계좌 '+deps.length+'건';
+    document.getElementById('dep-tbody').innerHTML=deps.length
       ?deps.map(d=>`<tr>
-          <td class="mono" style="color:var(--t3)">${(d.account_id||'').slice(0,10)}…</td>
+          <td class="mono" style="color:var(--t3)">${(d.user_guid||'').slice(0,10)}…</td>
           <td>${PROD[d.product_type]||d.product_type}</td>
           <td class="mono">${fmtT(d.principal)}</td>
           <td class="mono" style="color:var(--brand)">${fmtPct(d.interest_rate)}</td>
@@ -306,7 +327,7 @@ async function load(){
       :'<tr><td colspan="5" style="text-align:center;padding:16px;color:var(--t3)">예금 계좌 없음</td></tr>';
   }catch(e){
     document.getElementById('s-deposit').textContent='N/A';
-    document.getElementById('dep-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;padding:12px;color:var(--t3)">gdc_deposits 테이블 미생성</td></tr>';
+    document.getElementById('dep-tbody').innerHTML='<tr><td colspan="5" style="text-align:center;padding:12px;color:var(--t3)">조회 실패</td></tr>';
   }
 
   try{
@@ -348,19 +369,30 @@ async function load(){
     document.getElementById('credit-tbody').innerHTML='<tr><td colspan="8" style="text-align:center;padding:12px;color:var(--t3)">gdc_credit_history 테이블 미생성</td></tr>';
   }
 
-  const rlg=await fetch(S+'/rest/v1/fs_ledger?fs_account=in.(cash,gdc_transfer)&select=*&order=tx_at.desc&limit=15',{headers:H});
-  const rows=await rlg.json();
-  document.getElementById('ledger-tbody').innerHTML=Array.isArray(rows)&&rows.length
-    ?rows.map(r=>`<tr>
-        <td class="mono" style="color:var(--t3)">${(r.tx_id||'').slice(0,8)}…</td>
-        <td class="mono" style="color:var(--t3)">${(r.guid||'').slice(0,10)}…</td>
-        <td class="mono" style="color:var(--t3)">${(r.counterpart||'').slice(0,10)}…</td>
-        <td><span class="chip ${r.direction==='credit'?'chip-grn':'chip-red'}">${r.direction==='credit'?'입금':'출금'}</span></td>
-        <td class="mono" style="font-weight:500">${fmtT(r.amount)}</td>
-        <td style="color:var(--t3)">${r.fs_account||'—'}</td>
+  // (2026-07-15: Supabase fs_ledger → L1 이관. 관리자 토큰 필요 —
+  //  전체 사용자 거래를 보는 민감한 조회라 admin/stats와 동일하게 게이트.)
+  if(!ADMIN_TOKEN){
+    document.getElementById('ledger-tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:20px;color:var(--t3)">URL에 ?token=관리자토큰 을 붙여 접속하세요</td></tr>';
+  } else {
+    try{
+      const rlg=await fetch(`${PROXY_BASE}/admin/tx-recent?token=${encodeURIComponent(ADMIN_TOKEN)}&limit=15`);
+      const ld=await rlg.json();
+      const rows=ld.ok?ld.items:[];
+      document.getElementById('ledger-tbody').innerHTML=rows.length
+        ?rows.map(r=>`<tr>
+            <td class="mono" style="color:var(--t3)">${(r.tx_id||'').slice(0,8)}…</td>
+            <td class="mono" style="color:var(--t3)">${(r.guid||'').slice(0,10)}…</td>
+            <td class="mono" style="color:var(--t3)">${(r.counterpart||'').slice(0,10)}…</td>
+            <td><span class="chip ${r.direction==='credit'?'chip-grn':'chip-red'}">${r.direction==='credit'?'입금':'출금'}</span></td>
+            <td class="mono" style="font-weight:500">${fmtT(r.amount)}</td>
+            <td style="color:var(--t3)">${r.fs_account||'—'}</td>
         <td style="color:var(--t3)">${r.tx_at?new Date(r.tx_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}):'—'}</td>
       </tr>`).join('')
     :'<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--t3)">거래 내역 없음</td></tr>';
+    }catch(e){
+      document.getElementById('ledger-tbody').innerHTML='<tr><td colspan="7" style="text-align:center;padding:16px;color:var(--t3)">조회 실패</td></tr>';
+    }
+  }
 }
 
 (function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});setTimeout(tick,1000);})();

@@ -646,6 +646,7 @@ table.tbl tr:hover td{background:var(--bg)}
 const S = 'https://ebbecjfrwaswbdybbgiu.supabase.co';
 const K = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
 const H = { 'apikey': K, 'Authorization': 'Bearer ' + K };
+const PROXY_BASE = 'https://hondi-proxy.tensor-city.workers.dev';
 
 /* ── 포맷 유틸 ───────────────────────────────────────────── */
 const fmt  = n => (+(n || 0)).toLocaleString('ko-KR', { maximumFractionDigits: 0 });
@@ -744,12 +745,15 @@ function evalBadge(val, good, ok) {
 /* ── PDV 데이터 로드 ──────────────────────────────────────── */
 async function loadUserData(userGuid) {
   try {
-    const res  = await fetch(`${S}/rest/v1/user_profiles?guid=eq.${userGuid}&select=extra,username&limit=1`, { headers: H });
-    const rows = await res.json();
-    if (!rows[0]) return;
-
-    const profile = rows[0];
-    const name    = profile.username || userGuid.slice(0, 8) + '…';
+    // (2026-07-15: Supabase user_profiles → L1 이관, 이름 표시용만.
+    //  ⚠️ extra.fs(재무제표 bs/pl/cf)는 이 페이지에 지갑(gopang-wallet.js)이
+    //  로드돼 있지 않아 서명이 필요한 /biz/financials를 호출할 수 없다
+    //  — 이번 배치에서는 보류하고 재무제표는 빈 값(—)으로 표시된다.
+    //  지갑을 추가하거나 다른 인증 경로를 설계해야 완전히 이관 가능.)
+    const res  = await fetch(`${PROXY_BASE}/profile?guid=${encodeURIComponent(userGuid)}`);
+    const data = await res.json().catch(()=>({ok:false}));
+    const profile = data.ok ? data.profile : {};
+    const name    = profile.name || userGuid.slice(0, 8) + '…';
     document.getElementById('user-name').textContent    = name;
     document.getElementById('user-initial').textContent = name[0] || '?';
 
