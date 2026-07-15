@@ -712,14 +712,76 @@ function calcDep(){
   document.getElementById('dep-annual').textContent=fmtT(Math.round(a*r*100)/100);
 }
 
+// 2026-07-15 재작성 — 잔액 미차감 버그 수정. 지금까지는 잔액 부족
+// 검사(if(a>cash))만 하고 실제로는 아무것도 안 빠져나갔다 — 예금을
+// 몇 번을 열어도 잔액이 줄지 않는 회계 구멍이었다(2026-07-15 조사에서
+// 발견). doTransfer()와 완전히 동일한, 이미 검증된 L1 P2P 이체 경로
+// (POST /biz/order)로 예금액을 예약 시스템 계정('gdc-deposit-vault')에
+// 실제로 이체한다 — 'gopang-platform'과 똑같은 패턴(L1 profiles
+// 레코드 없이 blocks.outputs의 recipient_guid로만 존재, 이미 라이브
+// 검증됨). 이체가 실제로 성공한 뒤에만 gdc_deposits 메타데이터를
+// 남긴다 — 실패하면 예금 자체를 만들지 않는다.
+//
+// 범위(2026-07-15 지시) — 예금 해지·이자 지급·대출은 이번에 포함하지
+// 않는다(별도 세션 예정). 개설 시 실제로 차감된다는 것만 고친다.
+const GDC_DEPOSIT_VAULT_GUID = 'gdc-deposit-vault';
+
 async function openDep(){
   const p=document.getElementById('dep-prod').value;
   const a=parseFloat(document.getElementById('dep-amt').value)||0;
+  if(a<=0){alert('예치할 금액을 입력하세요.');return;}
   const cash=parseFloat(_profile.extra?.fs?.bs?.['bs-cash']||'0')||0;
   if(a>cash){alert(`잔액 부족: ${fmtT(cash)}`);return;}
+
+  const wallet = window.gopangWallet;
+  if (!wallet || typeof wallet.sign !== 'function' || wallet.guid !== GUID) {
+    alert('지갑이 아직 준비되지 않았습니다. 잠시 후 다시 시도해 주세요.');
+    return;
+  }
+
   try{
+    // ① 예치금을 실제로 이체 — L1이 재계산하는 진짜 잔액으로만 판정한다
+    // (여기서 실패하면 아래 gdc_deposits insert 자체를 하지 않는다).
+    const signedTx = await wallet.sign({
+      outputs:     [{ recipient_guid: GDC_DEPOSIT_VAULT_GUID, amount: a }],
+      items:       [],
+      seller_guid: GDC_DEPOSIT_VAULT_GUID,
+    });
+    const txRes = await fetch(`${PROXY_BASE}/biz/order`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        tx:               signedTx.tx,
+        tx_hash:          signedTx.tx_hash,
+        buyer_sig:        signedTx.buyer_sig,
+        buyer_public_key: signedTx.buyer_public_key,
+        prev_settle_hash: signedTx.prev_settle_hash,
+        from_guid:        GUID,
+        seller_guid:      GDC_DEPOSIT_VAULT_GUID,
+        memo:             `GDC 예금 개설 (${p})`,
+        session_id:       signedTx.tx_hash,
+      }),
+    });
+    const txData = await txRes.json().catch(() => ({}));
+    if (!txRes.ok || !txData.ok) {
+      alert(`⚠️ 예치금 이체 실패: ${txData.detail || txData.error || txRes.status}`);
+      return;
+    }
+    if (txData.buyer_claim) {
+      try {
+        await wallet.redeemClaim({
+          block_hash: txData.block_hash, block_id: txData.block_id,
+          tx_hash: txData.tx_hash, claims: [txData.buyer_claim],
+        });
+      } catch (e) { console.warn('[GDC] 예금 이체 로컬 반영 실패(이체 자체는 완료됨):', e.message); }
+    }
+
+    // ② 이체가 실제로 성공한 뒤에만 예금 메타데이터 기록
     const r=await fetch(`${S}/rest/v1/gdc_deposits`,{method:'POST',headers:{...H,'Prefer':'return=minimal'},
-      body:JSON.stringify({user_guid:GUID,product_type:p,principal:a,interest_rate:DEP[p]})});
+      body:JSON.stringify({
+        user_guid:GUID, product_type:p, principal:a, interest_rate:DEP[p],
+        vault_tx_hash: txData.tx_hash,
+      })});
     if(r.ok||r.status===201){
       // PDV — 예금 개설 기록
       const depNow = new Date().toISOString();
@@ -735,13 +797,20 @@ async function openDep(){
         what: {
           summary: `GDC 예금 개설 ₮${a.toLocaleString()} (${p})`,
         },
-        how:  { method: 'GDC 예금 개설 (gdc_deposits)' },
+        how:  { method: 'GDC 예금 개설 (L1 /biz/order → gdc-deposit-vault)' },
         why:  { goal: '이자 수익 목적 예금' },
       });
-      alert('예금 개설 완료');
+      alert('예금 개설 완료 — ₮' + a.toLocaleString() + '이 예치됐습니다.');
       goScr('scr-home');
+      await loadHome();
+    } else {
+      // ★ 이체는 이미 성공했는데 메타데이터 기록만 실패한 경우 — 돈은
+      // 안전하게 vault에 있지만(잃어버리지 않음) 예금 목록에 안 뜬다.
+      // 조용히 넘기지 않고 tx_hash를 명확히 보여준다(수동 대사용).
+      alert(`⚠️ 이체는 완료됐지만(tx: ${txData.tx_hash}) 예금 기록 저장에 실패했습니다.\n` +
+            'gdc_deposits 테이블 적용 필요\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.\n' +
+            '이 tx_hash를 기록해두고 문의해 주세요 — 자금은 안전합니다.');
     }
-    else alert('gdc_deposits 테이블 적용 필요\nsql/01_gdc_schema.sql을 Supabase에 적용하세요.');
   }catch(e){alert('오류: '+e.message);}
 }
 
