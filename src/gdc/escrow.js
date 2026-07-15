@@ -5,6 +5,14 @@
  * 근거: GDC §1.2 K-Law 판결 → 스마트 컨트랙트 자동 반영
  */
 
+// (2026-07-15: hondi.net 크로스오리진 시도했다가 되돌림 — event-bus.js는
+//  이 저장소의 src/gdc/*.js(currencyPool/dao/offlineQueue/tokenomics)
+//  만 쓰는 gdc 고유 유틸리티다. gopang 쪽엔 이제 이 값을 쓰는 코드가
+//  없어(GDC 모듈 전체가 이 저장소로 이관됨) "드리프트"라는 개념 자체가
+//  성립하지 않는다 — 크로스오리진으로 gopang의 K-Law 등 무관한 범용
+//  상수까지 끌고 오는 부수효과만 생겨 로컬 사본으로 되돌렸다.
+//  gopang-wallet.js/pdv-history-client.js처럼 "어디서 실행되든 반드시
+//  동일해야 하는" 파일에만 크로스오리진을 적용한다.)
 import { EventBus, EVENTS } from '../core/event-bus.js'
 
 const _escrows = new Map()  // escrowId → { amount, condition, status, msgId }
