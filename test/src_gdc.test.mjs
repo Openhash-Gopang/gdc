@@ -5,7 +5,7 @@ import { calcInflationRate, calcNewIssuance, burn, BURN_PATH, getTotalBurned, _r
 // 2026-07-18 법적 검토로 v2(사용자 간 매칭 중개, 비custodial)로 전면
 // 재설계됐다 — 아래 v1 전용 테스트는 제거했다. v2 테스트는
 // test/activated_features.test.mjs 참고.
-import { createProposal, vote, finalizeProposal, _resetDAO } from '../src/gdc/dao.js';
+
 import { createVault, calcExpectedVolatility, VAULT_ALLOCATION, _resetVaults } from '../src/gdc/smartVault.js';
 import { createEscrow, executeFromKLaw, _resetEscrows } from '../src/gdc/escrow.js';
 
@@ -41,33 +41,12 @@ describe('tokenomics.js', () => {
   });
 });
 
-describe('dao.js', () => {
-  test('blocks OWNERSHIP_TRANSFER proposals (DAWN principle)', () => {
-    _resetDAO();
-    assert.throws(() => createProposal('p1', 't', 'u1', { type: 'OWNERSHIP_TRANSFER' }));
-  });
-  test('vote requires MIN_STAKE_VOTE=1000', () => {
-    _resetDAO();
-    createProposal('p2', 't2', 'u1');
-    const r = vote('p2', 'u2', 999, 'yes');
-    assert.equal(r.success, false);
-  });
-  test('BUG CHECK: vote() trusts caller-supplied stakeGDC with no server-side balance check', () => {
-    _resetDAO();
-    createProposal('p3', 't3', 'u1');
-    // vote() trusts the caller-supplied stakeGDC with no server-side balance check against actual GDC holdings
-    const r = vote('p3', 'u2', 1000000, 'yes'); // any caller can claim any stake
-    assert.equal(r.success, true, 'vote() has no mechanism to verify stakeGDC against real balance -- self-reported stake is trusted');
-  });
-  test('finalizeProposal: tie (yes===no) resolves to REJECTED', () => {
-    _resetDAO();
-    createProposal('p4', 't4', 'u1');
-    vote('p4', 'a', 1000, 'yes');
-    vote('p4', 'b', 1000, 'no');
-    const f = finalizeProposal('p4');
-    assert.equal(f.status, 'REJECTED');
-  });
-});
+// dao.js v1(메모리 Map, 자기신고 stakeGDC 신뢰)은 2026-07-18 서버 연동
+// v2로 재작성됐다 — 그때 발견한 버그("BUG CHECK: vote() trusts
+// caller-supplied stakeGDC")는 서버가 실제 잔액을 재조회하는 방식으로
+// 수정됐다. v1 전용 테스트는 제거 — v2 테스트는 test/dao_client.test.mjs
+// (클라이언트)와 gopang 저장소 test/gdc_dao.test.mjs(서버, 조작된
+// stake_gdc가 무시되는지까지 검증) 참고.
 
 describe('smartVault.js', () => {
   test('all VAULT_ALLOCATION rows sum to 1.0', () => {
