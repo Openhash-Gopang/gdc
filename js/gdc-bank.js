@@ -94,10 +94,39 @@ async function _pdv(userGuid, recordType, summary, extra) {
   });
 }
 
-// 인출(closeDeposit)은 법적 문제와 무관한 기술적 공백이다 — worker.js에
-// 예치금고→사용자 반환 엔드포인트가 아직 없다(POST /biz/gdc-deposit,
-// GET /biz/gdc-deposits만 존재). 별도 세션에서 서버 엔드포인트부터
-// 신설해야 한다. 여기서 가짜로 구현하지 않는다.
+// ── 예치 인출(해지) ──────────────────────────────────────────
+// 2026-07-18: worker.js에 POST /biz/gdc-deposit-close 신설(vault→user
+// 반환 블록을 서버 관리자 권한으로 생성 — vault는 실제 개인키가 없는
+// 시스템 계정이라 사용자처럼 서명할 수 없음, mint와 동일 패턴).
+// 본인 확인을 위해 사용자 지갑 서명이 필요하다.
+export async function closeDeposit({ userGuid, depositId }) {
+  const wallet = window.gopangWallet;
+  if (!wallet || typeof wallet.signPayload !== 'function' || wallet.guid !== userGuid) {
+    throw new Error('[GDC] closeDeposit: 지갑 미초기화 또는 guid 불일치');
+  }
+  const ts = String(Date.now());
+  const sigMsg = `gdc-deposit-close:${userGuid}:${wallet.publicKeyB64u}:${ts}`;
+  const signature = await wallet.signPayload(sigMsg);
+
+  const res = await fetch(`${WORKER_URL}/biz/gdc-deposit-close`, {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      user_guid: userGuid, deposit_id: depositId,
+      pubkey: wallet.publicKeyB64u, signature, ts,
+    }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok || !data.ok) {
+    throw new Error(data.detail || data.error || `예치 인출 실패 (HTTP ${res.status})`);
+  }
+
+  await _pdv(userGuid, 'gdc_deposit_withdraw',
+    `예치 인출 ₮${data.amount.toLocaleString()}`,
+    { depositId, amount: data.amount, txHash: data.tx_hash });
+
+  return { amount: data.amount, txHash: data.tx_hash };
+}
 
 /* ════════════════════════════════════════════════════════════
  * 🔒 LEGAL-HOLD — 아래는 이자 지급·대출 원본 로직(2026-07-17 이전

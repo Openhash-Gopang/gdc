@@ -40,6 +40,9 @@ function installMocks() {
         }),
       };
     }
+    if (u.includes('/biz/gdc-deposit-close')) {
+      return { ok: true, json: async () => ({ ok: true, amount: 10000, tx_hash: 'return-tx-1' }) };
+    }
     if (u.includes('/biz/gdc-deposit') && !u.includes('gdc-deposits')) {
       return { ok: true, json: async () => ({ ok: true, id: 'dep-1' }) };
     }
@@ -51,6 +54,8 @@ function installMocks() {
     }
     throw new Error('예상치 못한 fetch 호출: ' + u);
   };
+  global.window.gopangWallet.publicKeyB64u = 'pubkey-stub';
+  global.window.gopangWallet.signPayload = async (msg) => 'sig-for:' + msg;
 }
 
 describe('gdc-bank.js openDeposit() 실제 흐름 (fetch/wallet mock)', () => {
@@ -83,5 +88,25 @@ describe('gdc-bank.js openDeposit() 실제 흐름 (fetch/wallet mock)', () => {
     const items = await listDeposits('user-guid-1');
     assert.equal(items.length, 1);
     assert.equal(items[0].interest_rate, 0);
+  });
+
+  test('closeDeposit이 지갑 서명을 붙여 /biz/gdc-deposit-close를 호출하고 원금을 반환', async () => {
+    const { closeDeposit } = await import('../js/gdc-bank.js?t=' + Date.now());
+    const result = await closeDeposit({ userGuid: 'user-guid-1', depositId: 'dep-1' });
+    assert.equal(result.amount, 10000);
+
+    const closeReq = capturedRequests.find(r => r.url.includes('/biz/gdc-deposit-close'));
+    assert.ok(closeReq, '인출 요청이 전송되어야 함');
+    assert.equal(closeReq.body.user_guid, 'user-guid-1');
+    assert.equal(closeReq.body.deposit_id, 'dep-1');
+    assert.ok(closeReq.body.signature, '서명이 포함되어야 함(본인 확인 없이 인출 불가)');
+  });
+
+  test('지갑이 준비되지 않으면 closeDeposit은 즉시 실패한다', async () => {
+    const savedWallet = global.window.gopangWallet;
+    global.window.gopangWallet = null;
+    const { closeDeposit } = await import('../js/gdc-bank.js?t=' + Date.now());
+    await assert.rejects(() => closeDeposit({ userGuid: 'user-guid-1', depositId: 'dep-1' }), /지갑/);
+    global.window.gopangWallet = savedWallet;
   });
 });
