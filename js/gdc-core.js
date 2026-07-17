@@ -4,13 +4,14 @@
 //       PDV는 Worker /pdv/report 경유, gdc_settle_ledger RPC 사용
 // ══════════════════════════════════════════════════════════════
 
-import { SUPABASE_URL, SUPABASE_KEY, WORKER_URL } from '../config.js';
+import { WORKER_URL } from '../config.js';
 
-const H = {
-  'apikey': SUPABASE_KEY,
-  'Authorization': 'Bearer ' + SUPABASE_KEY,
-  'Content-Type': 'application/json',
-};
+// 2026-07-18: SUPABASE_URL/KEY 및 그걸 쓰던 H 헤더 객체를 제거했다 —
+// 이 파일의 실사용 함수(getBalance/getFinancials/settleLedger/transfer)는
+// 이미 전부 WORKER_URL(L1) 경유로 재작성돼 있었고, Supabase를 쓰던
+// 마지막 함수(_ledger, 아래 참고)는 어디서도 호출되지 않는 죽은
+// 코드였다 — config.js 부재로 로드 자체가 깨져 있어 지금까지 드러나지
+// 않았을 뿐이다.
 
 // ── 서명된 요청 공용 헬퍼 ────────────────────────────────────
 // 2026-07-14 신설 — "Supabase는 더 이상 사용하면 안됩니다" 지시 반영.
@@ -197,27 +198,6 @@ export async function transfer({ fromGuid, toGuid, amount, memo, sessionId }) {
   };
 }
 
-// ── fs_ledger 기록 (내부) — 표준 코드 사용 ───────────────────
-async function _ledger({ txId, guid, counterpart, direction, amount, fsAccount, source, memo, txAt }) {
-  return fetch(`${SUPABASE_URL}/rest/v1/fs_ledger`, {
-    method: 'POST',
-    headers: { ...H, 'Prefer': 'return=minimal' },
-    body: JSON.stringify({
-      tx_id:     txId,
-      guid,
-      counterpart,
-      direction,
-      amount,
-      fs_account: fsAccount,   // 표준 코드: bs-cash, pl-revenue 등
-      source:     source || 'gdc',
-      item_name:  memo,
-      quantity:   1,
-      memo,
-      tx_at:      txAt,
-    }),
-  });
-}
-
 // ── PDV 기록 — Worker /pdv/report 경유 (P2 원칙) ─────────────
 async function _pdvViaWorker({ ipv6, sessionId, summary, what, how, why, svc, blockHash, blockId }) {
   const now = new Date().toISOString();
@@ -252,4 +232,4 @@ async function _sha256(str) {
 }
 
 // ── export (외부 모듈용) ──────────────────────────────────────
-export { _pdvViaWorker, _ledger };
+export { _pdvViaWorker };

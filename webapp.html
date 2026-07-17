@@ -268,35 +268,37 @@ svg.ic{display:block;flex-shrink:0}
     <button class="tb-back" onclick="goBack()">
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="15 18 9 12 15 6"/></svg>
     </button>
-    <div class="tb-title">예금 개설</div>
+    <div class="tb-title">GDC 예치·보관 (무이자)</div>
   </div>
   <div class="form-body">
+    <!-- 2026-07-18 법적 검토: 은행법/유사수신행위법상 "예금+이자"는 은행업
+         인가 없이 취급 불가. 이자율 표시·산정 전부 제거하고 무이자
+         보관으로만 운영한다. 이자 지급 UI(구 result-panel: 연이율/일일/
+         월/연 이자)와 상품별 확정금리 옵션은 법률 검토 통과 전까지
+         복구하지 않는다. -->
     <div class="form-panel">
       <div class="form-row">
-        <span class="form-lbl">상품</span>
-        <select class="form-select" id="dep-prod" onchange="calcDep()">
-          <option value="demand">요구불 — 연 3.0%</option>
-          <option value="time_7">7일 정기 — 연 4.0%</option>
-          <option value="time_30">30일 정기 — 연 5.0%</option>
-          <option value="time_365">365일 정기 — 연 6.5%</option>
+        <span class="form-lbl">보관 기간</span>
+        <select class="form-select" id="dep-prod">
+          <option value="demand">요구불 보관</option>
+          <option value="time_7">7일 지정 보관</option>
+          <option value="time_30">30일 지정 보관</option>
+          <option value="time_365">365일 지정 보관</option>
         </select>
       </div>
       <div class="form-row">
         <span class="form-lbl">예치 금액</span>
-        <input class="form-input" id="dep-amt" placeholder="0" type="number" min="1" oninput="calcDep()">
+        <input class="form-input" id="dep-amt" placeholder="0" type="number" min="1">
         <span class="form-unit">₮</span>
       </div>
     </div>
     <div class="result-panel">
-      <div class="result-hd">예상 이자</div>
-      <div class="result-row"><span class="result-key">연이율</span><span class="result-val ok" id="dep-rate">3.0%</span></div>
-      <div class="result-row"><span class="result-key">일일 이자</span><span class="result-val ok" id="dep-daily">₮0</span></div>
-      <div class="result-row"><span class="result-key">월 이자</span><span class="result-val ok" id="dep-monthly">₮0</span></div>
-      <div class="result-row"><span class="result-key">연 이자</span><span class="result-val ok" id="dep-annual">₮0</span></div>
+      <div class="result-hd">안내</div>
+      <div class="result-row"><span class="result-key">이자</span><span class="result-val">없음 (무이자 보관)</span></div>
     </div>
     <button class="btn-primary" onclick="openDep()">
       <svg class="ic" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" aria-hidden="true"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-      예금 개설
+      예치하기
     </button>
     <button class="btn-secondary" onclick="goBack()">취소</button>
   </div>
@@ -701,16 +703,9 @@ async function doTransfer(){
   }
 }
 
-const DEP={demand:.030,time_7:.040,time_30:.050,time_365:.065};
-function calcDep(){
-  const p=document.getElementById('dep-prod').value;
-  const a=parseFloat(document.getElementById('dep-amt').value)||0;
-  const r=DEP[p]||.03;
-  document.getElementById('dep-rate').textContent=(r*100).toFixed(1)+'%';
-  document.getElementById('dep-daily').textContent=fmtT(Math.round(a*r/365*100)/100);
-  document.getElementById('dep-monthly').textContent=fmtT(Math.round(a*r/12*100)/100);
-  document.getElementById('dep-annual').textContent=fmtT(Math.round(a*r*100)/100);
-}
+// 2026-07-18 법적 검토 — DEP{} 확정금리 테이블과 calcDep() 이자 계산기를
+// 제거했다(은행법/유사수신행위법 검토 통과 전까지 이자 표시 금지).
+// 원본은 git 이력(이 커밋의 부모)에 보존.
 
 // 2026-07-15 재작성 — 잔액 미차감 버그 수정. 지금까지는 잔액 부족
 // 검사(if(a>cash))만 하고 실제로는 아무것도 안 빠져나갔다 — 예금을
@@ -781,9 +776,12 @@ async function openDep(){
     //  L1 컬렉션에 못 쓰므로 신규 Worker 엔드포인트(/biz/gdc-deposit)를
     //  거친다 — 이 엔드포인트가 vault_tx_hash를 blocks 원장과 대조해
     //  검증한 뒤에만 기록한다.)
+    // 2026-07-18 법적 검토: 무이자 고정. interest_rate를 0 이외의 값으로
+    // 바꾸지 말 것 — 이 필드가 0이 아니면 예금+확정이자 약정으로 해석될
+    // 수 있다(유사수신행위법 검토 통과 전까지 절대 금지).
     const r=await fetch(`${PROXY_BASE}/biz/gdc-deposit`,{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        user_guid:GUID, product_type:p, principal:a, interest_rate:DEP[p],
+        user_guid:GUID, product_type:p, principal:a, interest_rate:0,
         vault_tx_hash: txData.tx_hash,
       })});
     if(r.ok){
@@ -802,7 +800,7 @@ async function openDep(){
           summary: `GDC 예금 개설 ₮${a.toLocaleString()} (${p})`,
         },
         how:  { method: 'GDC 예금 개설 (L1 /biz/order → gdc-deposit-vault)' },
-        why:  { goal: '이자 수익 목적 예금' },
+        why:  { goal: 'GDC 보관(무이자)' },
       });
       alert('예금 개설 완료 — ₮' + a.toLocaleString() + '이 예치됐습니다.');
       goScr('scr-home');
@@ -817,40 +815,13 @@ async function openDep(){
   }catch(e){alert('오류: '+e.message);}
 }
 
+// 🔒 LEGAL-HOLD (2026-07-18) — 대부업법상 미등록 대부업 영업 소지로
+// 대출 신청 접수 자체를 비활성화한다. 실제 자금 실행은 이전에도 없었지만
+// ("gdc_loans 테이블 적용 후 실행됩니다"), 신청 접수·한도 계산 표시 자체가
+// 대출 상품을 광고/모집하는 행위로 해석될 수 있어 신청 접수도 막는다.
+// 원본은 git 이력(이 커밋의 부모)에 보존 — 법률 검토 통과 후 복구할 것.
 async function applyLoan(){
-  const a=parseFloat(document.getElementById('ln-amt').value)||0;
-  const term=parseInt(document.getElementById('ln-term')?.value||'12');
-  if(a<=0){alert('대출 금액을 입력하세요.');return;}
-  const equity=parseFloat(_profile.extra?.fs?.bs?.['bs-equity']||'0')||0;
-  const maxLoan=Math.floor(equity*0.7);
-  if(maxLoan<=0){
-    alert('재무제표(bs-equity)가 없어 대출 한도를 계산할 수 없습니다.');
-    return;
-  }
-  if(a>maxLoan){
-    alert(`대출 한도 초과\n최대 ${fmtT(maxLoan)} (순자산의 70%)`);
-    return;
-  }
-
-  // PDV — 대출 신청 기록
-  const loanNow = new Date().toISOString();
-  await sendPDV(GUID, { ipv6: GUID, level: 'L0', via: 'loan' }, {
-    svc:  'gdc',
-    type: 'transaction',
-    who: {
-      ipv6: GUID, role: 'user',
-      level: 'L0', recipients: ['gopang-pdv'],
-    },
-    when: { period_start: loanNow, period_end: loanNow },
-    where: { svc_url: 'https://gdc.hondi.net/webapp.html' },
-    what: {
-      summary: `GDC 대출 신청 ₮${a.toLocaleString()} (${term}개월)`,
-    },
-    how:  { method: 'GDC 대출 신청 (재무제표 신용평가)' },
-    why:  { goal: '대출 자금 조달' },
-  });
-
-  alert(`대출 신청이 기록됐습니다.\n금액: ${fmtT(a)}\n기간: ${term}개월\n한도: ${fmtT(maxLoan)}\n\ngdc_loans 테이블 적용 후 실행됩니다.`);
+  alert('대출 기능은 법률 검토가 완료되기 전까지 제공되지 않습니다.');
 }
 
 async function runCredit(){
@@ -865,6 +836,13 @@ async function runCredit(){
   const debt=n(bs['bs-debt']),equity=n(bs['bs-equity']);
   const rev=n(pl['pl-revenue']),cogs=n(pl['pl-cogs']),opex=n(pl['pl-opex']);
   const cfOp=n(cf['cf-op']);
+  // 🔒 LEGAL-HOLD (2026-07-18) 지점 — 아래 신용점수·등급·대출금리·한도
+  // 산정 및 화면 표시는 대출 상품과 직결돼 있어 법률 검토 통과 전까지
+  // 실행하지 않는다. 원본은 git 이력(이 커밋의 부모)에 보존.
+  btn.disabled=false; txt.textContent='신용평가 시작';
+  alert('신용평가 기능은 대출 상품과 함께 법률 검토가 완료되기 전까지 제공되지 않습니다.');
+  return;
+  /* eslint-disable no-unreachable */
   const liq=ap>0?(cash+ar)/ap:10;
   const dbt=equity>0?debt/equity:99;
   const margin=rev>0?(rev-cogs-opex)/rev:0;

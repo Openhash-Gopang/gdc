@@ -1,133 +1,32 @@
 ﻿// ══════════════════════════════════════════════════════════════
-// gdc-credit.js — 재무제표 기반 신용평가 (목표: 0.1초 이내)
+// gdc-credit.js — 신용평가·대출한도 산정 모듈
+//
+// 🔒 LEGAL-HOLD (2026-07-18) — 대출 기능 전체가 법률 검토 대상이라
+// (대부업법 미등록 영업 소지), 신용평가 결과가 실제로 쓰일 곳이
+// 없다. 신용평가 자체는 대출과 분리하면 문제없을 수 있으나, 이
+// 파일이 전제하는 재무상태표(fs.bs: bs-cash/bs-ar/bs-ap/bs-debt/
+// bs-equity/bs-inventory) 필드가 서버 어디에도 기록되지 않는다는
+// 사실도 별도로 확인됨(gopang worker.js handleSettleLedger는
+// pl-*만 씀, bs-*는 존재하지 않음) — 법률 검토와 별개로 스키마
+// 자체가 없어 지금은 실행해도 항상 0으로만 나온다.
+//
+// 활성화 조건: (1) 대출 기능 법률 자문 통과 (2) bs-* 재무상태표
+// 필드를 실제로 채우는 서버 로직 신설. 둘 다 될 때까지 호출 시
+// 명시적 오류를 던진다 — 조용히 잘못된 값(항상 0/최하등급)을
+// 반환해 UI가 오작동하는 걸 막기 위함.
 // ══════════════════════════════════════════════════════════════
 
-import { SUPABASE_URL, SUPABASE_KEY } from '../config.js';
-
-const H = { 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY };
-
-// 신용등급별 대출금리
-const GRADE_RATES = {
-  AAA: 0.005, AA: 0.010, A:  0.020,
-  BBB: 0.030, BB: 0.040, C:  0.050,
-};
-
-// 신용등급별 대출한도 배율 (순자산 대비)
-const GRADE_LTV = {
-  AAA: 0.70, AA: 0.65, A:  0.60,
-  BBB: 0.50, BB: 0.35, C:  0.20,
-};
-
-// ── 메인: 신용평가 ───────────────────────────────────────────
-export async function evaluateCredit(userGuid) {
-  const t0 = performance.now();
-
-  // 재무제표 로드
-  const res  = await fetch(
-    `${SUPABASE_URL}/rest/v1/user_profiles?guid=eq.${userGuid}&select=extra&limit=1`,
-    { headers: H }
+export async function evaluateCredit() {
+  throw new Error(
+    '[GDC-CREDIT] 법적 검토 미완료로 비활성화됨(대부업법 등록 여부 확인 필요) — ' +
+    '재무상태표(bs-*) 서버 스키마도 아직 없음. LEGAL-HOLD, 활성화 금지.'
   );
-  const rows = await res.json();
-  const fs   = rows[0]?.extra?.fs || {};
-  const bs   = fs.bs || {};
-  const pl   = fs.pl || {};
-  const cf   = fs.cf || {};
-
-  const num = k => parseFloat(k || '0') || 0;
-
-  // 재무 지표 추출
-  const cash     = num(bs['bs-cash']);
-  const ar       = num(bs['bs-ar']);
-  const ap       = num(bs['bs-ap']);
-  const debt     = num(bs['bs-debt']);
-  const equity   = num(bs['bs-equity']);
-  const inventory= num(bs['bs-inventory']);
-  const revenue  = num(pl['pl-revenue']);
-  const cogs     = num(pl['pl-cogs']);
-  const opex     = num(pl['pl-opex']);
-  const cfOp     = num(cf['cf-op']);
-
-  // 4대 신용 지표 계산
-  const liquidAssets  = cash + ar;
-  const liquidityRatio = ap > 0 ? liquidAssets / ap : 10.0;         // 유동비율 (높을수록 좋음)
-  const debtRatio      = equity > 0 ? debt / equity : 99.0;         // 부채비율 (낮을수록 좋음)
-  const opMargin       = revenue > 0
-    ? (revenue - cogs - opex) / revenue : 0.0;                       // 영업이익률 (높을수록 좋음)
-  const cfRatio        = debt > 0 ? cfOp / debt : (cfOp > 0 ? 5.0 : 0.0); // 현금흐름비율
-
-  // 점수 계산 (각 25점 만점, 총 100점 → 1000점 환산)
-  const s1 = Math.min(25, liquidityRatio  * 10);   // 유동비율 가중치 25%
-  const s2 = Math.min(25, Math.max(0, (2.0 - debtRatio) * 12.5)); // 부채비율 25%
-  const s3 = Math.min(30, opMargin  * 100);         // 영업이익률 가중치 30%
-  const s4 = Math.min(20, cfRatio   * 5);           // 현금흐름비율 20%
-  const rawScore = Math.round((s1 + s2 + s3 + s4) * 10);
-  const creditScore = Math.min(1000, Math.max(0, rawScore));
-
-  // 등급 결정
-  const grade = creditScore >= 950 ? 'AAA'
-              : creditScore >= 900 ? 'AA'
-              : creditScore >= 800 ? 'A'
-              : creditScore >= 700 ? 'BBB'
-              : creditScore >= 600 ? 'BB'
-              : 'C';
-
-  const loanRate   = GRADE_RATES[grade];
-  const maxLoanAmt = Math.floor(equity * GRADE_LTV[grade]);
-  const elapsed    = performance.now() - t0;
-
-  const result = {
-    userGuid,
-    creditScore,
-    grade,
-    loanRate,
-    loanRatePct: (loanRate * 100).toFixed(1) + '%',
-    maxLoanAmount: maxLoanAmt,
-    indicators: {
-      liquidityRatio: +liquidityRatio.toFixed(4),
-      debtRatio:      +debtRatio.toFixed(4),
-      opMargin:       +opMargin.toFixed(4),
-      cfRatio:        +cfRatio.toFixed(4),
-    },
-    scores: { s1, s2, s3, s4 },
-    evaluatedAt: new Date().toISOString(),
-    elapsedMs: +elapsed.toFixed(1),
-  };
-
-  // 신용평가 이력 저장
-  await _saveHistory(userGuid, result);
-
-  return result;
 }
 
-// ── 신용평가 이력 저장 ────────────────────────────────────────
-async function _saveHistory(userGuid, r) {
-  return fetch(`${SUPABASE_URL}/rest/v1/gdc_credit_history`, {
-    method: 'POST',
-    headers: { ...H, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
-    body: JSON.stringify({
-      user_guid:       userGuid,
-      credit_score:    r.creditScore,
-      credit_grade:    r.grade,
-      loan_rate:       r.loanRate,
-      liquidity_ratio: r.indicators.liquidityRatio,
-      debt_ratio:      r.indicators.debtRatio,
-      op_margin:       r.indicators.opMargin,
-      cf_ratio:        r.indicators.cfRatio,
-      evaluated_at:    r.evaluatedAt,
-    })
-  });
-}
-
-// ── 신용등급 설명 ─────────────────────────────────────────────
-export function gradeDescription(grade) {
-  return {
-    AAA: '최우수 — 최저 금리 적용, 최대 한도',
-    AA:  '우수 — 낮은 금리, 높은 한도',
-    A:   '양호 — 표준 금리 적용',
-    BBB: '보통 — 중간 금리, 제한적 한도',
-    BB:  '주의 — 높은 금리, 낮은 한도',
-    C:   '위험 — 최고 금리, 최소 한도',
-  }[grade] || '평가 불가';
-}
-
-
+/* ════════════════════════════════════════════════════════════
+ * 🔒 LEGAL-HOLD — 원본 재무제표 기반 신용평가 로직(GRADE_RATES,
+ * GRADE_LTV, 4대 신용지표 계산 등)은 git 이력(이 커밋의 부모)에
+ * 보존돼 있다. Supabase(user_profiles.extra.fs) 직접 조회 방식이라
+ * 그대로도 실행 불가능한 상태였다 — 법률 검토 통과 후 재작성 시
+ * bs-* 필드를 실제로 채우는 서버 엔드포인트부터 먼저 만들 것.
+ * ════════════════════════════════════════════════════════════ */
