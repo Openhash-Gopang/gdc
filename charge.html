@@ -95,13 +95,44 @@ function showErr(msg) {
 
 // gopang-wallet.js가 이 페이지 로드 시 비동기 자동초기화한다(webapp.html 등과
 // 동일 관례) — 준비될 때까지 짧게 폴링해 기다린다.
+//
+// (2026-07-23 실사용 검증 중 발견 — PC/미확인 기기에서는 gopang-wallet.js가
+//  지갑을 아예 자동 생성하지 않고 window.gopangWallet을 null로 남긴 채
+//  window.gopangWalletNeedsSetup=true만 세운다("PC가 먼저 키를 만들어 진짜
+//  계정 키와 어긋나는 사고" 방지 — gopang-wallet.js 주석 참고). 기존 코드는
+//  이 경우와 "아직 로딩 중"을 구분하지 못해 5초 뒤 무조건 "잠시 후 다시
+//  시도"라는 틀린 안내를 보여줬다 — 실제로는 몇 초를 더 기다려도 절대
+//  채워지지 않는 상태였다. 지갑이 있는데 못 여는 경우(gopangWalletLocked)도
+//  마찬가지로 별도 안내가 필요해 함께 처리한다.)
 async function waitForWallet(timeoutMs = 5000) {
   const t0 = Date.now();
   while (!window.gopangWallet?.guid) {
-    if (Date.now() - t0 > timeoutMs) return null;
+    if (window.gopangWalletNeedsSetup) return { guid: null, reason: 'setup_needed' };
+    if (window.gopangWalletLocked)      return { guid: null, reason: 'locked' };
+    if (Date.now() - t0 > timeoutMs)    return { guid: null, reason: 'timeout' };
     await new Promise(r => setTimeout(r, 100));
   }
-  return window.gopangWallet.guid;
+  return { guid: window.gopangWallet.guid, reason: null };
+}
+
+function guideToDeviceLink() {
+  showErr('');
+  const el = document.getElementById('err');
+  el.innerHTML = '이 기기에는 아직 연결된 지갑이 없습니다. '
+    + '휴대폰에서 가입한 계정을 이 기기로 가져와야 충전을 신청할 수 있어요. '
+    + '<a href="/auth/device-link.html?return=' + encodeURIComponent(location.href) + '" '
+    + 'style="color:#1A73E8;font-weight:600">다른 기기에서 지갑 가져오기 →</a>';
+  el.style.display = 'block';
+}
+
+function guideToWalletRecovery() {
+  showErr('');
+  const el = document.getElementById('err');
+  el.innerHTML = '이 기기에 저장된 지갑을 열 수 없습니다(인증 정보 불일치). '
+    + '<a href="/auth/device-link.html?return=' + encodeURIComponent(location.href) + '" '
+    + 'style="color:#1A73E8;font-weight:600">다른 기기에서 가져오기</a> 또는 '
+    + '설정 화면에서 백업 키로 복구해 주세요.';
+  el.style.display = 'block';
 }
 
 async function loadBalanceBanner(guid) {
@@ -126,8 +157,14 @@ async function submitRequest() {
   const krwAmount = parseInt(amountInput.value, 10);
   if (!krwAmount || krwAmount < 1000) { showErr('최소 1,000원부터 신청 가능합니다.'); return; }
 
-  const guid = userGuid || await waitForWallet();
-  if (!guid) { showErr('지갑을 초기화하는 중입니다. 잠시 후 다시 시도해 주세요.'); return; }
+  let guid = userGuid;
+  if (!guid) {
+    const w = await waitForWallet();
+    if (w.reason === 'setup_needed') { guideToDeviceLink(); return; }
+    if (w.reason === 'locked')       { guideToWalletRecovery(); return; }
+    if (!w.guid) { showErr('지갑을 초기화하는 중입니다. 잠시 후 다시 시도해 주세요.'); return; }
+    guid = w.guid;
+  }
   userGuid = guid;
 
   const btn = document.getElementById('submit-btn');
@@ -192,8 +229,18 @@ function startPolling(guid, requestId) {
 }
 
 (async function init() {
-  const guid = await waitForWallet();
-  if (guid) { userGuid = guid; loadBalanceBanner(guid); }
+  const w = await waitForWallet();
+  if (w.guid) {
+    userGuid = w.guid;
+    loadBalanceBanner(w.guid);
+  } else if (w.reason === 'setup_needed') {
+    guideToDeviceLink();
+  } else if (w.reason === 'locked') {
+    guideToWalletRecovery();
+  }
+  // reason === 'timeout'인 경우는 페이지 진입 시점엔 조용히 넘어간다 —
+  // 아직 초기화 중일 수 있으므로, 실제 신청 버튼을 누를 때(submitRequest)
+  // 다시 한번 확인해 그때도 안 되면 그때 안내한다.
 })();
 </script>
 </body>
