@@ -122,6 +122,9 @@ table.tbl tr:hover td{background:var(--bg)}
     <a class="sb-item" href="#user-mgmt-anchor">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg><span class="sb-lbl">사용자 관리</span>
     </a>
+    <a class="sb-item" href="#audit-log-anchor">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-12a2 2 0 0 0 -2-2h-2"/><path d="M9 3m0 2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/><path d="M9 12l2 2l4-4"/></svg><span class="sb-lbl">관리자 충전 로그</span>
+    </a>
     <a class="sb-item" href="#">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg><span class="sb-lbl">FIAT POOL</span>
     </a>
@@ -262,6 +265,18 @@ table.tbl tr:hover td{background:var(--bg)}
       </table>
     </div>
 
+    <div class="sec-title" id="audit-log-anchor"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-12a2 2 0 0 0 -2-2h-2"/><path d="M9 3m0 2a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v0a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2z"/><path d="M9 12l2 2l4-4"/></svg>관리자 충전 로그<span style="font-size:11px;font-weight:400;color:var(--t3);margin-left:8px">(2026-07-27 신설 — 콘솔로그 대신 조회 가능한 감사기록)</span></div>
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-hd-left">전체 수동충전 이력(최근 30건)</div>
+        <button onclick="loadAuditLog()" style="font-size:11px;padding:4px 10px;border:.5px solid var(--bd2);border-radius:var(--r);background:var(--sur);color:var(--t2);cursor:pointer">새로고침</button>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>시각</th><th>담당자</th><th>대상 guid</th><th>금액</th><th>메모</th></tr></thead>
+        <tbody id="audit-log-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">불러오는 중…</td></tr></tbody>
+      </table>
+    </div>
+
     <div class="footer-note">GDC 관리자 대시보드 · OpenHash 분산원장 연동 · AI City Inc. 2026</div>
 
     <!-- 사용자 상세 모달 (2026-07-27 신설) — 입금/충전 이력 + 관리자 수동 충전 -->
@@ -276,6 +291,7 @@ table.tbl tr:hover td{background:var(--bg)}
         </div>
 
         <div style="padding:16px 20px;border-bottom:.5px solid var(--bd)">
+          <div id="ud-pending-charge-warning" style="display:none;background:#fef3c7;border:1px solid #fde68a;border-radius:var(--r);padding:10px 12px;margin-bottom:12px;font-size:12px;color:#92400e"></div>
           <div style="font-size:12px;color:var(--t2);margin-bottom:8px">관리자 수동 충전 — 은행 입금 확인 후 사용</div>
           <div style="display:flex;gap:8px;align-items:center">
             <input id="ud-charge-amount" type="number" min="1" step="1" placeholder="입금액(원)"
@@ -321,9 +337,11 @@ const PROD={demand:'요구불',time_7:'7일 정기',time_30:'30일 정기',time_
 const STATUS={active:'<span class="chip chip-grn">활성</span>',matured:'<span class="chip chip-gld">만기</span>',closed:'<span class="chip chip-gray">종료</span>',repaid:'<span class="chip chip-grn">상환완료</span>',overdue:'<span class="chip chip-red">연체</span>'};
 
 let _udCurrentGuid = null;
+let _udChargeIdemKey = null; // 2026-07-27: 충전 시도 하나당 고유 멱등키(중복 발행 방지)
 
 async function openUserDetail(guid, handle){
   _udCurrentGuid = guid;
+  _udChargeIdemKey = null; // 사용자 전환 시 이전 시도의 키를 재사용하지 않도록 초기화
   document.getElementById('ud-handle').textContent = handle ? '@'+handle : '(handle 없음)';
   document.getElementById('ud-guid').textContent = guid;
   document.getElementById('ud-charge-amount').value = '';
@@ -331,6 +349,27 @@ async function openUserDetail(guid, handle){
   document.getElementById('ud-charge-status').textContent = '';
   document.getElementById('user-detail-modal').style.display = 'flex';
   await loadUserHistory(guid);
+  await checkPendingChargeRequests(guid); // 2026-07-27: 이중지급 방지 — 대기중 charge.html 신청 표시
+}
+
+// 2026-07-27 신설 — /biz/charge-status는 인증 없이 guid만으로 해당
+// 사용자의 최근 충전 신청 20건을 반환한다(기존 charge.html이 본인
+// 확인용으로 쓰던 것과 같은 엔드포인트, 새 백엔드 코드 불필요).
+// pending 상태가 하나라도 있으면 경고 박스를 띄운다 — 자동 차단은
+// 하지 않고 정보만 보여준다(진짜 별개의 두 번째 입금일 수도 있음).
+async function checkPendingChargeRequests(guid){
+  const box = document.getElementById('ud-pending-charge-warning');
+  box.style.display = 'none';
+  try{
+    const res = await fetch(`${PROXY_BASE}/biz/charge-status?guid=${encodeURIComponent(guid)}`);
+    const data = await res.json().catch(()=>null);
+    if(!res.ok || !data?.ok) return;
+    const pending = (data.requests || []).filter(r => r.status === 'pending');
+    if(!pending.length) return;
+    box.style.display = 'block';
+    box.innerHTML = `⚠️ 이 사용자의 <b>대기 중인 충전 신청</b>이 ${pending.length}건 있습니다 — 지금 확인하려는 입금이 이미 아래 신청과 같은 건은 아닌지 먼저 확인하세요:<br>` +
+      pending.map(r => `· 매칭코드 <b>${r.match_code}</b> · ${fmt(r.requested_krw)}원 · 신청일시 ${r.created ? new Date(r.created).toLocaleString('ko-KR') : '—'}`).join('<br>');
+  } catch(e){ /* 조회 실패는 조용히 무시 — 경고 표시는 보조 정보일 뿐 */ }
 }
 
 function closeUserDetail(){
@@ -390,24 +429,72 @@ async function submitManualCharge(){
   if(!(krwAmount > 0)){ statusEl.textContent = '올바른 금액을 입력하세요.'; return; }
   if(!ADMIN_TOKEN){ statusEl.textContent = '토큰 필요'; return; }
 
+  // 2026-07-27: 버튼을 누를 때마다 새 멱등키를 발급한다 — 같은 클릭이
+  // 재전송돼도(더블클릭·네트워크 재시도) 서버가 같은 결과를 반환하고
+  // 중복 발행하지 않는다. confirm_large 재요청은 같은 키를 재사용해
+  // "확인 후 재요청"도 같은 시도로 취급되게 한다.
+  if(!_udChargeIdemKey) _udChargeIdemKey = (crypto.randomUUID ? crypto.randomUUID() : String(Date.now())+Math.random());
+
   statusEl.textContent = '처리 중…';
   try{
-    const res = await fetch(`${PROXY_BASE}/admin/users/manual-charge`, {
+    const doCharge = async (confirmLarge) => fetch(`${PROXY_BASE}/admin/users/manual-charge`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_TOKEN },
-      body: JSON.stringify({ guid: _udCurrentGuid, krw_amount: krwAmount }),
+      body: JSON.stringify({ guid: _udCurrentGuid, krw_amount: krwAmount, idempotency_key: _udChargeIdemKey, confirm_large: !!confirmLarge }),
     });
-    const data = await res.json().catch(()=>null);
+
+    let res = await doCharge(false);
+    let data = await res.json().catch(()=>null);
+
+    if(res.status === 409 && data?.requires_confirmation){
+      const proceed = confirm(`${data.message}\n\n계속 진행하시겠습니까?`);
+      if(!proceed){ statusEl.textContent = '취소됨.'; _udChargeIdemKey = null; return; }
+      res = await doCharge(true);
+      data = await res.json().catch(()=>null);
+    }
+
     if(!res.ok || !data?.ok){
-      statusEl.textContent = '충전 실패: ' + (data?.error || res.status);
+      statusEl.textContent = '충전 실패: ' + (data?.message || data?.error || res.status);
       return;
     }
-    statusEl.textContent = `✓ ${fmt(data.amount)} GDC 충전 완료 (입금액 ${fmt(data.krw_amount)}원)`;
+    const balTxt = data.balance_after_gdc != null ? ` · 충전 후 잔액 ${fmt(data.balance_after_gdc)} GDC` : '';
+    statusEl.textContent = `✓ ${fmt(data.amount)} GDC 충전 완료 (입금액 ${fmt(data.krw_amount)}원)${balTxt}`;
     document.getElementById('ud-charge-amount').value = '';
     document.getElementById('ud-charge-preview').textContent = '';
+    _udChargeIdemKey = null; // 다음 충전은 새 시도이므로 키 초기화
     await loadUserHistory(_udCurrentGuid); // 이력 즉시 갱신
   } catch(e){
     statusEl.textContent = '오류: ' + e.message;
+  }
+}
+
+async function loadAuditLog(){
+  const tbody = document.getElementById('audit-log-tbody');
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">불러오는 중…</td></tr>';
+  if(!ADMIN_TOKEN){ tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">토큰 필요</td></tr>'; return; }
+  try{
+    const res = await fetch(`${PROXY_BASE}/admin/manual-charges/recent?limit=30`,
+      { headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN } });
+    const data = await res.json().catch(()=>null);
+    if(!res.ok || !data?.ok){
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">조회 실패</td></tr>';
+      return;
+    }
+    if(!data.logs.length){
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">기록이 없습니다.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.logs.map(l => `
+      <tr>
+        <td style="font-size:11px;color:var(--t3)">${l.created ? new Date(l.created).toLocaleString('ko-KR') : '—'}</td>
+        <td style="font-size:12px">${l.admin || '<span style="color:var(--t3)">—</span>'}</td>
+        <td style="font-family:monospace;font-size:11px">${l.target_guid || '—'}</td>
+        <td style="font-family:monospace">${fmt(l.amount_gdc)} GDC</td>
+        <td style="font-size:11px;color:var(--t2)">${l.note || '<span style="color:var(--t3)">—</span>'}</td>
+      </tr>
+    `).join('');
+  } catch(e){
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">오류: '+e.message+'</td></tr>';
   }
 }
 
@@ -423,10 +510,10 @@ async function searchUsers(){
   tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">검색 중…</td></tr>';
   try{
     // 2026-07-27: 이 엔드포인트는 Authorization: Bearer 헤더로 인증한다.
-    // (참고: 위 load()의 /admin/stats?token=... 호출은 쿼리파라미터로
-    // 보내는데, worker.js의 _requireAdmin은 헤더만 확인하므로 그쪽은
-    // 실제로는 인증에 실패하고 있을 가능성이 높다 — 별도 확인·수정 필요.
-    // 이 신규 기능은 그 패턴을 반복하지 않고 올바른 방식을 쓴다.)
+    // (2026-07-27 수정 완료: 기존 load()의 /admin/stats 호출도 원래
+    // ?token=... 쿼리파라미터로 보내던 버그가 있었는데, worker.js의
+    // _requireAdmin은 헤더만 확인하므로 실제로는 계속 인증 실패였다 —
+    // 오늘 헤더 방식으로 통일해 수정했다.)
     const url = `${PROXY_BASE}/admin/users/search?q=${encodeURIComponent(q)}&limit=30`;
     const res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN } });
     const data = await res.json().catch(()=>null);
@@ -463,7 +550,7 @@ async function load(){
     document.getElementById('s-users').textContent='토큰 필요';
   } else {
     try{
-      const rs=await fetch(`${PROXY_BASE}/admin/stats?token=${encodeURIComponent(ADMIN_TOKEN)}`);
+      const rs=await fetch(`${PROXY_BASE}/admin/stats`,{headers:{'Authorization':'Bearer '+ADMIN_TOKEN}});
       const sd=await rs.json();
       document.getElementById('s-users').textContent=sd.ok!==false&&sd.total!=null?sd.total.toLocaleString():'—';
     }catch(e){ document.getElementById('s-users').textContent='—'; }
@@ -585,6 +672,7 @@ async function load(){
 
 (function tick(){document.getElementById('clock').textContent=new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit',second:'2-digit'});setTimeout(tick,1000);})();
 load();setInterval(load,60000);
+loadAuditLog();
 </script>
 </body>
 </html>
