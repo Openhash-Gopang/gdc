@@ -263,6 +263,39 @@ table.tbl tr:hover td{background:var(--bg)}
     </div>
 
     <div class="footer-note">GDC 관리자 대시보드 · OpenHash 분산원장 연동 · AI City Inc. 2026</div>
+
+    <!-- 사용자 상세 모달 (2026-07-27 신설) — 입금/충전 이력 + 관리자 수동 충전 -->
+    <div id="user-detail-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:500;align-items:center;justify-content:center">
+      <div style="background:var(--sur);border-radius:var(--r2);width:min(640px,92vw);max-height:85vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,.25)">
+        <div style="padding:16px 20px;border-bottom:.5px solid var(--bd);display:flex;justify-content:space-between;align-items:center">
+          <div>
+            <div style="font-size:15px;font-weight:600" id="ud-handle">—</div>
+            <div style="font-size:11px;font-family:monospace;color:var(--t3)" id="ud-guid">—</div>
+          </div>
+          <button onclick="closeUserDetail()" style="border:none;background:none;font-size:20px;cursor:pointer;color:var(--t3);line-height:1">×</button>
+        </div>
+
+        <div style="padding:16px 20px;border-bottom:.5px solid var(--bd)">
+          <div style="font-size:12px;color:var(--t2);margin-bottom:8px">관리자 수동 충전 — 은행 입금 확인 후 사용</div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <input id="ud-charge-amount" type="number" min="1" step="1" placeholder="입금액(원)"
+              style="flex:1;font-size:13px;padding:6px 10px;border:.5px solid var(--bd2);border-radius:var(--r);background:var(--bg);color:var(--t1)">
+            <span style="font-size:12px;color:var(--t3)" id="ud-charge-preview"></span>
+            <button onclick="submitManualCharge()" style="font-size:12px;padding:6px 14px;border:none;border-radius:var(--r);background:var(--brand);color:#fff;cursor:pointer;white-space:nowrap">충전 확정</button>
+          </div>
+          <div style="font-size:11px;color:var(--t3);margin-top:6px">현재 환율 1:1(테스트 기간 한정) — 10,000원 입금 시 10,000 GDC(10,000T) 지급됩니다.</div>
+          <div style="font-size:12px;margin-top:8px" id="ud-charge-status"></div>
+        </div>
+
+        <div style="padding:16px 20px">
+          <div style="font-size:12px;color:var(--t2);margin-bottom:8px">입금·사용량 차감 이력</div>
+          <table class="tbl" style="width:100%">
+            <thead><tr><th>구분</th><th>금액</th><th>모델/메모</th><th>시각</th></tr></thead>
+            <tbody id="ud-history-tbody"><tr><td colspan="4" style="text-align:center;padding:16px;color:var(--t3)">불러오는 중…</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 </div>
@@ -286,6 +319,97 @@ const fmtT=n=>'₮'+fmt(n);
 const fmtPct=n=>((+(n||0))*100).toFixed(1)+'%';
 const PROD={demand:'요구불',time_7:'7일 정기',time_30:'30일 정기',time_365:'365일 정기'};
 const STATUS={active:'<span class="chip chip-grn">활성</span>',matured:'<span class="chip chip-gld">만기</span>',closed:'<span class="chip chip-gray">종료</span>',repaid:'<span class="chip chip-grn">상환완료</span>',overdue:'<span class="chip chip-red">연체</span>'};
+
+let _udCurrentGuid = null;
+
+async function openUserDetail(guid, handle){
+  _udCurrentGuid = guid;
+  document.getElementById('ud-handle').textContent = handle ? '@'+handle : '(handle 없음)';
+  document.getElementById('ud-guid').textContent = guid;
+  document.getElementById('ud-charge-amount').value = '';
+  document.getElementById('ud-charge-preview').textContent = '';
+  document.getElementById('ud-charge-status').textContent = '';
+  document.getElementById('user-detail-modal').style.display = 'flex';
+  await loadUserHistory(guid);
+}
+
+function closeUserDetail(){
+  document.getElementById('user-detail-modal').style.display = 'none';
+  _udCurrentGuid = null;
+}
+
+async function loadUserHistory(guid){
+  const tbody = document.getElementById('ud-history-tbody');
+  tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--t3)">불러오는 중…</td></tr>';
+  if(!ADMIN_TOKEN){ tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--t3)">토큰 필요</td></tr>'; return; }
+  try{
+    const res = await fetch(`${PROXY_BASE}/admin/users/history?guid=${encodeURIComponent(guid)}&limit=30`,
+      { headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN } });
+    const data = await res.json().catch(()=>null);
+    if(!res.ok || !data?.ok){
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--t3)">조회 실패</td></tr>';
+      return;
+    }
+    if(!data.history.length){
+      tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--t3)">이력이 없습니다.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.history.map(h => {
+      const isDep = h.type === 'deposit';
+      const label = isDep
+        ? `<span class="chip chip-grn">입금·충전</span>`
+        : `<span class="chip chip-gray">사용량 차감</span>`;
+      const amount = isDep
+        ? `+${fmt(h.amount_gdc)} GDC`
+        : `-${fmt(h.amount_gdc)} GDC`;
+      const detail = isDep
+        ? (h.mint_method ? h.mint_method : (h.memo || '—'))
+        : `${h.model || '—'}${h.cost_krw!=null ? ' · 원가 '+fmtT(h.cost_krw) : ''}`;
+      return `<tr>
+        <td>${label}</td>
+        <td style="font-family:monospace">${amount}</td>
+        <td style="font-size:11px;color:var(--t2)">${detail}</td>
+        <td style="font-size:11px;color:var(--t3)">${h.created ? new Date(h.created).toLocaleString('ko-KR') : '—'}</td>
+      </tr>`;
+    }).join('');
+  } catch(e){
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;padding:16px;color:var(--t3)">오류: '+e.message+'</td></tr>';
+  }
+}
+
+document.getElementById('ud-charge-amount')?.addEventListener('input', function(){
+  const krw = parseInt(this.value, 10);
+  const preview = document.getElementById('ud-charge-preview');
+  preview.textContent = (krw > 0) ? `→ ${fmt(krw)} GDC` : '';
+});
+
+async function submitManualCharge(){
+  const statusEl = document.getElementById('ud-charge-status');
+  const krwAmount = parseInt(document.getElementById('ud-charge-amount').value, 10);
+  if(!_udCurrentGuid){ statusEl.textContent = '사용자가 선택되지 않았습니다.'; return; }
+  if(!(krwAmount > 0)){ statusEl.textContent = '올바른 금액을 입력하세요.'; return; }
+  if(!ADMIN_TOKEN){ statusEl.textContent = '토큰 필요'; return; }
+
+  statusEl.textContent = '처리 중…';
+  try{
+    const res = await fetch(`${PROXY_BASE}/admin/users/manual-charge`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + ADMIN_TOKEN },
+      body: JSON.stringify({ guid: _udCurrentGuid, krw_amount: krwAmount }),
+    });
+    const data = await res.json().catch(()=>null);
+    if(!res.ok || !data?.ok){
+      statusEl.textContent = '충전 실패: ' + (data?.error || res.status);
+      return;
+    }
+    statusEl.textContent = `✓ ${fmt(data.amount)} GDC 충전 완료 (입금액 ${fmt(data.krw_amount)}원)`;
+    document.getElementById('ud-charge-amount').value = '';
+    document.getElementById('ud-charge-preview').textContent = '';
+    await loadUserHistory(_udCurrentGuid); // 이력 즉시 갱신
+  } catch(e){
+    statusEl.textContent = '오류: ' + e.message;
+  }
+}
 
 async function searchUsers(){
   const q = document.getElementById('user-search-q').value.trim();
@@ -317,7 +441,7 @@ async function searchUsers(){
       return;
     }
     tbody.innerHTML = data.users.map(u => `
-      <tr>
+      <tr onclick="openUserDetail('${(u.guid||'').replace(/'/g,"\\'")}','${(u.handle||'').replace(/'/g,"\\'")}')" style="cursor:pointer" title="클릭하여 입금/충전 이력 보기">
         <td>${u.handle ? '@'+u.handle : '<span style="color:var(--t3)">—</span>'}</td>
         <td style="font-family:monospace;font-size:11px">${u.guid || '—'}</td>
         <td>${u.balance_error ? '<span style="color:var(--t3)">조회실패</span>' : fmt(u.balance_gdc)+' GDC'}</td>
