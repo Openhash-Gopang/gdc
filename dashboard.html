@@ -119,6 +119,9 @@ table.tbl tr:hover td{background:var(--bg)}
     <a class="sb-item act" href="dashboard.html">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-6a1 1 0 0 1 1-1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1"/></svg><span class="sb-lbl">종합 대시보드</span>
     </a>
+    <a class="sb-item" href="#user-mgmt-anchor">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg><span class="sb-lbl">사용자 관리</span>
+    </a>
     <a class="sb-item" href="#">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0-18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg><span class="sb-lbl">FIAT POOL</span>
     </a>
@@ -242,6 +245,23 @@ table.tbl tr:hover td{background:var(--bg)}
       </table>
     </div>
 
+    <div class="sec-title" id="user-mgmt-anchor"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0-8 0"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/><path d="M21 21v-2a4 4 0 0 0-3-3.85"/></svg>사용자 관리<span style="font-size:11px;font-weight:400;color:var(--t3);margin-left:8px">(2026-07-27 신설 — 목록·검색만, 수동 충전은 다음 단계)</span></div>
+    <div class="panel">
+      <div class="panel-hd">
+        <div class="panel-hd-left">
+          <input id="user-search-q" type="text" placeholder="handle 또는 guid로 검색 (비우면 최근 가입순)"
+            style="font-size:13px;padding:6px 10px;border:.5px solid var(--bd2);border-radius:var(--r);width:280px;background:var(--sur);color:var(--t1)"
+            onkeydown="if(event.key==='Enter')searchUsers()">
+          <button onclick="searchUsers()" style="margin-left:8px;font-size:12px;padding:6px 14px;border:none;border-radius:var(--r);background:var(--brand);color:#fff;cursor:pointer">검색</button>
+        </div>
+        <span style="font-size:11px;color:var(--t3)" id="user-search-status"></span>
+      </div>
+      <table class="tbl">
+        <thead><tr><th>handle</th><th>guid</th><th>GDC 잔액</th><th>₮ 환산</th><th>가입일</th></tr></thead>
+        <tbody id="user-search-tbody"><tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">검색어를 입력하거나 검색 버튼을 눌러 최근 가입자를 확인하세요.</td></tr></tbody>
+      </table>
+    </div>
+
     <div class="footer-note">GDC 관리자 대시보드 · OpenHash 분산원장 연동 · AI City Inc. 2026</div>
   </div>
 </div>
@@ -266,6 +286,50 @@ const fmtT=n=>'₮'+fmt(n);
 const fmtPct=n=>((+(n||0))*100).toFixed(1)+'%';
 const PROD={demand:'요구불',time_7:'7일 정기',time_30:'30일 정기',time_365:'365일 정기'};
 const STATUS={active:'<span class="chip chip-grn">활성</span>',matured:'<span class="chip chip-gld">만기</span>',closed:'<span class="chip chip-gray">종료</span>',repaid:'<span class="chip chip-grn">상환완료</span>',overdue:'<span class="chip chip-red">연체</span>'};
+
+async function searchUsers(){
+  const q = document.getElementById('user-search-q').value.trim();
+  const statusEl = document.getElementById('user-search-status');
+  const tbody = document.getElementById('user-search-tbody');
+  if(!ADMIN_TOKEN){
+    statusEl.textContent = '토큰 필요 (?token=... 쿼리파라미터로 접속하세요)';
+    return;
+  }
+  statusEl.textContent = '검색 중…';
+  tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">검색 중…</td></tr>';
+  try{
+    // 2026-07-27: 이 엔드포인트는 Authorization: Bearer 헤더로 인증한다.
+    // (참고: 위 load()의 /admin/stats?token=... 호출은 쿼리파라미터로
+    // 보내는데, worker.js의 _requireAdmin은 헤더만 확인하므로 그쪽은
+    // 실제로는 인증에 실패하고 있을 가능성이 높다 — 별도 확인·수정 필요.
+    // 이 신규 기능은 그 패턴을 반복하지 않고 올바른 방식을 쓴다.)
+    const url = `${PROXY_BASE}/admin/users/search?q=${encodeURIComponent(q)}&limit=30`;
+    const res = await fetch(url, { headers: { 'Authorization': 'Bearer ' + ADMIN_TOKEN } });
+    const data = await res.json().catch(()=>null);
+    if(!res.ok || !data?.ok){
+      statusEl.textContent = '조회 실패: ' + (data?.error || res.status);
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">조회 실패</td></tr>';
+      return;
+    }
+    statusEl.textContent = `${data.count}건`;
+    if(!data.users.length){
+      tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">결과가 없습니다.</td></tr>';
+      return;
+    }
+    tbody.innerHTML = data.users.map(u => `
+      <tr>
+        <td>${u.handle ? '@'+u.handle : '<span style="color:var(--t3)">—</span>'}</td>
+        <td style="font-family:monospace;font-size:11px">${u.guid || '—'}</td>
+        <td>${u.balance_error ? '<span style="color:var(--t3)">조회실패</span>' : fmt(u.balance_gdc)+' GDC'}</td>
+        <td>${u.balance_error ? '—' : fmtT(u.balance_krw)}</td>
+        <td style="font-size:11px;color:var(--t3)">${u.created ? new Date(u.created).toLocaleDateString('ko-KR') : '—'}</td>
+      </tr>
+    `).join('');
+  } catch(e){
+    statusEl.textContent = '오류: ' + e.message;
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:20px;color:var(--t3)">오류 발생</td></tr>';
+  }
+}
 
 async function load(){
   // (2026-07-15: Supabase user_profiles → L1 이관. 기존 /admin/stats를
