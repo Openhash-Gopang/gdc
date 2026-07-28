@@ -211,7 +211,7 @@ async function _pdvViaWorker({ ipv6, sessionId, summary, what, how, why, svc, bl
         reporter_svc: 'kgdc',
         who:  { ipv6, role: 'user' },
         when: { period_start: now, period_end: now },
-        where:{ svc_url: 'https://gdc.gopang.net' },
+        where:{ svc_url: 'https://gdc.hondi.net' },
         what: { summary },
         how:  { method: how },
         why:  { goal: why },
