@@ -893,11 +893,23 @@ async function loadUserData(userGuid) {
 /* ── 거래 내역 로드 ──────────────────────────────────────── */
 async function loadTx(userGuid) {
   try {
-    const res  = await fetch(
-      `${S}/rest/v1/fs_ledger?guid=eq.${userGuid}&order=tx_at.desc&limit=100`,
-      { headers: H }
+    // ★2026-08-12 — Supabase fs_ledger 직접 호출 제거, hondi-proxy
+    // /biz/tx-history(handleTxHistory, blocks 컬렉션 기반 재구성) 경유로
+    // 전환. README_SECRETS_INCIDENT.md 참조.
+    const wallet = window.gopangWallet;
+    if (!wallet?.signPayload || !wallet.publicKeyB64u) {
+      console.warn('[GDC] 거래내역 조회 보류 — 지갑 준비 전');
+      return;
+    }
+    const pubkey = wallet.publicKeyB64u;
+    const ts = String(Math.floor(Date.now() / 1000));
+    const signature = await wallet.signPayload(`tx-history:${userGuid}:${pubkey}:${ts}`);
+    const res = await fetch(
+      `${PROXY_BASE}/biz/tx-history?guid=${encodeURIComponent(userGuid)}`
+      + `&pubkey=${encodeURIComponent(pubkey)}&signature=${encodeURIComponent(signature)}&ts=${ts}&limit=100`
     );
-    const rows = await res.json();
+    const data = await res.json().catch(() => ({ items: [] }));
+    const rows = data.items || [];
     if (!Array.isArray(rows) || !rows.length) return;
 
     _allTx = rows.map(r => ({ ...r, _cat: classifyTx(r) }));
@@ -948,5 +960,8 @@ window._onGopangAuth = async function(user) {
 </script>
 
 <script type="module" src="https://hondi.net/auth/subsystem-auth.js"></script>
+<!-- ★2026-08-12 — loadTx()의 서명 인증(/biz/tx-history)에 필요. market 등
+     다른 페이지와 동일 패턴. README_SECRETS_INCIDENT.md 참조. -->
+<script src="https://cdn.jsdelivr.net/gh/Openhash-Gopang/gopang@main/gopang-wallet.js"></script>
 </body>
 </html>
