@@ -310,8 +310,8 @@ table.tbl tr:hover td{background:var(--bg)}
 // "gdc_pool 테이블 미생성" 같은 안내만 계속 뜬다 — 대출/신용평가/
 // 통화풀 기능을 이번에 완성하지 않기로 확정했으므로 그대로 둔다.
 // 이 셋만 Supabase 상수(S/K/H)가 남아있는 이유이기도 하다.
-const S='https://ebbecjfrwaswbdybbgiu.supabase.co';
-const K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImViYmVjamZyd2Fzd2JkeWJiZ2l1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzk1NjE5ODQsImV4cCI6MjA5NTEzNzk4NH0.H2ahQKtWdSke04Pdi3hDY86pdTx7UUKPUpQMlS_zciA';
+const S='' /* -2026-08-12 secret removed, see README_SECRETS_INCIDENT.md */;
+const K='' /* -2026-08-12 secret removed, rotate + migrate to PocketBase, see README_SECRETS_INCIDENT.md */;
 const H={'apikey':K,'Authorization':'Bearer '+K};
 const PROXY_BASE='https://hondi-proxy.tensor-city.workers.dev';
 const ADMIN_TOKEN=new URLSearchParams(location.search).get('token')||'';
