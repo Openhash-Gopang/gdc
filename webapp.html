@@ -1045,9 +1045,13 @@ window.addEventListener('pagehide', () => {
 });
 </script>
 
-<script type="module"
-  src="https://hondi.net/auth/subsystem-auth.js">
+<!-- K-서비스 공용 전화번호 인증 모듈(2026-09-07 부착) — 구 고팡 지갑 SSO
+     (subsystem-auth.js, 크로스 도메인 릴레이 버그로 고장난 상태였음)는
+     전수 폐기 — desktop.html과 동일하게 이 공용 모듈 단독 체제로 전환됨. -->
+<script>
+window.K_AUTH_CONFIG = { serviceLabel: 'GDC' };
 </script>
+<script src="https://hondi.net/auth/k-service-auth-client.js"></script>
 </body>
 </html>
 </body>
