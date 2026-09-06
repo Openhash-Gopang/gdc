@@ -1,610 +1,243 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ko">
 <head>
 <link rel="icon" href="data:,">
-    <script src="https://cdn.jsdelivr.net/gh/Openhash-Gopang/gopang@main/gopang-wallet.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/Openhash-Gopang/gopang@main/gopang-wallet.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>GDC — Gopang Digital Currency</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
 :root{
-  --bg:#f8f9fa;--sur:#fff;
-  --bd:rgba(0,0,0,.1);--bd2:rgba(0,0,0,.18);
-  --t1:#1c1c1e;--t2:#4a4a55;--t3:#9898a6;
-  --brand:#3ecf8e;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.25);
+  --bg:#f6f6f4;--sur:#fff;
+  --bd:rgba(20,24,22,.1);--bd2:rgba(20,24,22,.18);
+  --t1:#181c1a;--t2:#4c534e;--t3:#93998f;
+  --brand:#3ecf8e;--brand-dk:#1f8f5c;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.28);
+  --clause:#1f5c46;--clause-bg:rgba(31,92,70,.06);
   --font:'Noto Sans KR',-apple-system,sans-serif;
   --r:6px;--r2:10px;
+  --measure:640px;
 }
 @media(prefers-color-scheme:dark){
-  :root{--bg:#0f0f0f;--sur:#1c1c1e;--bd:rgba(255,255,255,.1);--bd2:rgba(255,255,255,.2);--t1:#f5f5f7;--t2:#a1a1aa;--t3:#52525b}
+  :root{--bg:#101311;--sur:#191d1a;--bd:rgba(255,255,255,.09);--bd2:rgba(255,255,255,.18);--t1:#f4f5f3;--t2:#a7ada4;--t3:#5c625a;--clause:#5fd6a8;--clause-bg:rgba(95,214,168,.08)}
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{font-family:var(--font);font-size:14px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6}
+body{font-family:var(--font);font-size:14.5px;color:var(--t1);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.65}
 a{text-decoration:none;color:inherit}
-.ti{line-height:1}
+.container{max-width:820px;margin:0 auto;padding:0 24px}
+.divider{border:none;border-top:.5px solid var(--bd)}
 
-/* NAV */
-.nav{background:var(--sur);border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:100}
-.nav-inner{max-width:1080px;margin:0 auto;padding:0 24px;height:56px;display:flex;align-items:center;gap:32px}
-.logo{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:500;color:var(--t1)}
-.logo-mark{width:28px;height:28px;background:var(--brand);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:500}
-.nav-links{display:flex;gap:0;flex:1}
-.nav-links a{padding:6px 12px;border-radius:var(--r);font-size:13px;color:var(--t2);transition:color .12s,background .12s}
-.nav-links a:hover{color:var(--t1);background:rgba(0,0,0,.04)}
+/* ── clause numbering — the recurring signature motif, drawn from
+   GDC's own docs (§1, §2 …) rather than a decorative label ── */
+.clause-hd{display:flex;align-items:baseline;gap:14px;margin-bottom:10px}
+.clause-no{flex-shrink:0;font-size:13px;font-weight:600;color:var(--clause);background:var(--clause-bg);border:.5px solid var(--brand-bd);border-radius:4px;padding:2px 8px;font-variant-numeric:tabular-nums;letter-spacing:.02em}
+.clause-hd h2{font-size:21px;font-weight:600;color:var(--t1);letter-spacing:-.2px}
+.clause-sub{font-size:14px;color:var(--t2);max-width:var(--measure);margin:2px 0 28px}
+
+/* ── NAV ── */
+.nav{background:rgba(246,246,244,.86);backdrop-filter:blur(10px);border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:100}
+@media(prefers-color-scheme:dark){.nav{background:rgba(16,19,17,.86)}}
+.nav-inner{max-width:960px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;gap:28px}
+.logo{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--t1)}
+.logo-mark{width:26px;height:26px;background:var(--brand);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff}
+.nav-links{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{padding:6px 11px;border-radius:var(--r);font-size:13px;color:var(--t2);white-space:nowrap;transition:color .12s,background .12s}
+.nav-links a:hover{color:var(--t1);background:rgba(0,0,0,.045)}
 @media(prefers-color-scheme:dark){.nav-links a:hover{background:rgba(255,255,255,.06)}}
-.nav-right{display:flex;gap:8px;align-items:center}
-.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;border:.5px solid var(--bd2);background:var(--sur);color:var(--t1);transition:all .12s}
+.nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;border:.5px solid var(--bd2);background:var(--sur);color:var(--t1);transition:all .12s;white-space:nowrap}
 .btn:hover{background:var(--bg)}
 .btn-brand{background:var(--brand);border-color:var(--brand);color:#fff}
-.btn-brand:hover{background:#2db87a;border-color:#2db87a}
+.btn-brand:hover{background:var(--brand-dk);border-color:var(--brand-dk)}
+@media(max-width:760px){.nav-links{display:none}}
 
-/* HERO */
-.hero{max-width:1080px;margin:0 auto;padding:80px 24px 64px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;border:.5px solid var(--brand-bd);background:var(--brand-bg);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--brand);margin-bottom:24px}
+/* ── ANNOUNCE BAR (single, merged) ── */
+.announce{background:var(--sur);border-bottom:.5px solid var(--bd);padding:8px 20px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--t2);flex-wrap:wrap}
+.announce b{color:var(--t1);font-weight:600}
+.announce a{color:var(--clause);font-weight:500}
+.announce a:hover{text-decoration:underline}
+.announce-close{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;padding:2px}
+
+/* ── HERO ── */
+.hero{max-width:760px;margin:0 auto;padding:72px 24px 56px;text-align:center}
+.hero-badge{display:inline-flex;align-items:center;gap:6px;border:.5px solid var(--brand-bd);background:var(--brand-bg);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--clause);margin-bottom:22px}
 .pulse{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
-.hero h1{font-size:40px;font-weight:500;letter-spacing:-.5px;line-height:1.5;color:var(--t1);margin-bottom:16px}
-.hero-sub{font-size:16px;color:var(--t2);max-width:720px;margin:0 auto 32px;line-height:1.6}
-.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:48px}
-.hero-actions .btn{padding:9px 20px;font-size:14px}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+.hero h1{font-size:36px;font-weight:600;letter-spacing:-.6px;line-height:1.42;color:var(--t1);margin-bottom:16px}
+.hero-sub{font-size:15.5px;color:var(--t2);max-width:600px;margin:0 auto 30px;line-height:1.75}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
+.hero-actions .btn{padding:9px 18px;font-size:13.5px}
 
-/* STAT STRIP */
-.stat-strip{border:.5px solid var(--bd);border-radius:var(--r2);background:var(--sur);display:grid;grid-template-columns:repeat(4,1fr);max-width:700px;margin:0 auto 72px;overflow:hidden}
-.stat{padding:20px 24px;border-right:.5px solid var(--bd)}
+.stat-strip{border:.5px solid var(--bd);border-radius:var(--r2);background:var(--sur);display:grid;grid-template-columns:repeat(4,1fr);max-width:680px;margin:0 auto}
+.stat{padding:18px 16px;border-right:.5px solid var(--bd)}
 .stat:last-child{border-right:none}
-.stat-val{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:3px}
-.stat-val em{color:var(--brand);font-style:normal}
-.stat-lbl{font-size:12px;color:var(--t3)}
+.stat-val{font-size:19px;font-weight:600;color:var(--t1);margin-bottom:3px;font-variant-numeric:tabular-nums}
+.stat-lbl{font-size:11.5px;color:var(--t3)}
+.stat-flag{font-size:9.5px;font-weight:700;color:var(--clause);vertical-align:super;margin-left:1px}
+@media(max-width:640px){.hero h1{font-size:26px}.stat-strip{grid-template-columns:1fr 1fr}}
 
-.stat-note{font-size:10px;color:var(--brand);font-weight:600;vertical-align:super}
-.stat-footnote{font-size:11px;color:var(--t3);text-align:center;max-width:700px;margin:-52px auto 72px;line-height:1.6;padding:0 8px}
-/* SECTION */
-.container{max-width:1080px;margin:0 auto;padding:0 24px}
-.section{padding:64px 0}
-.section-hd{margin-bottom:40px}
-.section-hd h2{font-size:22px;font-weight:500;color:var(--t1);margin-bottom:8px}
-.section-hd p{font-size:14px;color:var(--t2);max-width:440px}
-.divider{border:none;border-top:.5px solid var(--bd);margin:0}
+/* ── SECTION ── */
+.section{padding:56px 0}
 
-/* FEATURE GRID */
-.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+/* ── narrative copy (the ◆ clause lines carried over from GDC's own house style) ── */
+.prose{font-size:14.5px;color:var(--t2);line-height:1.95;max-width:var(--measure);margin-bottom:14px}
+.prose strong{color:var(--t1);font-weight:600}
+.prose a{color:var(--clause);text-decoration:underline;text-underline-offset:2px;font-weight:500}
+.bullet{color:var(--brand);font-size:10px;margin-right:5px}
+.closing{font-size:15.5px;font-weight:500;color:var(--t1);line-height:1.8;margin:22px 0 4px;max-width:var(--measure)}
+
+/* ── FEATURE GRID ── */
+.feature-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden;margin-top:28px}
 @media(max-width:720px){.feature-grid{grid-template-columns:1fr}}
-.feature-cell{background:var(--sur);padding:24px}
-.feature-icon{width:36px;height:36px;border:.5px solid var(--bd);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--t2);margin-bottom:16px;font-size:18px}
-.feature-title{font-size:14px;font-weight:500;color:var(--t1);margin-bottom:6px}
-.feature-desc{font-size:13px;color:var(--t2);line-height:1.55}
-.feature-badge{display:inline-block;margin-top:10px;font-size:11px;padding:2px 8px;border-radius:20px;border:.5px solid var(--brand-bd);color:var(--brand);background:var(--brand-bg)}
+.feature-cell{background:var(--sur);padding:22px}
+.feature-icon{width:34px;height:34px;border:.5px solid var(--bd);border-radius:var(--r);display:flex;align-items:center;justify-content:center;color:var(--t2);margin-bottom:14px;font-size:17px}
+.feature-title{font-size:14px;font-weight:600;color:var(--t1);margin-bottom:6px}
+.feature-desc{font-size:12.8px;color:var(--t2);line-height:1.6}
+.feature-badge{display:inline-block;margin-top:10px;font-size:10.5px;padding:2px 8px;border-radius:20px;border:.5px solid var(--bd2);color:var(--t3)}
+.feature-badge.live{border-color:var(--brand-bd);color:var(--clause);background:var(--brand-bg)}
 
-/* RATE TABLE */
-.rate-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* ── PATENT / TECH clauses ── */
+.tech-notice{border:.5px solid var(--brand-bd);background:var(--brand-bg);border-radius:var(--r2);padding:16px 18px;font-size:12.8px;color:var(--t2);line-height:1.75;margin-bottom:28px}
+.tech-notice b{color:var(--clause)}
+.tech-list{display:flex;flex-direction:column;gap:1px;background:var(--bd);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
+.tech-item{background:var(--sur);padding:20px 22px;display:grid;grid-template-columns:150px 1fr;gap:20px}
+@media(max-width:680px){.tech-item{grid-template-columns:1fr;gap:6px}}
+.tech-name{font-size:13px;font-weight:600;color:var(--t1);line-height:1.5}
+.tech-name span{display:block;font-size:11px;font-weight:400;color:var(--t3);margin-top:3px}
+.tech-desc{font-size:13px;color:var(--t2);line-height:1.75}
+.tech-desc code{font-size:12px;background:var(--bg);border:.5px solid var(--bd);border-radius:3px;padding:1px 5px}
+
+/* ── RATE TABLE ── */
+.rate-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:640px){.rate-grid{grid-template-columns:1fr}}
 .panel{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);overflow:hidden}
-.panel-hd{padding:14px 18px;border-bottom:.5px solid var(--bd);font-size:13px;font-weight:500;color:var(--t1);display:flex;align-items:center;gap:8px}
+.panel-hd{padding:13px 17px;border-bottom:.5px solid var(--bd);font-size:13px;font-weight:600;color:var(--t1);display:flex;align-items:center;gap:8px}
 .panel-hd .ti{font-size:16px;color:var(--t3)}
 table.rt{width:100%;border-collapse:collapse}
 table.rt tr{border-bottom:.5px solid var(--bd)}
 table.rt tr:last-child{border-bottom:none}
-table.rt td{padding:10px 18px;font-size:13px;color:var(--t2)}
+table.rt td{padding:10px 17px;font-size:12.8px;color:var(--t2)}
 table.rt td:last-child{text-align:right;color:var(--t1);font-variant-numeric:tabular-nums}
-table.rt td.grn{color:var(--brand)!important}
-.grade-chip{display:inline-flex;align-items:center;justify-content:center;width:32px;height:18px;border-radius:3px;font-size:11px;font-weight:500;border:.5px solid;line-height:1}
+table.rt td.grn{color:var(--clause)!important;font-weight:500}
+.grade-chip{display:inline-flex;align-items:center;justify-content:center;width:32px;height:18px;border-radius:3px;font-size:11px;font-weight:600;border:.5px solid;line-height:1}
 .g-AAA{color:#1B6B3A;background:#E6F4EC;border-color:#A3D9B8}
 .g-AA{color:#0047AB;background:#E8F0FE;border-color:#93C4F7}
 .g-A{color:#0369A1;background:#E0F2FE;border-color:#93C9F7}
 .g-BBB{color:#92400E;background:#FEF9E7;border-color:#FCD34D}
 .g-BB{color:#C05621;background:#FEF3E2;border-color:#FCA47A}
 .g-C{color:#9B1C1C;background:#FEE2E2;border-color:#FCA5A5}
+.foot-note{font-size:11px;color:var(--t3);margin-top:10px;line-height:1.6;padding:0 17px 14px}
 
-/* POOL */
-.pool-box{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:24px}
+/* ── POOL ── */
+.pool-box{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:22px}
 .pool-currencies{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.flag-chip{display:flex;align-items:center;gap:6px;border:.5px solid var(--bd);border-radius:var(--r);padding:6px 10px;font-size:12px;color:var(--t2)}
+.flag-chip{display:flex;align-items:center;gap:6px;border:.5px solid var(--bd);border-radius:var(--r);padding:6px 10px;font-size:11.5px;color:var(--t2)}
 .pool-bars{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:520px){.pool-bars{grid-template-columns:1fr}}
 .pool-bar-item{border:.5px solid var(--bd);border-radius:var(--r);padding:14px 16px}
 .pool-bar-label{font-size:11px;color:var(--t3);margin-bottom:4px}
-.pool-bar-pct{font-size:20px;font-weight:500;color:var(--t1)}
+.pool-bar-pct{font-size:19px;font-weight:600;color:var(--t1)}
 .pool-bar-desc{font-size:11px;color:var(--t3);margin-top:2px}
 .pool-bar-track{height:4px;background:var(--bg);border-radius:2px;margin-top:8px;overflow:hidden}
 .pool-bar-fill{height:100%;border-radius:2px}
 .fill-brand{background:var(--brand);width:20%}
 .fill-muted{background:var(--bd2);width:80%}
 
-/* FLOW */
-.flow-row{display:flex;align-items:flex-start;gap:0;margin-bottom:0}
-.flow-step{flex:1;padding:20px 16px;border-right:.5px solid var(--bd);position:relative}
+/* ── FLOW ── */
+.flow-row{display:flex;flex-wrap:wrap}
+.flow-step{flex:1 1 150px;padding:20px 16px;border-right:.5px solid var(--bd);border-bottom:.5px solid var(--bd)}
 .flow-step:last-child{border-right:none}
-.flow-num{width:24px;height:24px;border:.5px solid var(--bd);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--t3);margin-bottom:10px}
-.flow-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:4px}
-.flow-desc{font-size:12px;color:var(--t3);line-height:1.5}
+@media(max-width:640px){.flow-step{border-right:none}}
+.flow-num{width:22px;height:22px;border:.5px solid var(--bd2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--clause);margin-bottom:10px;font-weight:600}
+.flow-title{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:4px}
+.flow-desc{font-size:12px;color:var(--t3);line-height:1.55}
 
-/* ACCESS */
-.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+/* ── ACCESS ── */
+.access-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:640px){.access-grid{grid-template-columns:1fr}}
-.access-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:24px}
-.access-card h3{font-size:15px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:8px}
-.access-card h3 .ti{font-size:18px;color:var(--t3)}
-.access-card p{font-size:13px;color:var(--t2);margin-bottom:16px;line-height:1.55}
-.access-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
-.access-list li{font-size:13px;color:var(--t2);display:flex;align-items:center;gap:7px}
-.access-list li .ti{font-size:14px;color:var(--t3)}
+.access-card{background:var(--sur);border:.5px solid var(--bd);border-radius:var(--r2);padding:22px}
+.access-card h3{font-size:14.5px;font-weight:600;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:8px}
+.access-card p{font-size:12.8px;color:var(--t2);margin-bottom:14px}
+.access-list{list-style:none;display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.access-list li{font-size:12.8px;color:var(--t2);display:flex;align-items:center;gap:7px}
 
-/* FOOTER */
-.footer{border-top:.5px solid var(--bd);background:var(--sur);padding:40px 0 24px}
-.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:32px;margin-bottom:32px}
-@media(max-width:720px){.footer-grid{grid-template-columns:1fr 1fr}}
-.footer-brand{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.footer-brand .ti{font-size:16px;color:var(--t3)}
-.footer-desc{font-size:12px;color:var(--t3);line-height:1.6}
-.footer-col-title{font-size:11px;font-weight:500;color:var(--t3);text-transform:uppercase;letter-spacing:.6px;margin-bottom:10px}
+/* ── FOOTER ── */
+.footer{border-top:.5px solid var(--bd);background:var(--sur);padding:40px 0 22px}
+.footer-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:28px;margin-bottom:28px}
+@media(max-width:680px){.footer-grid{grid-template-columns:1fr 1fr}}
+.footer-brand{font-size:13px;font-weight:600;color:var(--t1);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.footer-desc{font-size:11.5px;color:var(--t3);line-height:1.65}
+.footer-col-title{font-size:11px;font-weight:600;color:var(--t3);margin-bottom:10px}
 .footer-links{list-style:none}
-.footer-links li a{display:block;font-size:13px;color:var(--t2);padding:3px 0;transition:color .12s}
+.footer-links li a{display:block;font-size:12.8px;color:var(--t2);padding:3px 0}
 .footer-links li a:hover{color:var(--t1)}
-.footer-bottom{border-top:.5px solid var(--bd);padding-top:16px;font-size:12px;color:var(--t3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.footer-bottom{border-top:.5px solid var(--bd);padding-top:15px;font-size:11.5px;color:var(--t3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
 
-/* FLOAT */
-.float{position:fixed;bottom:24px;right:24px;z-index:99;display:flex;flex-direction:column;align-items:center;gap:5px}
-.float-btn{width:48px;height:48px;border-radius:50%;background:var(--brand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 2px 8px rgba(62,207,142,.35);transition:transform .15s}
+/* ── AI CHAT ── */
+.float{position:fixed;bottom:22px;right:22px;z-index:99;display:flex;flex-direction:column;align-items:center;gap:5px}
+.float-btn{width:46px;height:46px;border-radius:50%;background:var(--brand);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;color:#fff;box-shadow:0 3px 12px rgba(31,92,70,.28);transition:transform .15s}
 .float-btn:hover{transform:scale(1.06)}
-.float-label{font-size:10px;color:var(--t3);white-space:nowrap}
-
-/* FEATURES DESC */
-.features-desc{font-size:14px;color:var(--t2);line-height:2;width:100%;margin-bottom:16px}
-.features-closing{font-size:16px;font-weight:500;color:var(--t1);line-height:1.7;margin-bottom:32px;width:100%}
-.rates-desc{font-size:14px;color:var(--t2);line-height:2;width:100%;margin-bottom:12px}
-.rates-closing{font-size:16px;font-weight:500;color:var(--t1);line-height:1.8;margin:24px 0 32px;width:100%}
-.rates-closing a{color:var(--brand);text-decoration:underline;text-underline-offset:2px}
-.rates-closing a:hover{opacity:.8}
-.features-desc a{color:var(--brand);text-decoration:underline;text-underline-offset:2px;font-weight:500}
-.features-desc a:hover{opacity:.8}
-.fd-bullet{color:var(--brand);font-size:10px;margin-right:4px;vertical-align:middle}
-
-
-/* ═══════════════════════════════════════════════
-   GDC AI 상담 모달 (DeepSeek V4 Pro)
-   ════════════════════════════════════════════════ */
-.chat-modal-overlay {
-  display: none;
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.35);
-  z-index: 300;
-  align-items: flex-end;
-  justify-content: flex-end;
-  padding: 84px 24px 24px;
-}
-.chat-modal-overlay.open { display: flex; }
-
-.chat-modal {
-  width: 380px;
-  height: 560px;
-  background: var(--sur);
-  border: .5px solid var(--bd);
-  border-radius: 14px;
-  box-shadow: 0 8px 40px rgba(0,0,0,.18);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-@media(max-width:460px){
-  .chat-modal { width: calc(100vw - 32px); height: 70dvh; }
-}
-
-.chat-modal-hd {
-  padding: 14px 16px;
-  border-bottom: .5px solid var(--bd);
-  display: flex; align-items: center; gap: 10px;
-  flex-shrink: 0;
-}
-.chat-modal-hd .chat-logo {
-  width: 28px; height: 28px;
-  background: var(--brand);
-  border-radius: 7px;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff; flex-shrink: 0;
-}
-.chat-modal-hd .chat-title {
-  flex: 1;
-  font-size: 13px; font-weight: 500; color: var(--t1);
-}
-.chat-modal-hd .chat-subtitle {
-  font-size: 11px; color: var(--t3);
-}
-.chat-close-btn {
-  background: none; border: none; cursor: pointer;
-  color: var(--t3); font-size: 18px; line-height: 1;
-  padding: 4px; border-radius: 4px;
-  transition: color .12s, background .12s;
-}
-.chat-close-btn:hover { color: var(--t1); background: var(--bg); }
-
-.chat-messages {
-  flex: 1; overflow-y: auto;
-  padding: 14px 14px 8px;
-  display: flex; flex-direction: column; gap: 10px;
-  scroll-behavior: smooth;
-}
-.chat-msg {
-  max-width: 88%;
-  font-size: 13px; line-height: 1.55;
-  padding: 9px 12px;
-  border-radius: 10px;
-}
-.chat-msg.ai {
-  align-self: flex-start;
-  background: var(--bg);
-  border: .5px solid var(--bd);
-  color: var(--t1);
-  border-bottom-left-radius: 3px;
-}
-.chat-msg.user {
-  align-self: flex-end;
-  background: var(--brand);
-  color: #fff;
-  border-bottom-right-radius: 3px;
-}
-.chat-msg.typing { color: var(--t3); font-style: italic; }
-
-.chat-input-row {
-  padding: 10px 12px;
-  border-top: .5px solid var(--bd);
-  display: flex; gap: 8px; align-items: flex-end;
-  flex-shrink: 0;
-}
-.chat-input {
-  flex: 1; resize: none;
-  border: .5px solid var(--bd2);
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 13px; font-family: var(--font);
-  color: var(--t1); background: var(--bg);
-  line-height: 1.45; max-height: 100px;
-  outline: none;
-  transition: border-color .12s;
-}
-.chat-input:focus { border-color: var(--brand); }
-.chat-send-btn {
-  width: 36px; height: 36px; flex-shrink: 0;
-  background: var(--brand); border: none; border-radius: 8px;
-  cursor: pointer; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  transition: background .12s, transform .1s;
-}
-.chat-send-btn:hover { background: #2db87a; }
-.chat-send-btn:active { transform: scale(.95); }
-.chat-send-btn:disabled { background: var(--bd2); cursor: not-allowed; }
-.chat-powered {
-  text-align: center; font-size: 10px; color: var(--t3);
-  padding: 4px 0 8px;
-  flex-shrink: 0;
-}
-
-/* 플로팅 버튼 레이블 변경 */
-.float-label { font-size: 10px; color: var(--t3); white-space: nowrap; }
-
-/* BANNER */
-.banner{background:var(--brand);color:#fff;text-align:center;padding:9px 48px;font-size:13px;line-height:1.5;position:relative;z-index:110}
-.banner a{color:#fff;text-decoration:underline;text-underline-offset:2px;opacity:.85}
-.banner a:hover{opacity:1}
-.banner-close{position:absolute;right:14px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#fff;opacity:.7;font-size:16px;line-height:1;padding:4px}
-.banner-close:hover{opacity:1}
-.nav-links-desktop{display:flex}
-@media(max-width:720px){.nav-links-desktop{display:none}.hero h1{font-size:28px}.stat-strip{grid-template-columns:1fr 1fr}.section{padding:40px 0}}
-
-/* ═══════════════════════════════════════════════
-   SIDEBAR — Supabase 스타일, 아이콘 전용 → hover 시 전개
-   ════════════════════════════════════════════════ */
-:root{
-  --sb-w-collapsed: 48px;
-  --sb-w-expanded:  220px;
-  --sb-bg:          #ffffff;
-  --sb-hover:       rgba(0,0,0,.05);
-  --sb-active:      rgba(62,207,142,.10);
-  --sb-text:        #4a4a55;
-  --sb-text-dim:    #9898a6;
-  --sb-sep:         rgba(0,0,0,.08);
-  --sb-brand:       #3ECF8E;
-  --sb-trans:       width 220ms cubic-bezier(.4,0,.2,1),
-                    box-shadow 220ms cubic-bezier(.4,0,.2,1);
-}
-
-body.has-sidebar {
-  padding-left: var(--sb-w-collapsed);
-}
-
-.sidebar {
-  position: fixed;
-  top: 0; left: 0; bottom: 0;
-  width: var(--sb-w-collapsed);
-  background: var(--sb-bg);
-  border-right: 1px solid rgba(0,0,0,.09);
-  display: flex;
-  flex-direction: column;
-  z-index: 200;
-  overflow: hidden;
-  transition: var(--sb-trans);
-}
-.sidebar:hover {
-  width: var(--sb-w-expanded);
-  box-shadow: 2px 0 20px rgba(0,0,0,.32);
-}
-
-.sb-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 12px;
-  height: 56px;
-  border-bottom: .5px solid var(--sb-sep);
-  flex-shrink: 0;
-  overflow: hidden;
-  white-space: nowrap;
-  text-decoration: none;
-}
-.sb-logo-mark {
-  width: 24px; height: 24px;
-  background: var(--sb-brand);
-  border-radius: 5px;
-  display: flex; align-items: center; justify-content: center;
-  color: #fff;
-  font-size: 12px; font-weight: 600;
-  flex-shrink: 0;
-}
-.sb-logo-text {
-  font-size: 13px; font-weight: 500;
-  color: #1c1c1e;
-  opacity: 0;
-  transition: opacity 160ms ease 30ms;
-}
-.sidebar:hover .sb-logo-text { opacity: 1; }
-
-.sb-section-label {
-  padding: 14px 14px 3px;
-  font-size: 10px;
-  font-weight: 500;
-  letter-spacing: .08em;
-  color: var(--sb-text-dim);
-  text-transform: uppercase;
-  white-space: nowrap;
-  opacity: 0;
-  transition: opacity 140ms ease;
-}
-.sidebar:hover .sb-section-label { opacity: 1; }
-
-.sb-nav {
-  flex: 1;
-  overflow: hidden;
-  padding: 6px 6px 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.sb-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  padding: 0 8px;
-  height: 36px;
-  border-radius: 6px;
-  color: var(--sb-text);
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background 120ms, color 120ms;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.sb-item:hover {
-  background: var(--sb-hover);
-  color: #fff;
-}
-.sb-item.active {
-  background: var(--sb-active);
-  color: #1A6B4A;
-}
-.sb-icon {
-  flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  display: block;
-}
-.sb-label {
-  font-size: 13px;
-  opacity: 0;
-  transition: opacity 150ms ease 20ms;
-}
-.sidebar:hover .sb-label { opacity: 1; }
-
-.sb-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 18px; height: 16px;
-  border-radius: 8px;
-  background: rgba(62,207,142,.18);
-  color: var(--sb-brand);
-  font-size: 10px; font-weight: 600;
-  padding: 0 5px;
-  margin-left: auto;
-  opacity: 0;
-  transition: opacity 150ms ease;
-  flex-shrink: 0;
-}
-.sidebar:hover .sb-badge { opacity: 1; }
-
-.sb-sep {
-  height: .5px;
-  background: var(--sb-sep);
-  margin: 6px 0;
-  flex-shrink: 0;
-}
-
-.sb-bottom {
-  padding: 6px 6px 12px;
-  border-top: .5px solid var(--sb-sep);
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-
-@media(max-width:768px) {
-  .sidebar { display: none; }
-  body.has-sidebar { padding-left: 0; }
-}
+.float-label{font-size:10px;color:var(--t3)}
+.chat-modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,20,17,.35);z-index:300;align-items:flex-end;justify-content:flex-end;padding:80px 22px 22px}
+.chat-modal-overlay.open{display:flex}
+.chat-modal{width:376px;height:552px;background:var(--sur);border:.5px solid var(--bd);border-radius:14px;box-shadow:0 10px 40px rgba(0,0,0,.2);display:flex;flex-direction:column;overflow:hidden}
+@media(max-width:460px){.chat-modal{width:calc(100vw - 28px);height:70dvh}}
+.chat-modal-hd{padding:13px 16px;border-bottom:.5px solid var(--bd);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.chat-logo{width:28px;height:28px;background:var(--brand);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0}
+.chat-title{flex:1;font-size:13px;font-weight:600;color:var(--t1)}
+.chat-subtitle{font-size:11px;color:var(--t3)}
+.chat-close-btn{background:none;border:none;cursor:pointer;color:var(--t3);font-size:17px;line-height:1;padding:4px;border-radius:4px}
+.chat-close-btn:hover{color:var(--t1);background:var(--bg)}
+.chat-messages{flex:1;overflow-y:auto;padding:14px 14px 8px;display:flex;flex-direction:column;gap:10px}
+.chat-msg{max-width:88%;font-size:12.8px;line-height:1.55;padding:9px 12px;border-radius:10px}
+.chat-msg.ai{align-self:flex-start;background:var(--bg);border:.5px solid var(--bd);color:var(--t1);border-bottom-left-radius:3px}
+.chat-msg.user{align-self:flex-end;background:var(--brand);color:#fff;border-bottom-right-radius:3px}
+.chat-msg.typing{color:var(--t3);font-style:italic}
+.chat-input-row{padding:10px 12px;border-top:.5px solid var(--bd);display:flex;gap:8px;align-items:flex-end;flex-shrink:0}
+.chat-input{flex:1;resize:none;border:.5px solid var(--bd2);border-radius:8px;padding:8px 10px;font-size:12.8px;font-family:var(--font);color:var(--t1);background:var(--bg);line-height:1.45;max-height:100px;outline:none}
+.chat-input:focus{border-color:var(--brand)}
+.chat-send-btn{width:36px;height:36px;flex-shrink:0;background:var(--brand);border:none;border-radius:8px;cursor:pointer;color:#fff;display:flex;align-items:center;justify-content:center}
+.chat-send-btn:hover{background:var(--brand-dk)}
+.chat-send-btn:disabled{background:var(--bd2);cursor:not-allowed}
+.chat-powered{text-align:center;font-size:10px;color:var(--t3);padding:4px 0 8px;flex-shrink:0}
 </style>
 </head>
 <body>
 
-
-<aside class="sidebar" role="navigation" aria-label="GDC 메인 메뉴">
-
-  <!-- 로고 -->
-  <a href="desktop.html" class="sb-logo">
-    <div class="sb-logo-mark"><svg viewBox="0 0 28 34" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="T" style="width:60%;height:60%"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg></div>
-    <span class="sb-logo-text">GDC</span>
-  </a>
-
-  <!-- 메인 네비 -->
-  <nav class="sb-nav">
-    <a href="#features" class="sb-item active">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l-2 0l9 -9l9 9l-2 0"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"/><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"/></svg>
-      <span class="sb-label">서비스 소개</span>
-    </a>
-    <a href="webapp.html" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
-      <span class="sb-label">GDC 앱</span>
-    </a>
-    <a href="#rates" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7 -3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/></svg>
-      <span class="sb-label">금리 안내</span>
-    </a>
-    <a href="#credit" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06"/><path d="M15 19l2 2l4 -4"/></svg>
-      <span class="sb-label">신용평가</span>
-    </a>
-    <a href="#pool" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 1 0 18 0a9 9 0 0 0 -18 0"/><path d="M3.6 9h16.8"/><path d="M3.6 15h16.8"/><path d="M11.5 3a17 17 0 0 0 0 18"/><path d="M12.5 3a17 17 0 0 1 0 18"/></svg>
-      <span class="sb-label">FIAT POOL</span>
-    </a>
-    <a href="dashboard.html" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
-      <span class="sb-label">관리자 대시보드</span>
-    </a>
-
-    <div class="sb-sep"></div>
-
-    <div class="sb-section-label">백서</div>
-    <a href="https://github.com/Openhash-Gopang/gdc/blob/main/docs/GDC_WHITEPAPER_v1_1.md"
-       class="sb-item" target="_blank" rel="noopener">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span class="sb-label">GDC Whitepaper v1.1</span>
-    </a>
-    <a href="https://github.com/Openhash-Gopang/market/blob/main/docs/K-Market_WhitePaper_v1_1.md"
-       class="sb-item" target="_blank" rel="noopener">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span class="sb-label">K-Market WP v1.1</span>
-    </a>
-    <a href="https://github.com/Openhash-Gopang/tax/blob/main/docs/K-Tax_Whitepaper_v1_0.md"
-       class="sb-item" target="_blank" rel="noopener">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
-      <span class="sb-label">K-Tax WP v1.0</span>
-    </a>
-
-    <div class="sb-sep"></div>
-
-    <div class="sb-section-label">연동 서비스</div>
-    <a href="https://market.hondi.net" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M6.331 8h11.338a2 2 0 0 1 1.977 2.304l-1.255 8.152a3 3 0 0 1 -2.966 2.544h-6.85a3 3 0 0 1 -2.965 -2.544l-1.255 -8.152a2 2 0 0 1 1.976 -2.304z"/><path d="M9 11v-5a3 3 0 0 1 6 0v5"/></svg>
-      <span class="sb-label">K-Market</span>
-    </a>
-    <a href="https://tax.hondi.net" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 14l6 -6"/><circle cx="9.5" cy="8.5" r=".5" fill="currentColor"/><circle cx="14.5" cy="13.5" r=".5" fill="currentColor"/><path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"/></svg>
-      <span class="sb-label">K-Tax</span>
-    </a>
-    <a href="https://klaw.hondi.net" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 4l6 6l-3.5 3.5"/><path d="M6 10l8 -6"/><path d="M10 6l-6 6l7 7l6 -6"/><path d="M4 20l3.5 -3.5"/></svg>
-      <span class="sb-label">K-Law</span>
-    </a>
-    <a href="https://openhash.kr" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 15l6 -6"/><path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464"/><path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463"/></svg>
-      <span class="sb-label">OpenHash</span>
-    </a>
-  </nav>
-
-  <!-- 하단 -->
-  <div class="sb-bottom">
-    <a href="https://hondi.net" class="sb-item">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l14 0"/><path d="M5 12l6 6"/><path d="M5 12l6 -6"/></svg>
-      <span class="sb-label">고팡으로 돌아가기</span>
-    </a>
-    <a href="#" class="sb-item" id="sb-settings">
-      <svg class="sb-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"/><path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"/></svg>
-      <span class="sb-label">설정</span>
-    </a>
-  </div>
-
-</aside>
-
-
-<div class="banner" id="site-banner" role="banner">
-  <strong>GDC (Global Digital Currency)</strong>는 오픈소스 공동체이며, 누구나 기능 개선에
-  <a href="https://github.com/Openhash-Gopang/gdc" target="_blank" rel="noopener">참여할 수 있습니다 →</a>
-  <button class="banner-close" onclick="document.getElementById('site-banner').style.display='none'" aria-label="배너 닫기">✕</button>
-</div>
-
-<!-- ── Whitepaper 배너 ── -->
-<div id="wp-banner" style="
-  background:#f8fafc;border-bottom:1px solid #e2e8f0;
-  padding:8px 20px;display:flex;align-items:center;gap:12px;
-  font-size:12px;color:#475569;flex-wrap:wrap;
-  position:sticky;top:0;z-index:80;">
-  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#64748b" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-  <span style="font-weight:600;color:#1e293b">기술 백서 공개</span>
-  <span style="color:#94a3b8">|</span>
-  <a href="https://github.com/Openhash-Gopang/gdc/blob/main/docs/GDC_WHITEPAPER_v1_1.md"
-     target="_blank" rel="noopener"
-     style="color:#2563eb;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:3px;">
-    GDC v1.1 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-  </a>
-  <a href="https://github.com/Openhash-Gopang/market/blob/main/docs/K-Market_WhitePaper_v1_1.md"
-     target="_blank" rel="noopener"
-     style="color:#2563eb;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:3px;">
-    K-Market v1.1 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-  </a>
-  <a href="https://github.com/Openhash-Gopang/tax/blob/main/docs/K-Tax_Whitepaper_v1_0.md"
-     target="_blank" rel="noopener"
-     style="color:#2563eb;text-decoration:none;font-weight:500;display:inline-flex;align-items:center;gap:3px;">
-    K-Tax v1.0 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
-  </a>
-  <button onclick="document.getElementById('wp-banner').style.display='none'"
-    style="margin-left:auto;background:none;border:none;cursor:pointer;color:#94a3b8;font-size:14px;line-height:1;padding:0 2px;"
-    aria-label="배너 닫기">✕</button>
+<div class="announce" id="site-banner">
+  <b>GDC</b>는 오픈소스 공동체입니다 — 소스와 특허 출원 기술의 방향 모두
+  <a href="https://github.com/Openhash-Gopang/gdc" target="_blank" rel="noopener">GitHub에서 열람·기여</a>할 수 있습니다.
+  <button class="announce-close" onclick="document.getElementById('site-banner').style.display='none'" aria-label="닫기">✕</button>
 </div>
 
 <nav class="nav">
   <div class="nav-inner">
     <a href="desktop.html" class="logo">
-      <div class="logo-mark"><svg viewBox="0 0 28 34" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="T" style="width:60%;height:60%"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg></div>
+      <div class="logo-mark"><svg viewBox="0 0 28 34" width="14" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="T"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg></div>
       GDC
     </a>
-    <div class="nav-links nav-links-desktop">
+    <div class="nav-links">
+      <a href="#principles">원칙</a>
       <a href="#features">서비스</a>
       <a href="#rates">금리</a>
       <a href="#credit">신용평가</a>
+      <a href="#tech">기술</a>
       <a href="#pool">FIAT POOL</a>
       <a href="dashboard.html">대시보드</a>
-      <a href="https://github.com/Openhash-Gopang/gdc/blob/main/docs/GDC_WHITEPAPER_v1_1.md"
-         target="_blank" rel="noopener"
-         style="display:inline-flex;align-items:center;gap:4px;">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Whitepaper
-      </a>
     </div>
     <div class="nav-right">
-      <a href="dashboard.html" class="btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>대시보드</a>
-      <a href="webapp.html" class="btn btn-brand"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>GDC 앱 열기</a>
+      <a href="dashboard.html" class="btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
+        대시보드
+      </a>
+      <a href="webapp.html" class="btn btn-brand">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
+        GDC 앱 열기
+      </a>
     </div>
   </div>
 </nav>
@@ -612,57 +245,77 @@ body.has-sidebar {
 <div class="hero">
   <div class="hero-badge"><span class="pulse"></span>OpenHash 원장 연동 · 필드 테스트 — 혼디 구독료·서비스 결제 운영 중</div>
   <h1>5천만 인구와 5백만 기관의 재무제표를<br>화폐 하나로 잇는 게 목표입니다</h1>
-  <p class="hero-sub">고팡은 모든 사용자의 재무제표를 자동으로 생성하고, 매 거래마다 갱신하며, 전체 인구와 기관의 재무제표를 상호 연동하는 것을 목표로 합니다. 이 재무제표의 현금 계정이 곧 GDC입니다. 필드 테스트 기간 동안 GDC는 혼디의 구독료와 K-Law 등 혼디가 제공하는 서비스의 결제 수단으로 쓰입니다. 개인·기관 간 결제 통화 기능과 예금 이자·대출·투자는 은행·보험사·증권사 컨소시엄이 구성된 이후 다음 단계로 넓혀갈 계획입니다.</p>
+  <p class="hero-sub">고팡은 모든 사용자의 재무제표를 자동으로 생성하고, 매 거래마다 갱신하며, 전체 인구와 기관의 재무제표를 상호 연동하는 것을 목표로 합니다. 이 재무제표의 현금 계정이 곧 GDC입니다. 필드 테스트 기간 동안 GDC는 혼디의 구독료와 K-Law 등 개별 서비스의 결제 수단으로 쓰입니다. 결제 통화 기능, 예금 이자, 대출, 투자는 은행·보험사·증권사 컨소시엄이 구성된 이후 다음 단계로 넓혀갈 계획입니다.</p>
   <div class="hero-actions">
-    <a href="webapp.html" class="btn btn-brand"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>GDC 앱 열기</a>
-    <a href="dashboard.html" class="btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>관리자 대시보드</a>
+    <a href="webapp.html" class="btn btn-brand">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
+      GDC 앱 열기
+    </a>
+    <a href="#tech" class="btn">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      기술 개요 보기
+    </a>
   </div>
   <div class="stat-strip">
     <div class="stat">
-  <div class="stat-val">
-    <em style="display:inline-flex;align-items:baseline;gap:1px"><span style="font-size:1.5em;line-height:1">1</span><svg class="gdc-t" viewBox="0 0 28 34" width="18" height="22" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="T" style="color:#1D4ED8;position:relative;top:1px">
-      <rect x="0" y="0" width="28" height="5" rx="1.5" fill="currentColor"/>
-      <rect x="11" y="5" width="6" height="29" rx="1.5" fill="currentColor"/>
-    </svg></em>
-  </div>
-  <div class="stat-lbl">= KRW 1,000원 기준가</div>
-</div>
+      <div class="stat-val">1 ₮</div>
+      <div class="stat-lbl">= KRW 1,000원 기준가</div>
+    </div>
     <div class="stat" title="예치·보관은 이자 없이 운영됩니다 — 은행업 인가 없이 이자를 약속하면 유사수신행위법 위반 소지가 있습니다.">
-  <div class="stat-val"><em>무이자</em></div>
-  <div class="stat-lbl">예치·보관 <span class="stat-note">LIVE</span></div>
-</div>
+      <div class="stat-val">무이자</div>
+      <div class="stat-lbl">예치·보관 <span class="stat-flag">LIVE</span></div>
+    </div>
     <div class="stat">
-  <div class="stat-val"><em>구독료</em></div>
-  <div class="stat-lbl">혼디 서비스 결제 <span class="stat-note">LIVE</span></div>
-</div>
-    <div class="stat"><div class="stat-val"><em>0.1초</em></div><div class="stat-lbl">AI 신용평가 <span class="stat-note">목표</span></div></div>
+      <div class="stat-val">구독료</div>
+      <div class="stat-lbl">혼디 서비스 결제 <span class="stat-flag">LIVE</span></div>
+    </div>
+    <div class="stat">
+      <div class="stat-val">특허 출원</div>
+      <div class="stat-lbl">AI 신용평가 엔진 <span class="stat-flag">목표</span></div>
+    </div>
   </div>
 </div>
 
 <hr class="divider">
 
+<section id="principles" class="section">
+  <div class="container">
+    <div class="clause-hd"><span class="clause-no">§1</span><h2>핵심 원칙</h2></div>
+    <p class="clause-sub">GDC가 지키는 다섯 가지 원칙 — 무엇이 바뀌어도 이 다섯은 협상 대상이 아닙니다.</p>
+    <div class="panel">
+      <table class="rt">
+        <tr><td style="width:150px;color:var(--t1);font-weight:500">불변성</td><td>모든 GDC 잔액은 OpenHash 분산 원장에 기록 — 위변조 불가</td></tr>
+        <tr><td style="color:var(--t1);font-weight:500">재무제표 = 신용</td><td><code style="font-size:12px">user_profiles.extra.fs</code> 재무제표가 유일한 신용 평가 근거</td></tr>
+        <tr><td style="color:var(--t1);font-weight:500">PDV 연동</td><td>모든 GDC 거래는 PDV에 6하 원칙으로 기록</td></tr>
+        <tr><td style="color:var(--t1);font-weight:500">디지털 서명</td><td>이체·대출 등 모든 거래에 ED25519 개인키 서명 필수</td></tr>
+        <tr><td style="color:var(--t1);font-weight:500">무지점</td><td>지점·직원 없음 → 예금 이자는 높게, 대출 이자는 낮게 설계하는 것이 목표</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
 <section id="features" class="section">
   <div class="container">
-    <div class="section-hd">
-      <h2>핵심 서비스</h2>
-    </div>
-    <p class="features-desc">
+    <div class="clause-hd"><span class="clause-no">§2</span><h2>핵심 서비스</h2></div>
+    <p class="prose">
       GDC는 글로벌 디지털 통화입니다.<br>
-      <span class="fd-bullet">◆</span> <a href="https://hondi.net" target="_blank" rel="noopener">고팡</a>은 현실 세계의 AI 쌍둥이들로 구성된 평행 세계입니다.<br>
-      <span class="fd-bullet">◆</span> <a href="https://market.hondi.net" target="_blank" rel="noopener">고팡 마켓</a>은 현실의 모든 시장을 통합하는 것이 목표인 AI 쌍둥이이며, GDC는 그 결제 통화가 되는 것이 목표입니다.<br>
-      <span class="fd-bullet">◆</span> 고팡 마켓은 전 세계 동시 런칭을 목표로 합니다.<br>
-      <span class="fd-bullet">◆</span> 필드 테스트 기간 동안 GDC는 혼디의 월 구독료와 K-Law 등 개별 서비스 이용료를 결제하는 통화로 쓰입니다.<br>
-      <span class="fd-bullet">◆</span> GDC는 사전에 발행된 화폐가 아닙니다. 이용자가 국적 통화를 예치하면 그만큼 GDC가 발행되어 사용자 계좌로 귀속되는 무이자 예치·보관 구조로 지금 운영되고 있습니다.<br>
-      <span class="fd-bullet">◆</span> 개인과 기관이 서로 GDC를 주고받는 결제 통화 기능, 그리고 여러 국적 통화를 하나의 POOL로 묶어 즉시 교환하는 구조는 은행·보험사·증권사 컨소시엄이 구성된 이후의 목표입니다.<br>
-      <span class="fd-bullet">◆</span> 각국 국적 통화를 각국 인덱스 증권 등에 투자해 그 수익을 예금 이자로 배분하는 것이 목표입니다 — 은행업·자본시장법 인허가가 필요한 영역이라, 라이선스를 가진 은행·보험사·증권사와의 컨소시엄을 통해 실현할 계획입니다.
+      <span class="bullet">◆</span> <a href="https://hondi.net" target="_blank" rel="noopener">고팡</a>은 현실 세계의 AI 쌍둥이들로 구성된 평행 세계입니다.<br>
+      <span class="bullet">◆</span> <a href="https://market.hondi.net" target="_blank" rel="noopener">고팡 마켓</a>은 현실의 모든 시장을 통합하는 것이 목표인 AI 쌍둥이이며, GDC는 그 결제 통화가 되는 것이 목표입니다.<br>
+      <span class="bullet">◆</span> 고팡 마켓은 전 세계 동시 런칭을 목표로 합니다.<br>
+      <span class="bullet">◆</span> 필드 테스트 기간 동안 GDC는 혼디의 월 구독료와 K-Law 등 개별 서비스 이용료를 결제하는 통화로 쓰입니다.<br>
+      <span class="bullet">◆</span> GDC는 사전에 발행된 화폐가 아닙니다. 이용자가 국적 통화를 예치하면 그만큼 GDC가 발행되어 사용자 계좌로 귀속되는 무이자 예치·보관 구조로 지금 운영되고 있습니다.<br>
+      <span class="bullet">◆</span> 개인과 기관이 서로 GDC를 주고받는 결제 통화 기능, 그리고 여러 국적 통화를 하나의 POOL로 묶어 즉시 교환하는 구조는 은행·보험사·증권사 컨소시엄이 구성된 이후의 목표입니다.<br>
+      <span class="bullet">◆</span> 각국 국적 통화를 각국 인덱스 증권 등에 투자해 그 수익을 예금 이자로 배분하는 것이 목표입니다 — 은행업·자본시장법 인허가가 필요한 영역이라, 라이선스를 가진 은행·보험사·증권사와의 컨소시엄을 통해 실현할 계획입니다.
     </p>
-    <p class="features-closing">이상의 목표를 향한 메커니즘과 소스코드는 처음부터 오픈소스로 공개합니다.</p>
+    <p class="closing">이상의 목표를 향한 메커니즘과 소스코드는 처음부터 오픈소스로 공개합니다.</p>
     <div class="feature-grid">
       <div class="feature-cell">
         <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg></div>
         <div class="feature-title">GDC 지갑·구독료 결제</div>
         <p class="feature-desc">재무제표 bs-cash가 GDC 잔액. 혼디 구독료와 K-Law 등 개별 서비스 이용료가 이 잔액에서 결제됩니다. ED25519 디지털 서명으로 위변조 불가.</p>
-        <span class="feature-badge">구독료·서비스 결제 LIVE</span>
+        <span class="feature-badge live">구독료·서비스 결제 LIVE</span>
       </div>
       <div class="feature-cell">
         <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7 -3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/></svg></div>
@@ -692,7 +345,7 @@ body.has-sidebar {
         <div class="feature-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 11m0 2a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v6a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2z"/><path d="M12 16m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"/><path d="M8 11v-4a4 4 0 0 1 8 0v4"/></svg></div>
         <div class="feature-title">OpenHash 원장</div>
         <p class="feature-desc">모든 GDC 거래는 확률론적 계층 분산원장에 기록. 어떤 기관도 수정·삭제 불가.</p>
-        <span class="feature-badge">위변조 불가</span>
+        <span class="feature-badge live">위변조 불가</span>
       </div>
     </div>
   </div>
@@ -702,25 +355,23 @@ body.has-sidebar {
 
 <section id="rates" class="section">
   <div class="container">
-    <div class="section-hd">
-      <h2>예금 금리와 대출 금리</h2>
-    </div>
-    <p class="rates-desc">
+    <div class="clause-hd"><span class="clause-no">§3</span><h2>예금 금리와 대출 금리</h2></div>
+    <p class="prose">
       모든 개인과 기관의 재무제표를 상호 연동시켜, 누구도 분식이나 위변조할 수 없게 만드는 것이 목표입니다. 실현되면, 각자의 재무제표가 가장 정직하고 확실한 신용 평가의 척도가 됩니다.
     </p>
-    <p class="rates-desc">
-      <span class="fd-bullet">◆</span> GDC POOL의 초기 잔고는 0입니다. 발행량은 오직 사용자의 실제 입금에 의해서만 증가하며, GDC는 어떠한 형태의 사전 채굴이나 중앙 발행 없이 운영됩니다.<br>
-      <span class="fd-bullet">◆</span> 지점도 직원도 주주도 없는 구조라, 예금 이자는 시중은행 대비 높고 대출 금리는 낮게 설계하는 것이 목표입니다 — 다만 예금 이자·대출 실행은 은행업·대부업법 인허가가 필요해, 지금은 제공하지 않고 라이선스를 가진 컨소시엄 파트너를 통해 실현할 계획입니다.<br>
-      <span class="fd-bullet">◆</span> 목표 단계에서는 투자 수익을 일일 정산하며, 예금 금리는 곧 GDC의 가치 상승으로 나타나는 구조를 그리고 있습니다.<br>
-      <span class="fd-bullet">◆</span> GDC 1단위(₮)의 가치는 세계 전역에서 동일하게 만드는 것이 목표입니다.<br>
-      <span class="fd-bullet">◆</span> GDC의 투자 지침은 처음부터 오픈소스로 투명하게 공개할 계획입니다.<br>
-      <span class="fd-bullet">◆</span> 대출 금리도 실현되면 해당 사용자의 재무제표를 기반으로 결정되는 구조를 목표로 합니다.
+    <p class="prose">
+      <span class="bullet">◆</span> GDC POOL의 초기 잔고는 0입니다. 발행량은 오직 사용자의 실제 입금에 의해서만 증가하며, GDC는 어떠한 형태의 사전 채굴이나 중앙 발행 없이 운영됩니다.<br>
+      <span class="bullet">◆</span> 지점도 직원도 주주도 없는 구조라, 예금 이자는 시중은행 대비 높고 대출 금리는 낮게 설계하는 것이 목표입니다 — 다만 예금 이자·대출 실행은 은행업·대부업법 인허가가 필요해, 지금은 제공하지 않고 라이선스를 가진 컨소시엄 파트너를 통해 실현할 계획입니다.<br>
+      <span class="bullet">◆</span> 목표 단계에서는 투자 수익을 일일 정산하며, 예금 금리는 곧 GDC의 가치 상승으로 나타나는 구조를 그리고 있습니다.<br>
+      <span class="bullet">◆</span> GDC 1단위(₮)의 가치는 세계 전역에서 동일하게 만드는 것이 목표입니다.<br>
+      <span class="bullet">◆</span> GDC의 투자 지침은 처음부터 오픈소스로 투명하게 공개할 계획입니다.<br>
+      <span class="bullet">◆</span> 대출 금리도 실현되면 해당 사용자의 재무제표를 기반으로 결정되는 구조를 목표로 합니다.
     </p>
-    <p class="rates-closing">
+    <p class="closing">
       GDC는 사람이 아니라 지침(Guideline)에 의해 동작하는 것을 목표로 하며, 누구나 언제나 어디서나 해당 지침의 개정과 갱신에 참여할 수 있도록 설계하고 있습니다.<br>
-      고팡의 모토는 <strong>DAWN (Democracy is All We Need)</strong>입니다. <a href="https://democracy.hondi.net" target="_blank" rel="noopener">democracy.hondi.net →</a>
+      고팡의 모토는 <strong>DAWN (Democracy is All We Need)</strong>입니다. <a href="https://democracy.hondi.net" target="_blank" rel="noopener" style="color:var(--clause);text-decoration:underline">democracy.hondi.net →</a>
     </p>
-    <div class="rate-grid">
+    <div class="rate-grid" style="margin-top:24px">
       <div class="panel">
         <div class="panel-hd"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 21l18 0"/><path d="M3 10l18 0"/><path d="M5 6l7 -3l7 3"/><path d="M4 10l0 11"/><path d="M20 10l0 11"/><path d="M8 14l0 3"/><path d="M12 14l0 3"/><path d="M16 14l0 3"/></svg>예금 금리</div>
         <table class="rt">
@@ -740,7 +391,7 @@ body.has-sidebar {
           <tr><td><span class="grade-chip g-BB">BB</span></td><td>목표 연 3~4%대</td></tr>
           <tr><td><span class="grade-chip g-C">C</span></td><td>목표 연 5%대</td></tr>
         </table>
-        <p style="font-size:11px;color:var(--t3);margin-top:8px;line-height:1.6">대출 실행은 대부업법 등 별도 인허가가 필요해, 지금은 제공하지 않으며 라이선스를 가진 컨소시엄 파트너를 통해 실현할 계획입니다.</p>
+        <div class="foot-note">대출 실행은 대부업법 등 별도 인허가가 필요해, 지금은 제공하지 않으며 라이선스를 가진 컨소시엄 파트너를 통해 실현할 계획입니다.</div>
       </div>
     </div>
   </div>
@@ -750,10 +401,8 @@ body.has-sidebar {
 
 <section id="credit" class="section">
   <div class="container">
-    <div class="section-hd">
-      <h2>AI 신용평가</h2>
-      <p>재무제표만으로 0.1초 안에 신용을 증명하는 것이 목표입니다.</p>
-    </div>
+    <div class="clause-hd"><span class="clause-no">§4</span><h2>AI 신용평가</h2></div>
+    <p class="clause-sub">재무제표만으로 신용을 즉시 증명하는 것이 목표입니다.</p>
     <div class="panel">
       <div class="panel-hd"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M11.46 20.846a12 12 0 0 1 -7.96 -14.846a12 12 0 0 0 8.5 -3a12 12 0 0 0 8.5 3a12 12 0 0 1 -.09 7.06"/><path d="M15 19l2 2l4 -4"/></svg>4대 평가 지표</div>
       <table class="rt">
@@ -761,8 +410,34 @@ body.has-sidebar {
         <tr><td>부채비율 (25%)</td><td>bs-debt ÷ bs-equity</td></tr>
         <tr><td>영업이익률 (30%)</td><td>(매출 − 원가 − 판관비) ÷ 매출</td></tr>
         <tr><td>현금흐름비율 (20%)</td><td>cf-op ÷ bs-debt</td></tr>
-        <tr><td>평가 시간</td><td class="grn">0.1초 (목표)</td></tr>
+        <tr><td>평가 속도</td><td class="grn">즉시 판정 (목표)</td></tr>
       </table>
+    </div>
+  </div>
+</section>
+
+<hr class="divider">
+
+<section id="tech" class="section">
+  <div class="container">
+    <div class="clause-hd"><span class="clause-no">§5</span><h2>기술 기반</h2></div>
+    <p class="clause-sub">GDC를 떠받치는 세 갈래 기술 방향입니다. 아래 세 항목 모두 특허 출원 명세서에 담긴 연구·개발 방향이며, 실제 서비스 반영 시점은 각 항목의 인허가·검증 절차에 따라 달라집니다.</p>
+    <div class="tech-notice">
+      <b>안내.</b> 이 절은 AI City Inc.가 출원한 특허 명세서(민간 경쟁형 디지털 화폐 발행 시스템, FPGA 기반 AI 재무제표 검증 방법, OpenHash 적응형 계층 구조 시스템)에 기재된 기술 방향을 소개합니다. 특허 출원은 발명의 보호를 위한 절차일 뿐 등록이나 실제 구현을 보장하지 않으며, 명세서에 기재된 처리 속도·정확도 등의 수치는 검증된 실측치가 아닙니다. 은행업·보험업·자본시장법 인허가가 필요한 기능은 라이선스를 보유한 컨소시엄 파트너 확보 이후 순차적으로 적용됩니다.
+    </div>
+    <div class="tech-list">
+      <div class="tech-item">
+        <div class="tech-name">OpenHash 원장<span>적응형 계층 구조</span></div>
+        <div class="tech-desc">단일 서버가 아니라 <code>L1–L5</code> 다층 구조로 나뉜 확률론적 분산 원장에 거래를 기록합니다. 노드마다 처리량과 확정 속도가 다른 계층을 두고, 계층 간 브리지로 기록을 서로 검증하는 구조를 통해 특정 계층이 멈춰도 원장 전체가 멈추지 않는 것을 목표로 합니다. 지금은 hanlim L1 노드가 실제로 이 구조를 운영하며 GDC 잔액과 거래를 기록하고 있습니다.</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-name">AI 재무제표 검증 엔진<span>FPGA 하드웨어 가속</span></div>
+        <div class="tech-desc">거래가 일어날 때마다 재무제표를 자동으로 갱신하고, 대차대조표의 대차균형(총자산=총부채+총자본)이 항상 맞는지 AI가 실시간으로 확인하는 것이 목표입니다. 특허 명세서는 이 검증을 범용 GPU 대신 FPGA로 가속해, 같은 정확도를 훨씬 적은 전력으로 얻는 방향을 제시합니다 — 지금 필드 테스트에서는 표준 서버 인프라로 재무제표 갱신·기본 이상거래 탐지만 운영하고 있으며, 하드웨어 가속 계층은 아직 적용 전입니다.</div>
+      </div>
+      <div class="tech-item">
+        <div class="tech-name">완전자율 금융 로드맵<span>은행·보험·증권</span></div>
+        <div class="tech-desc">재무제표를 근거로 대출을 자동 승인하고, 보험 언더라이팅과 포트폴리오 최적화까지 하나의 엔진에서 처리하는 완전자율 금융 서비스가 특허 명세서의 궁극적 목표입니다. 이 세 기능은 각각 은행업·보험업·자본시장법의 별도 인허가 대상이라, GDC는 라이선스를 보유한 컨소시엄 파트너와의 협업을 전제로 단계적으로만 실현할 계획입니다. §2·§3에 정리한 목표 항목들이 바로 이 로드맵의 1단계입니다.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -771,23 +446,21 @@ body.has-sidebar {
 
 <section id="pool" class="section">
   <div class="container">
-    <div class="section-hd">
-      <h2>FIAT POOL</h2>
-      <p>환전 없이 전 세계와 즉시 거래하는 것이 목표입니다. 필드 테스트 기간에는 제공하지 않으며, 은행·보험사·증권사 컨소시엄 구성 이후 시작합니다.</p>
-    </div>
+    <div class="clause-hd"><span class="clause-no">§6</span><h2>FIAT POOL</h2></div>
+    <p class="clause-sub">환전 없이 전 세계와 즉시 거래하는 것이 목표입니다. 필드 테스트 기간에는 제공하지 않으며, 은행·보험사·증권사 컨소시엄 구성 이후 시작합니다.</p>
     <div class="pool-box">
       <div class="pool-currencies">
-        <div class="flag-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>KRW 대한민국 원</div>
-        <div class="flag-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>USD 미국 달러</div>
-        <div class="flag-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>EUR 유럽 유로</div>
-        <div class="flag-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>JPY 일본 엔</div>
-        <div class="flag-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>CNY 중국 위안</div>
-        <div class="flag-chip"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 5a5 5 0 0 1 7 0a5 5 0 0 0 7 0v9a5 5 0 0 1 -7 0a5 5 0 0 0 -7 0v-9z"/><path d="M5 21v-7"/></svg>GBP 영국 파운드</div>
+        <div class="flag-chip">KRW 대한민국 원</div>
+        <div class="flag-chip">USD 미국 달러</div>
+        <div class="flag-chip">EUR 유럽 유로</div>
+        <div class="flag-chip">JPY 일본 엔</div>
+        <div class="flag-chip">CNY 중국 위안</div>
+        <div class="flag-chip">GBP 영국 파운드</div>
       </div>
       <div class="pool-bars">
         <div class="pool-bar-item">
           <div class="pool-bar-label">지불준비금 (목표)</div>
-          <div class="pool-bar-pct" style="color:var(--brand)">20%</div>
+          <div class="pool-bar-pct" style="color:var(--clause)">20%</div>
           <div class="pool-bar-desc">즉시 출금 보장</div>
           <div class="pool-bar-track"><div class="pool-bar-fill fill-brand"></div></div>
         </div>
@@ -806,37 +479,15 @@ body.has-sidebar {
 
 <section class="section">
   <div class="container">
-    <div class="section-hd">
-      <h2>구독료·서비스 결제 흐름</h2>
-      <p>ED25519 디지털 서명으로 보호되는 GDC 결제 — 필드 테스트 기간에는 혼디 구독료·서비스 결제에 한정됩니다.</p>
-    </div>
+    <div class="clause-hd"><span class="clause-no">§7</span><h2>구독료·서비스 결제 흐름</h2></div>
+    <p class="clause-sub">ED25519 디지털 서명으로 보호되는 GDC 결제 — 필드 테스트 기간에는 혼디 구독료·서비스 결제에 한정됩니다.</p>
     <div class="panel">
       <div class="flow-row">
-        <div class="flow-step">
-          <div class="flow-num">1</div>
-          <div class="flow-title">결제 요청</div>
-          <div class="flow-desc">혼디 구독료 또는 K-Law 등 서비스 이용료 청구</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">2</div>
-          <div class="flow-title">ED25519 서명</div>
-          <div class="flow-desc">브라우저 내 개인키로 서명. 서버 미전송.</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">3</div>
-          <div class="flow-title">서명 검증</div>
-          <div class="flow-desc">공개키로 유효성 확인</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">4</div>
-          <div class="flow-title">원장 기록</div>
-          <div class="flow-desc">fs_ledger · OpenHash 동시 기록</div>
-        </div>
-        <div class="flow-step">
-          <div class="flow-num">5</div>
-          <div class="flow-title">PDV 기록</div>
-          <div class="flow-desc">송수신자 PDV에 6하 원칙 기록</div>
-        </div>
+        <div class="flow-step"><div class="flow-num">1</div><div class="flow-title">결제 요청</div><div class="flow-desc">혼디 구독료 또는 K-Law 등 서비스 이용료 청구</div></div>
+        <div class="flow-step"><div class="flow-num">2</div><div class="flow-title">ED25519 서명</div><div class="flow-desc">브라우저 내 개인키로 서명. 서버 미전송.</div></div>
+        <div class="flow-step"><div class="flow-num">3</div><div class="flow-title">서명 검증</div><div class="flow-desc">공개키로 유효성 확인</div></div>
+        <div class="flow-step"><div class="flow-num">4</div><div class="flow-title">원장 기록</div><div class="flow-desc">fs_ledger · OpenHash 동시 기록</div></div>
+        <div class="flow-step"><div class="flow-num">5</div><div class="flow-title">PDV 기록</div><div class="flow-desc">송수신자 PDV에 6하 원칙 기록</div></div>
       </div>
     </div>
   </div>
@@ -846,30 +497,29 @@ body.has-sidebar {
 
 <section class="section">
   <div class="container">
-    <div class="section-hd"><h2>접근</h2></div>
+    <div class="clause-hd"><span class="clause-no">§8</span><h2>접근</h2></div>
     <div class="access-grid">
       <div class="access-card">
         <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>GDC 사용자 앱</h3>
         <p>스마트폰 최적화 · 구독료·서비스 결제</p>
         <ul class="access-list">
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>GDC 잔액 조회 및 충전</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>무이자 예치·보관</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>혼디 구독료·K-Law 등 서비스 결제</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>OpenHash 원장 거래 내역</li>
+          <li>GDC 잔액 조회 및 충전</li>
+          <li>무이자 예치·보관</li>
+          <li>혼디 구독료·K-Law 등 서비스 결제</li>
+          <li>OpenHash 원장 거래 내역</li>
         </ul>
-        <a href="webapp.html" class="btn btn-brand"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>GDC 앱 열기</a>
+        <a href="webapp.html" class="btn btn-brand">GDC 앱 열기</a>
       </div>
       <div class="access-card">
         <h3><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>관리자 대시보드</h3>
         <p>POOL 현황·발행량·투자 집계</p>
         <ul class="access-list">
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>GDC 총 발행량 실시간 추적</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>FIAT POOL 통화별 현황</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>예금·대출 포트폴리오</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>투자 수익률 집계</li>
-          <li><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 12l5 5l10 -10"/></svg>신용평가 통계</li>
+          <li>GDC 총 발행량 실시간 추적</li>
+          <li>FIAT POOL 통화별 현황</li>
+          <li>예금·대출 포트폴리오</li>
+          <li>신용평가 통계</li>
         </ul>
-        <a href="dashboard.html" class="btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>대시보드 열기</a>
+        <a href="dashboard.html" class="btn">대시보드 열기</a>
       </div>
     </div>
   </div>
@@ -879,7 +529,7 @@ body.has-sidebar {
   <div class="container">
     <div class="footer-grid">
       <div>
-        <div class="footer-brand"><svg viewBox="0 0 28 34" width="14" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="T" style="vertical-align:middle;position:relative;top:-1px;color:var(--t3)"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg>GDC</div>
+        <div class="footer-brand"><svg viewBox="0 0 28 34" width="13" height="16" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="T" style="color:var(--t3)"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg>GDC</div>
         <p class="footer-desc">Gopang Digital Currency — OpenHash 분산원장 기반<br>혼디 구독료·서비스 결제 통화 (필드 테스트 중)</p>
       </div>
       <div>
@@ -888,25 +538,24 @@ body.has-sidebar {
           <li><a href="webapp.html">GDC 앱</a></li>
           <li><a href="dashboard.html">대시보드</a></li>
           <li><a href="#rates">금리 안내</a></li>
-          <li><a href="https://hondi.net">고팡 홈</a></li>
+          <li><a href="#tech">기술 개요</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">백서</div>
+        <ul class="footer-links">
+          <li><a href="https://github.com/Openhash-Gopang/gdc/blob/main/docs/GDC_WHITEPAPER_v1_1.md" target="_blank" rel="noopener">GDC Whitepaper v1.1</a></li>
+          <li><a href="https://github.com/Openhash-Gopang/market/blob/main/docs/K-Market_WhitePaper_v1_1.md" target="_blank" rel="noopener">K-Market WP v1.1</a></li>
+          <li><a href="https://github.com/Openhash-Gopang/tax/blob/main/docs/K-Tax_Whitepaper_v1_0.md" target="_blank" rel="noopener">K-Tax WP v1.0</a></li>
         </ul>
       </div>
       <div>
         <div class="footer-col-title">연동 서비스</div>
         <ul class="footer-links">
+          <li><a href="https://hondi.net">고팡 홈</a></li>
           <li><a href="https://market.hondi.net">고팡 마켓</a></li>
-          <li><a href="https://tax.hondi.net">고팡 세무</a></li>
           <li><a href="https://klaw.hondi.net">K-Law</a></li>
           <li><a href="https://openhash.kr">OpenHash</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="footer-col-title">법적 안내</div>
-        <ul class="footer-links">
-          <li><a href="#">이용 약관</a></li>
-          <li><a href="#">개인정보처리방침</a></li>
-          <li><a href="#">GDC 백서</a></li>
-          <li><a href="#">면책 조항</a></li>
         </ul>
       </div>
     </div>
@@ -952,10 +601,9 @@ body.has-sidebar {
   </div>
 </div>
 
-<!-- 플로팅 상담 버튼 -->
 <div class="float">
   <button class="float-btn" onclick="openChat()" aria-label="GDC AI 상담 열기">
-    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor"
+    <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor"
          stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
@@ -963,22 +611,11 @@ body.has-sidebar {
   <span class="float-label">AI 상담</span>
 </div>
 
-
 <script>
-/**
- * desktop.html — Gopang SSO 인증 콜백
- * subsystem-auth.js가 인증 완료 시 호출
- * desktop은 열람 전용이므로 레벨 요구 없음 (D 게스트도 허용)
- */
 window._onGopangAuth = function(user) {
-  // user: { guid, level, exp, via }
-  // 랜딩 페이지는 인증 여부와 무관하게 콘텐츠를 표시하되,
-  // 로그인 상태이면 "GDC 앱 열기" 버튼을 강조 처리한다.
   if (user && user.guid) {
-    // 로그인 상태: NAV 우측 버튼 텍스트 보강
     var appBtns = document.querySelectorAll('a[href="webapp.html"]');
     appBtns.forEach(function(btn) {
-      // 이미 '앱 열기' 텍스트가 있으면 유지, 뱃지만 추가
       if (!btn.querySelector('.auth-badge')) {
         var badge = document.createElement('span');
         badge.className = 'auth-badge';
@@ -992,9 +629,7 @@ window._onGopangAuth = function(user) {
 };
 </script>
 
-<script type="module"
-  src="https://hondi.net/auth/subsystem-auth.js">
-</script>
+<script type="module" src="https://hondi.net/auth/subsystem-auth.js"></script>
 <!-- K-서비스 공용 전화번호 인증 모듈(2026-09-06, 잠정 부착 — 주피터 지시,
      전수 재점검으로 발견) — plan.hondi.net 등에서 이미 로그인했으면
      .hondi.net 쿠키로 여기서도 자동 로그인된다. 기존 고팡 지갑 SSO
@@ -1005,58 +640,41 @@ window.K_AUTH_CONFIG = { serviceLabel: 'GDC' };
 </script>
 <script src="https://hondi.net/auth/k-service-auth-client.js"></script>
 
-
 <script>
-/* 사이드바 — 스크롤 활성 섹션 추적 */
 (function() {
-  document.body.classList.add('has-sidebar');
-
-  var sections = ['features','rates','credit','pool'];
-  var items    = {};
+  var sections = ['principles','features','rates','credit','tech','pool'];
+  var items = {};
   sections.forEach(function(id) {
-    var el = document.querySelector('.sb-item[href="#' + id + '"]');
+    var el = document.querySelector('.nav-links a[href="#' + id + '"]');
     if (el) items[id] = el;
   });
-
-  var homeItem = document.querySelector('.sb-item[href="#features"]');
-
   function onScroll() {
     var scrollY = window.scrollY + 80;
-    var active  = null;
+    var active = null;
     sections.forEach(function(id) {
       var sec = document.getElementById(id);
       if (sec && sec.offsetTop <= scrollY) active = id;
     });
-
-    // 모든 .active 초기화
-    document.querySelectorAll('.sb-item.active').forEach(function(el) {
-      el.classList.remove('active');
+    Object.keys(items).forEach(function(id) {
+      items[id].style.color = '';
+      items[id].style.background = '';
     });
-
     if (active && items[active]) {
-      items[active].classList.add('active');
-    } else if (homeItem) {
-      homeItem.classList.add('active');
+      items[active].style.color = 'var(--t1)';
+      items[active].style.background = 'var(--brand-bg)';
     }
   }
-
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 })();
 </script>
 
 <script>
-/* ── GDC AI 상담 (DeepSeek V4 Pro via gopang-proxy) ─────── */
 const PROXY_BASE = 'https://hondi-proxy.tensor-city.workers.dev';
 
-/**
- * 시스템 프롬프트를 외부 파일에서 로드합니다.
- * 파일: /prompts/SP-GDC_v2_0.txt
- * 갱신 시 해당 파일만 수정하면 됩니다.
- */
 const SYSTEM_PROMPT_URL = '/prompts/SP-GDC_v2_0.txt';
 const UNIVERSAL_INTEGRITY_URL = 'https://raw.githubusercontent.com/Openhash-Gopang/gopang/main/prompts/UNIVERSAL-INTEGRITY_v1_0.md';
-let GDC_SYSTEM_PROMPT = ''; // 비동기 로드 후 채워짐
+let GDC_SYSTEM_PROMPT = '';
 
 (async function loadSystemPrompt() {
   let universalIntegrity = '';
@@ -1068,7 +686,6 @@ let GDC_SYSTEM_PROMPT = ''; // 비동기 로드 후 채워짐
     const res = await fetch(SYSTEM_PROMPT_URL);
     if (!res.ok) throw new Error('HTTP ' + res.status);
     const raw = await res.text();
-    // 파일 상단 주석(#으로 시작하는 줄) 제거 후 사용
     const own = raw
       .split('\n')
       .filter(line => !line.trimStart().startsWith('#'))
@@ -1083,7 +700,7 @@ let GDC_SYSTEM_PROMPT = ''; // 비동기 로드 후 채워짐
   }
 })();
 
-const chatHistory = []; // {role, content}[]
+const chatHistory = [];
 
 function openChat() {
   document.getElementById('chatOverlay').classList.add('open');
@@ -1092,14 +709,13 @@ function openChat() {
 function closeChat() {
   document.getElementById('chatOverlay').classList.remove('open');
 }
-// 오버레이 클릭 시 닫기
 document.getElementById('chatOverlay').addEventListener('click', function(e) {
   if (e.target === this) closeChat();
 });
 
 function appendMsg(role, text) {
-  const box  = document.getElementById('chatMessages');
-  const div  = document.createElement('div');
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
   div.className = 'chat-msg ' + (role === 'user' ? 'user' : 'ai');
   div.textContent = text;
   box.appendChild(div);
@@ -1109,19 +725,17 @@ function appendMsg(role, text) {
 
 async function sendChat() {
   const input = document.getElementById('chatInput');
-  const btn   = document.getElementById('chatSendBtn');
-  const text  = input.value.trim();
+  const btn = document.getElementById('chatSendBtn');
+  const text = input.value.trim();
   if (!text) return;
 
   input.value = '';
   input.style.height = '';
   btn.disabled = true;
 
-  // 사용자 메시지 표시
   appendMsg('user', text);
   chatHistory.push({ role: 'user', content: text });
 
-  // 타이핑 인디케이터
   const typingDiv = appendMsg('ai', '…');
   typingDiv.classList.add('typing');
 
@@ -1132,11 +746,10 @@ async function sendChat() {
       body: JSON.stringify({
         model: 'deepseek-v4-pro',
         system: GDC_SYSTEM_PROMPT,
-        messages: chatHistory.slice(-12), // 최근 12턴 유지
+        messages: chatHistory.slice(-12),
         max_tokens: 800,
         temperature: 0.6,
-        service_id: 'kgdc', // 2026-07-05: worker.js가 UNIVERSAL 레이어 강제 주입
-        // Worker가 env.DEEPSEEK_API_KEY를 Authorization 헤더에 주입
+        service_id: 'kgdc',
         _use_env_key: 'DEEPSEEK_API_KEY',
       })
     });
@@ -1160,7 +773,6 @@ async function sendChat() {
   }
 }
 
-// textarea 자동 높이
 document.getElementById('chatInput').addEventListener('input', function() {
   this.style.height = '';
   this.style.height = Math.min(this.scrollHeight, 100) + 'px';
@@ -1169,4 +781,3 @@ document.getElementById('chatInput').addEventListener('input', function() {
 
 </body>
 </html>
-
