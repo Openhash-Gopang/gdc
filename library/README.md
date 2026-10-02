@@ -7,7 +7,7 @@
 |------|------|------|
 | `business/` | GDC 백서 v1.0 / v1.1 / v1.5 (`docs/`에서 이전) | 이전 완료 |
 | `dev/` | 인수인계 문서, L1 이전 세션 요약 (`docs/`에서 이전) | 이전 완료 |
-| `labs/` | 상품별 테스트 방법론·시나리오·라운드 (klaw의 `benchmark/` 대응) | 골격 (P0) |
+| `labs/` | 상품별 테스트 방법론·시나리오·라운드 (klaw의 `benchmark/` 대응) | 한도 명세 v0.1, 라운드 1 (P1) |
 | `methodology/` | 신용평가·기업가치 평가 방법론 문서 | 비어 있음 (P2에서 작성) |
 | `papers/` | 논문·특허 기술 설명 | 비어 있음 |
 | `reports/` | 라운드별 실증 보고서 | 비어 있음 (P1 이후) |
@@ -16,7 +16,7 @@
 
 - 백서: [v1.5](business/GDC_Whitepaper_v1.5.md) · [v1.1](business/GDC_WHITEPAPER_v1_1.md) · [v1.0](business/GDC_WHITEPAPER_v1_0.md)
 - 개발: [GOPANG_HANDOVER](dev/GOPANG_HANDOVER.md) · [L1 이전 세션 요약 (2026-07-07)](dev/session-summary-2026-07-07-gdc-l1-migration.md)
-- 테스트: [labs/README.md](labs/README.md)
+- 테스트: [labs/README.md](labs/README.md) · [한도 명세 v0.1](labs/method/limits_v0_1.md) · [라운드 1 결과](labs/rounds/r01/results.md)
 - 로드맵: [../GDC_ROADMAP.md](../GDC_ROADMAP.md)
 
 ## 사이트맵 (목표 — P1~P4에서 단계적으로 구현)

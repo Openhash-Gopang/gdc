@@ -1,0 +1,543 @@
+{
+  "round": "r01",
+  "executed_mode": "simulation",
+  "total": 32,
+  "passed": 32,
+  "byKind": {
+    "credit": {
+      "total": 10,
+      "pass": 10
+    },
+    "transfer": {
+      "total": 11,
+      "pass": 11
+    },
+    "loan_limit": {
+      "total": 11,
+      "pass": 11
+    }
+  },
+  "results": [
+    {
+      "id": "cred-001",
+      "kind": "credit",
+      "note": "모든 지표 최상위 구간",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      }
+    },
+    {
+      "id": "cred-002",
+      "kind": "credit",
+      "note": "유동 1.6 / 부채비율 0.7(구간 경계) / 영업이익률 0.2(구간 경계) / 현금흐름 0.214",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 80
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 80
+      }
+    },
+    {
+      "id": "cred-003",
+      "kind": "credit",
+      "note": "유동 1.0 / 부채비율 1.0 / 영업이익률 0.1(경계) / 현금흐름 0.15",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 61.25
+      },
+      "actual": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 61.3
+      }
+    },
+    {
+      "id": "cred-004",
+      "kind": "credit",
+      "note": "BB 구간 중앙 부근",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BB",
+        "annualRate": 0.035,
+        "score": 40.25
+      },
+      "actual": {
+        "grade": "BB",
+        "annualRate": 0.035,
+        "score": 40.3
+      }
+    },
+    {
+      "id": "cred-005",
+      "kind": "credit",
+      "note": "취약 재무 — C",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 27.75
+      },
+      "actual": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 27.8
+      }
+    },
+    {
+      "id": "cred-006",
+      "kind": "credit",
+      "note": "분모 0 처리: 유동비율·영업이익률은 0점, 부채비율·현금흐름은 중립 50점",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 22.5
+      },
+      "actual": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 22.5
+      }
+    },
+    {
+      "id": "cred-007",
+      "kind": "credit",
+      "note": "영업손실(-20%)이어도 다른 지표가 좋으면 A — 영업이익률 0점이 총점에 미치는 영향 확인",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      }
+    },
+    {
+      "id": "cred-008",
+      "kind": "credit",
+      "note": "총점 정확히 90 — AAA 하한 경계(부동소수점 합산 확인)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred-009",
+      "kind": "credit",
+      "note": "필드테스터 아님(재무제표 레코드 없음, 서버 404) — 값을 돌려주지 않고 TESTER_ONLY로 실패해야 한다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TESTER_ONLY"
+      },
+      "actual": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "cred-010",
+      "kind": "credit",
+      "note": "무차입(부채 0, 순자산 양수): 부채비율 0 -> 100점, 현금흐름비율은 분모 0이라 중립 50점",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 80
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 80
+      }
+    },
+    {
+      "id": "xfer-001",
+      "kind": "transfer",
+      "note": "1회 상한과 같은 금액 — 통과(경계 포함)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": true,
+        "code": "OK"
+      },
+      "actual": {
+        "ok": true,
+        "code": "OK"
+      }
+    },
+    {
+      "id": "xfer-002",
+      "kind": "transfer",
+      "note": "1회 상한 +1",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "PER_TX_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "PER_TX_LIMIT",
+        "detail": "1회 한도 ₮1000 초과"
+      }
+    },
+    {
+      "id": "xfer-003",
+      "kind": "transfer",
+      "note": "오늘 누적 + 금액 = 2000 정확히 — 통과",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": true,
+        "code": "OK"
+      },
+      "actual": {
+        "ok": true,
+        "code": "OK"
+      }
+    },
+    {
+      "id": "xfer-004",
+      "kind": "transfer",
+      "note": "1일 상한 +1",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "DAILY_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "DAILY_LIMIT",
+        "detail": "1일 한도 ₮2000 초과 (오늘 누적 ₮1500)"
+      }
+    },
+    {
+      "id": "xfer-005",
+      "kind": "transfer",
+      "note": "신규 수취인 상한과 같은 금액 — 통과",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": true,
+        "code": "OK"
+      },
+      "actual": {
+        "ok": true,
+        "code": "OK"
+      }
+    },
+    {
+      "id": "xfer-006",
+      "kind": "transfer",
+      "note": "신규 수취인 상한 +1",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "NEW_RECIPIENT_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "NEW_RECIPIENT_LIMIT",
+        "detail": "처음 보내는 수취인 한도 ₮100 초과"
+      }
+    },
+    {
+      "id": "xfer-007",
+      "kind": "transfer",
+      "note": "금액 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "ok": false,
+        "code": "AMOUNT_INVALID",
+        "detail": "금액은 0보다 큰 유한한 숫자여야 합니다."
+      }
+    },
+    {
+      "id": "xfer-008",
+      "kind": "transfer",
+      "note": "음수 금액",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "ok": false,
+        "code": "AMOUNT_INVALID",
+        "detail": "금액은 0보다 큰 유한한 숫자여야 합니다."
+      }
+    },
+    {
+      "id": "xfer-009",
+      "kind": "transfer",
+      "note": "검사 순서: 1회 상한과 신규 수취인·1일 상한을 동시에 넘으면 1회 상한이 먼저",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "PER_TX_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "PER_TX_LIMIT",
+        "detail": "1회 한도 ₮1000 초과"
+      }
+    },
+    {
+      "id": "xfer-010",
+      "kind": "transfer",
+      "note": "검사 순서: 신규 수취인 상한이 1일 상한보다 먼저",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "NEW_RECIPIENT_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "NEW_RECIPIENT_LIMIT",
+        "detail": "처음 보내는 수취인 한도 ₮100 초과"
+      }
+    },
+    {
+      "id": "xfer-011",
+      "kind": "transfer",
+      "note": "숫자가 아닌 금액(문자열)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "ok": false,
+        "code": "AMOUNT_INVALID",
+        "detail": "금액은 0보다 큰 유한한 숫자여야 합니다."
+      }
+    },
+    {
+      "id": "loan-001",
+      "kind": "loan_limit",
+      "note": "정상 — 등급 A(1.5%), 소득 5000",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": true,
+        "code": "OK",
+        "dsr": 0.2033
+      },
+      "actual": {
+        "ok": true,
+        "code": "OK",
+        "dsr": 0.20326487702037738
+      }
+    },
+    {
+      "id": "loan-002",
+      "kind": "loan_limit",
+      "note": "1건 상한 +1",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "LOAN_PER_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "LOAN_PER_LIMIT",
+        "detail": "1건 한도 ₮3000 초과"
+      }
+    },
+    {
+      "id": "loan-003",
+      "kind": "loan_limit",
+      "note": "잔액 합계 5001",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "LOAN_TOTAL_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "LOAN_TOTAL_LIMIT",
+        "detail": "잔액 합계 한도 ₮5000 초과"
+      }
+    },
+    {
+      "id": "loan-004",
+      "kind": "loan_limit",
+      "note": "순자산 2000의 70% = 1400 < 2000",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "LOAN_EQUITY_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "LOAN_EQUITY_LIMIT",
+        "detail": "순자산의 70% (₮1400) 초과"
+      }
+    },
+    {
+      "id": "loan-005",
+      "kind": "loan_limit",
+      "note": "DSR 초과 — 등급 C(5%)+가산 1.5%p, 소득 2000",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "DSR_EXCEEDED",
+        "dsr": 1.5533
+      },
+      "actual": {
+        "ok": false,
+        "code": "DSR_EXCEEDED",
+        "detail": "DSR 155.3% > 40%",
+        "dsr": 1.553335505285078
+      }
+    },
+    {
+      "id": "loan-006",
+      "kind": "loan_limit",
+      "note": "소득 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "NO_INCOME"
+      },
+      "actual": {
+        "ok": false,
+        "code": "NO_INCOME",
+        "detail": "소득(영업이익)이 0 이하여서 DSR을 계산할 수 없습니다."
+      }
+    },
+    {
+      "id": "loan-007",
+      "kind": "loan_limit",
+      "note": "DSR 40% 직전 — 소득 7600(DSR 39.9%)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": true,
+        "code": "OK",
+        "dsr": 0.399
+      },
+      "actual": {
+        "ok": true,
+        "code": "OK",
+        "dsr": 0.3990262134510157
+      }
+    },
+    {
+      "id": "loan-008",
+      "kind": "loan_limit",
+      "note": "DSR 40% 직후 — 소득 7500(DSR 40.4%)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "DSR_EXCEEDED",
+        "dsr": 0.4043
+      },
+      "actual": {
+        "ok": false,
+        "code": "DSR_EXCEEDED",
+        "detail": "DSR 40.4% > 40%",
+        "dsr": 0.40434656296369587
+      }
+    },
+    {
+      "id": "loan-009",
+      "kind": "loan_limit",
+      "note": "원금 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "ok": false,
+        "code": "AMOUNT_INVALID",
+        "detail": "대출 원금은 0보다 큰 유한한 숫자여야 합니다."
+      }
+    },
+    {
+      "id": "loan-010",
+      "kind": "loan_limit",
+      "note": "순자산 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": false,
+        "code": "LOAN_EQUITY_LIMIT"
+      },
+      "actual": {
+        "ok": false,
+        "code": "LOAN_EQUITY_LIMIT",
+        "detail": "순자산의 70% (₮0) 초과"
+      }
+    },
+    {
+      "id": "loan-011",
+      "kind": "loan_limit",
+      "note": "1건 상한 3000과 합계 상한 5000 정확히 — 통과(경계 포함), 소득 충분",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "ok": true,
+        "code": "OK"
+      },
+      "actual": {
+        "ok": true,
+        "code": "OK",
+        "dsr": 0.030489731553056603
+      }
+    }
+  ]
+}
