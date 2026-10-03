@@ -4,7 +4,7 @@ klaw의 `library/benchmark/` 에 대응하는 폴더다. 은행(예금·적금·
 기능을 시나리오로 시험하고, 신용평가·기업가치 평가 방법론을 라운드마다 갱신·검증하는
 절차를 기록한다.
 
-**상태 (2026-10-03, P2)**: 한도 명세 v0.1, 신용평가 방법론 v1.0(`gdc_credit_v1_0.md`)과 독립 검수 지침(`gdc_check_v1_0.md`), 라운드 1(기준선)과 라운드 2(신용평가 57건, 독립 검수·재검토 완료)가 있다. 한도는 서버에 반영됐다(대출·테스터 이체·예치). 신용평가 v1.0의 서버 반영은 별도 PR 대기.
+**상태 (2026-10-03, P3a)**: 한도 명세 v0.1, 신용평가 방법론 v1.0(`gdc_credit_v1_0.md`)과 독립 검수 지침(`gdc_check_v1_0.md`), 적금 명세 v0.1(`method/savings_v0_1.md`), 라운드 1(기준선)·라운드 2(신용평가 57건)·라운드 3(적금 49건, 독립 검수·재검토 완료)이 있다. 한도와 신용평가 v1.0은 서버에 반영됐다. 적금은 시뮬레이터뿐이며 서버에는 없다.
 결과: [R01](rounds/r01/results.md)(독립 검수 전), [R02](rounds/r02/results.md)(독립 검수 57/57 일치 — 검수자는 같은 제작사의 다른 모델이라 완전한 독립 검증은 아니다).
 
 **면책**: GDC는 고팡 플랫폼 안의 결제·저축·대출 단위이며, 이 테스트는 은행업·보험업·금융투자업
@@ -58,6 +58,7 @@ library/labs/
     CHANGELOG_gdc.md     방법론 버전별 변경 기록 (최신순)
     pipeline.md          생성 -> 독립 검수 -> 재검토 절차와 파일 규약
     limits_v0_1.md       필드테스트 한도 명세 (P1)
+    savings_v0_1.md      적금 상품 명세 (P3a, 시뮬레이션용)
   scenarios/README.md    상품별 시나리오 매트릭스 규격
   scripts/run_round.mjs  라운드 시나리오 실행기 (node library/labs/scripts/run_round.mjs r02)
   scripts/compare_check.mjs  실행 결과와 독립 검수 결과의 대조기
@@ -65,6 +66,7 @@ library/labs/
   rounds/README.md       라운드 디렉터리 규약
   rounds/r01/            라운드 1: scenarios.json, results.json, results.md
   rounds/r02/ r02-check/ r02-final/   라운드 2: 신용평가 v1.0 (실행·독립 검수·재검토)
+  rounds/r03/ r03-check/ r03-final/   라운드 3: 적금 v0.1 (실행·독립 검수·재검토)
   rounds/r02/            라운드 2: 신용평가 v1.0 시나리오 57건과 결과
   rounds/r02-check/      독립 검수: 검수자의 계산 결과·스크립트, 대조 보고서(report.md)
   rounds/r02-final/      재검토: 수용·반박 기록(reconcile.md)
@@ -98,7 +100,7 @@ library/labs/
 6. R01의 `transfer`·`loan_limit` 통과는 **새로 만든 기준 구현이 같은 사람이 쓴 명세와 일치한다**는 뜻일 뿐,
    독립 검증이 아니다. 실제 의미는 서버 이식 후 같은 시나리오를 통과할 때 생긴다.
    `credit` 시나리오는 R02에서 독립 검수(다른 모델이 문서만 보고 계산)를 거쳤다. 다만 같은 회사의 모델이라 공통의 오해를 완전히 막지 못한다(`gdc_check_v1_0.md` §5).
-7. 보험·증권·적금·기업가치 평가는 코드·스키마·문서가 아직 없다 (P2~P3). `src/gdc/smartVault.js`는
+7. 보험·증권·기업가치 평가는 코드·스키마·문서가 아직 없다 (P3). 적금은 명세와 시뮬레이터만 있고(서버 없음), 이율 > 0 의 이자 재원은 정해지지 않았다. `src/gdc/smartVault.js`는
    집합투자기구 해당 소지로 LEGAL-HOLD(미배선)이므로 증권 상품 설계 시 같은 쟁점을 먼저 검토해야 한다.
 8. `gdc-pool.js`(법정화폐 <-> GDC 풀)는 LEGAL-HOLD로 전부 실패하도록 막혀 있어 법정화폐 충전·환율 교환
    시나리오는 시험할 수 없다. 사용자 간 환전 매칭(`src/gdc/currencyPool.js`)은 별도로 동작한다.
