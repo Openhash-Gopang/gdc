@@ -59,6 +59,9 @@ library/labs/
     pipeline.md          생성 -> 독립 검수 -> 재검토 절차와 파일 규약
     limits_v0_1.md       필드테스트 한도 명세 (P1)
     savings_v0_1.md      적금 상품 명세 (P3a, 시뮬레이션용)
+    insurance_v0_1.md    보험 상품 명세 (P3b, 시뮬레이션용)
+    securities_v0_1.md   증권 운용·이자 재원 규칙 (P3d, 시뮬레이션용)
+    decisions_2026-10-03.md  이자 지급 방식·증권 단위·재무제표 자동 산출 범위의 결정과 이유
     securities_funding_memo.md  증권 투자와 이자 재원 구조 설계 메모 (명세 아님)
   scenarios/README.md    상품별 시나리오 매트릭스 규격
   scripts/run_round.mjs  라운드 시나리오 실행기 (node library/labs/scripts/run_round.mjs r02)
@@ -102,7 +105,7 @@ library/labs/
 6. R01의 `transfer`·`loan_limit` 통과는 **새로 만든 기준 구현이 같은 사람이 쓴 명세와 일치한다**는 뜻일 뿐,
    독립 검증이 아니다. 실제 의미는 서버 이식 후 같은 시나리오를 통과할 때 생긴다.
    `credit` 시나리오는 R02에서 독립 검수(다른 모델이 문서만 보고 계산)를 거쳤다. 다만 같은 회사의 모델이라 공통의 오해를 완전히 막지 못한다(`gdc_check_v1_0.md` §5).
-7. 보험·증권(종목·체결)은 코드·스키마·문서가 아직 없다 (P3). 적금·기업가치 평가는 명세와 시뮬레이터만 있고(서버 없음), 이율 > 0 의 이자 재원 방식(수익 연동 vs 확정 이율)은 [설계 메모](method/securities_funding_memo.md)에 정리했으나 결정 전이다. `src/gdc/smartVault.js`는
+7. 적금·보험·기업가치 평가·증권 운용은 명세와 시뮬레이터만 있고(서버 없음) 증권의 종목·발행·체결 규칙은 아직 없다. 이자 재원 방식(수익 연동 vs 확정 이율)은 2026-10-03 [결정 기록](method/decisions_2026-10-03.md)에서 수익 연동형으로 정했고, 적금 규격은 그에 맞춘 v0.2가 아직 없다. `src/gdc/smartVault.js`는
    집합투자기구 해당 소지로 LEGAL-HOLD(미배선)이므로 증권 상품 설계 시 같은 쟁점을 먼저 검토해야 한다.
 8. `gdc-pool.js`(법정화폐 <-> GDC 풀)는 LEGAL-HOLD로 전부 실패하도록 막혀 있어 법정화폐 충전·환율 교환
    시나리오는 시험할 수 없다. 사용자 간 환전 매칭(`src/gdc/currencyPool.js`)은 별도로 동작한다.
