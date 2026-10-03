@@ -62,6 +62,7 @@ library/labs/
     savings_v0_2.md      적금 상품 명세 v0.2 (P3e, 수익 연동 이자, 시뮬레이션용)
     insurance_v0_1.md    보험 상품 명세 (P3b, 시뮬레이션용)
     securities_v0_1.md   증권 운용·이자 재원 규칙 (P3d, 시뮬레이션용)
+    issuance_v0_1.md     증권 발행·가격 규칙 (P3f, 시뮬레이션용)
     decisions_2026-10-03.md  이자 지급 방식·증권 단위·재무제표 자동 산출 범위의 결정과 이유
     securities_funding_memo.md  증권 투자와 이자 재원 구조 설계 메모 (명세 아님)
   scenarios/README.md    상품별 시나리오 매트릭스 규격
