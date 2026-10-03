@@ -1,0 +1,2397 @@
+{
+ "schema": 1,
+ "round": "r05",
+ "authored": "2026-10-03",
+ "note": "보험 명세 v0.1(insurance_v0_1.md) 기준. expected는 gen_scenarios.py의 참조 계산(명세를 구현 코드와 별개로 옮김)이 실행 전에 냈다.",
+ "scenarios": [
+  {
+   "id": "ins5-001",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "1000/12/A 전부 납입, 사고 없음 (월 보험료 ceil(83.33)=84센트, 12회 ₮10.08)",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 12,
+    "paidCount": 12,
+    "premiumTotal": 10.08,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-002",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "1000/12/B (167센트 올림 확인: 1000*200/1200=166.67)",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "B",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 12,
+    "paidCount": 12,
+    "premiumTotal": 20.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-003",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "1000/6/C (333.33→334센트)",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "C",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 20.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-004",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "10000/12/C 최대 (3333.33→3334센트=₮33.34)",
+   "inputs": {
+    "coverageAmount": 10000,
+    "termMonths": 12,
+    "riskClass": "C",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 12,
+    "paidCount": 12,
+    "premiumTotal": 400.08,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 10000
+   }
+  },
+  {
+   "id": "ins5-005",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "100/6/A 최소 (100*100/1200=8.33→9센트)",
+   "inputs": {
+    "coverageAmount": 100,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 0.54,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 100
+   }
+  },
+  {
+   "id": "ins5-006",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "600/12/B: 600*200/1200=100센트 정확히 (올림 없음)",
+   "inputs": {
+    "coverageAmount": 600,
+    "termMonths": 12,
+    "riskClass": "B",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 12,
+    "paidCount": 12,
+    "premiumTotal": 12.0,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 600
+   }
+  },
+  {
+   "id": "ins5-007",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "면책 기간: 1월 사고는 WAITING",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 1,
+      "loss": 900
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 1,
+      "loss": 900,
+      "payout": 0,
+      "reason": "WAITING"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-008",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "2월 사고 PAID (손실 500 − 자기부담 100 = 400)",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 500,
+      "payout": 400,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 400,
+    "remainingCoverage": 600
+   }
+  },
+  {
+   "id": "ins5-009",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "손실이 자기부담금과 같으면 BELOW_DEDUCTIBLE",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 100
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 100,
+      "payout": 0,
+      "reason": "BELOW_DEDUCTIBLE"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-010",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "손실이 자기부담금보다 1 크면 PAID 1",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 101
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 101,
+      "payout": 1,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 1,
+    "remainingCoverage": 999
+   }
+  },
+  {
+   "id": "ins5-011",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "손실 1, 최소",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 3,
+      "loss": 1
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 3,
+      "loss": 1,
+      "payout": 0,
+      "reason": "BELOW_DEDUCTIBLE"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-012",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "손실이 한도+자기부담금과 정확히 같으면 PAID (1100−100=1000=R) → 소진 종료",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 1100
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 2,
+    "paidCount": 2,
+    "premiumTotal": 1.68,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 1100,
+      "payout": 1000,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 1000,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-013",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "손실이 한도+자기부담금보다 1 크면 PARTIAL 1000 → 소진",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 1101
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 2,
+    "paidCount": 2,
+    "premiumTotal": 1.68,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 1101,
+      "payout": 1000,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 1000,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-014",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "누적: 3월 PAID 600 후 4월 PARTIAL 400",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "B",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 3,
+      "loss": 700
+     },
+     {
+      "month": 4,
+      "loss": 900
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 4,
+    "paidCount": 4,
+    "premiumTotal": 6.68,
+    "claimResults": [
+     {
+      "month": 3,
+      "loss": 700,
+      "payout": 600,
+      "reason": "PAID"
+     },
+     {
+      "month": 4,
+      "loss": 900,
+      "payout": 400,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 1000,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-015",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "같은 달 두 건: 앞 건이 한도를 소진하면 뒤 건은 EXHAUSTED",
+   "inputs": {
+    "coverageAmount": 500,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 1000
+     },
+     {
+      "month": 2,
+      "loss": 300
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 2,
+    "paidCount": 2,
+    "premiumTotal": 0.84,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 1000,
+      "payout": 500,
+      "reason": "PARTIAL"
+     },
+     {
+      "month": 2,
+      "loss": 300,
+      "payout": 0,
+      "reason": "EXHAUSTED"
+     }
+    ],
+    "totalPayout": 500,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-016",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "같은 달 두 건: 둘 다 PAID",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 300
+     },
+     {
+      "month": 2,
+      "loss": 400
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 300,
+      "payout": 200,
+      "reason": "PAID"
+     },
+     {
+      "month": 2,
+      "loss": 400,
+      "payout": 300,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 500,
+    "remainingCoverage": 500
+   }
+  },
+  {
+   "id": "ins5-017",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "같은 달 두 건: PAID 후 PARTIAL (200 후 잔여 800 중 손실 1000−100=900>800)",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 300
+     },
+     {
+      "month": 2,
+      "loss": 1000
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 2,
+    "paidCount": 2,
+    "premiumTotal": 1.68,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 300,
+      "payout": 200,
+      "reason": "PAID"
+     },
+     {
+      "month": 2,
+      "loss": 1000,
+      "payout": 800,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 1000,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-018",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "소진 달이 만기 달이면 exhausted가 우선",
+   "inputs": {
+    "coverageAmount": 200,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 6,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 1.02,
+    "claimResults": [
+     {
+      "month": 6,
+      "loss": 500,
+      "payout": 200,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 200,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-019",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "소진 달에 cancelAt이 겹쳐도 exhausted가 우선",
+   "inputs": {
+    "coverageAmount": 200,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 5,
+      "loss": 500
+     }
+    ],
+    "cancelAt": 5
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 5,
+    "paidCount": 5,
+    "premiumTotal": 0.85,
+    "claimResults": [
+     {
+      "month": 5,
+      "loss": 500,
+      "payout": 200,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 200,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-020",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "소진 뒤 달의 사고는 목록에 나타나지 않는다",
+   "inputs": {
+    "coverageAmount": 200,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 3,
+      "loss": 500
+     },
+     {
+      "month": 6,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 3,
+    "paidCount": 3,
+    "premiumTotal": 0.51,
+    "claimResults": [
+     {
+      "month": 3,
+      "loss": 500,
+      "payout": 200,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 200,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-021",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "미납한 달의 사고는 UNPAID",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "missed",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 3,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 5,
+    "premiumTotal": 4.2,
+    "claimResults": [
+     {
+      "month": 3,
+      "loss": 500,
+      "payout": 0,
+      "reason": "UNPAID"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-022",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "미납 다음 달 납입하면 다시 보상",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "missed",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 4,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 5,
+    "premiumTotal": 4.2,
+    "claimResults": [
+     {
+      "month": 4,
+      "loss": 500,
+      "payout": 400,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 400,
+    "remainingCoverage": 600
+   }
+  },
+  {
+   "id": "ins5-023",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "1월 미납 + 1월 사고 → WAITING이 UNPAID보다 앞선다",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "missed",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 1,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 5,
+    "premiumTotal": 4.2,
+    "claimResults": [
+     {
+      "month": 1,
+      "loss": 500,
+      "payout": 0,
+      "reason": "WAITING"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-024",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "1월 미납 후 2월 미납 → 2회 연속, 실효",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "missed",
+     "missed",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "lapsed",
+    "endMonth": 2,
+    "paidCount": 0,
+    "premiumTotal": 0.0,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 500,
+      "payout": 0,
+      "reason": "UNPAID"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-025",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "1월 미납, 2월 납입은 연속 아님",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "missed",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 5,
+    "premiumTotal": 4.2,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-026",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "2회 연속 미납 → 그 달 끝 실효, 그 달 사고는 UNPAID",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "B",
+    "outcomes": [
+     "paid",
+     "paid",
+     "missed",
+     "missed",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 4,
+      "loss": 800
+     },
+     {
+      "month": 5,
+      "loss": 800
+     }
+    ]
+   },
+   "expected": {
+    "status": "lapsed",
+    "endMonth": 4,
+    "paidCount": 2,
+    "premiumTotal": 3.34,
+    "claimResults": [
+     {
+      "month": 4,
+      "loss": 800,
+      "payout": 0,
+      "reason": "UNPAID"
+     }
+    ],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-027",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "만기 달에 2회 연속 미납이면 lapsed (만기 아님)",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "missed",
+     "missed"
+    ]
+   },
+   "expected": {
+    "status": "lapsed",
+    "endMonth": 6,
+    "paidCount": 4,
+    "premiumTotal": 3.36,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-028",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "3월 소진 후 종료하면 뒤의 연속 미납은 읽지 않는다",
+   "inputs": {
+    "coverageAmount": 200,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "missed",
+     "missed"
+    ],
+    "claims": [
+     {
+      "month": 3,
+      "loss": 400
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 3,
+    "paidCount": 3,
+    "premiumTotal": 0.51,
+    "claimResults": [
+     {
+      "month": 3,
+      "loss": 400,
+      "payout": 200,
+      "reason": "PARTIAL"
+     }
+    ],
+    "totalPayout": 200,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-029",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "비연속 미납 두 번은 계속 유효",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "missed",
+     "paid",
+     "missed",
+     "paid",
+     "missed",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 12,
+    "paidCount": 9,
+    "premiumTotal": 7.56,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-030",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "4월 말 해지: 환급 없음, 낸 보험료 4회",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "cancelAt": 4
+   },
+   "expected": {
+    "status": "cancelled",
+    "endMonth": 4,
+    "paidCount": 4,
+    "premiumTotal": 3.36,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-031",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "해지 달 사고는 처리한 뒤 해지",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 4,
+      "loss": 400
+     }
+    ],
+    "cancelAt": 4
+   },
+   "expected": {
+    "status": "cancelled",
+    "endMonth": 4,
+    "paidCount": 4,
+    "premiumTotal": 3.36,
+    "claimResults": [
+     {
+      "month": 4,
+      "loss": 400,
+      "payout": 300,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 300,
+    "remainingCoverage": 700
+   }
+  },
+  {
+   "id": "ins5-032",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "해지 뒤 달에 outcomes가 더 있어도 읽지 않는다",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 7,
+      "loss": 400
+     }
+    ],
+    "cancelAt": 3
+   },
+   "expected": {
+    "status": "cancelled",
+    "endMonth": 3,
+    "paidCount": 3,
+    "premiumTotal": 2.52,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-033",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "실효가 cancelAt보다 앞서면 cancelAt 무시",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "missed",
+     "missed",
+     "paid",
+     "paid"
+    ],
+    "cancelAt": 6
+   },
+   "expected": {
+    "status": "lapsed",
+    "endMonth": 4,
+    "paidCount": 2,
+    "premiumTotal": 1.68,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-034",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "cancelAt == termMonths (outcomes 가득) → 만기",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "cancelAt": 6
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-035",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "cancelAt null",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "cancelAt": null
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-036",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "claims null",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": null
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-037",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "outcomes 3개만 → active",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 300
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 3,
+    "paidCount": 3,
+    "premiumTotal": 2.52,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 300,
+      "payout": 200,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 200,
+    "remainingCoverage": 800
+   }
+  },
+  {
+   "id": "ins5-038",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "outcomes 비어 있음 → active, endMonth 0",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": []
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 0,
+    "paidCount": 0,
+    "premiumTotal": 0.0,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-039",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "active에서 1회 미납",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "C",
+    "outcomes": [
+     "paid",
+     "missed",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 3,
+    "paidCount": 2,
+    "premiumTotal": 6.68,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-040",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "active에서 소진되면 exhausted",
+   "inputs": {
+    "coverageAmount": 300,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 4,
+      "loss": 330
+     }
+    ]
+   },
+   "expected": {
+    "status": "exhausted",
+    "endMonth": 4,
+    "paidCount": 4,
+    "premiumTotal": 1.0,
+    "claimResults": [
+     {
+      "month": 4,
+      "loss": 330,
+      "payout": 300,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 300,
+    "remainingCoverage": 0
+   }
+  },
+  {
+   "id": "ins5-041",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "COVERAGE 50",
+   "inputs": {
+    "coverageAmount": 50,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-042",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "COVERAGE 10100",
+   "inputs": {
+    "coverageAmount": 10100,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-043",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "COVERAGE 150 (100의 배수 아님)",
+   "inputs": {
+    "coverageAmount": 150,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-044",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "COVERAGE 문자열",
+   "inputs": {
+    "coverageAmount": "1000",
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-045",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "COVERAGE 1000.0 = 정수 1000",
+   "inputs": {
+    "coverageAmount": 1000.0,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-046",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "COVERAGE true",
+   "inputs": {
+    "coverageAmount": true,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-047",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "TERM 3",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 3,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "TERM_INVALID"
+   }
+  },
+  {
+   "id": "ins5-048",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLASS D",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "D",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "CLASS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-049",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLASS 소문자 a",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "a",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "CLASS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-050",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "OUTCOMES 길이 초과",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "OUTCOMES_INVALID"
+   }
+  },
+  {
+   "id": "ins5-051",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "OUTCOMES 원소 이상",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "late"
+    ]
+   },
+   "expected": {
+    "error": "OUTCOMES_INVALID"
+   }
+  },
+  {
+   "id": "ins5-052",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 월 0",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 0,
+      "loss": 100
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-053",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 월이 outcomes 길이 초과",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 4,
+      "loss": 100
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-054",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS loss 0",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 0
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-055",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS loss 소수",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 150.5
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-056",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 월 순서 거꾸로",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 3,
+      "loss": 200
+     },
+     {
+      "month": 2,
+      "loss": 200
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-057",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 배열 아님",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": {
+     "month": 2,
+     "loss": 200
+    }
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-058",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 오류는 계약 종료 뒤 사고에도 적용",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 7,
+      "loss": 0
+     }
+    ],
+    "cancelAt": 3
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-059",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CANCEL 0",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "cancelAt": 0
+   },
+   "expected": {
+    "error": "CANCEL_INVALID"
+   }
+  },
+  {
+   "id": "ins5-060",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CANCEL outcomes 길이 초과",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 12,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "cancelAt": 4
+   },
+   "expected": {
+    "error": "CANCEL_INVALID"
+   }
+  },
+  {
+   "id": "ins5-061",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "검사 순서: COVERAGE와 TERM이 모두 틀리면 COVERAGE",
+   "inputs": {
+    "coverageAmount": 50,
+    "termMonths": 3,
+    "riskClass": "D",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-062",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "검사 순서: CLAIMS와 CANCEL이 모두 틀리면 CLAIMS",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 0,
+      "loss": 1
+     }
+    ],
+    "cancelAt": 9
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-063",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "필수 필드 coverageAmount 누락",
+   "inputs": {
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "COVERAGE_INVALID"
+   }
+  },
+  {
+   "id": "ins5-064",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "termMonths null",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": null,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "TERM_INVALID"
+   }
+  },
+  {
+   "id": "ins5-065",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "riskClass 누락",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "CLASS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-066",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "outcomes 누락",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A"
+   },
+   "expected": {
+    "error": "OUTCOMES_INVALID"
+   }
+  },
+  {
+   "id": "ins5-067",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 원소가 null",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     null
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-068",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 원소에 loss 키 없음",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-069",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 원소가 숫자",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     5
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-070",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS 빈 배열",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": []
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [],
+    "totalPayout": 0,
+    "remainingCoverage": 1000
+   }
+  },
+  {
+   "id": "ins5-071",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "CLAIMS loss가 1000.0 (정수값 실수) → 정수 1000",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 1000.0
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 1000,
+      "payout": 900,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 900.0,
+    "remainingCoverage": 100.0
+   }
+  },
+  {
+   "id": "ins5-072",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "outcomes가 비어 있는데 사고가 있으면 CLAIMS_INVALID",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [],
+    "claims": [
+     {
+      "month": 1,
+      "loss": 100
+     }
+    ]
+   },
+   "expected": {
+    "error": "CLAIMS_INVALID"
+   }
+  },
+  {
+   "id": "ins5-073",
+   "kind": "insurance",
+   "product": "insurance",
+   "moves_balance": false,
+   "note": "사고 원소의 추가 키는 무시",
+   "inputs": {
+    "coverageAmount": 1000,
+    "termMonths": 6,
+    "riskClass": "A",
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "claims": [
+     {
+      "month": 2,
+      "loss": 300,
+      "memo": "x"
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "premiumTotal": 5.04,
+    "claimResults": [
+     {
+      "month": 2,
+      "loss": 300,
+      "payout": 200,
+      "reason": "PAID"
+     }
+    ],
+    "totalPayout": 200,
+    "remainingCoverage": 800
+   }
+  }
+ ]
+}
