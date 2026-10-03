@@ -1,0 +1,423 @@
+{
+ "ambiguities": [
+  "tester 값이 true/false/생략이 아닌 경우(예: 문자열 \"true\", 숫자 1, null)는 문서가 '불리언 tester'·'true일 때만'이라고만 함 -> 엄격히 불리언 true만 테스터로 가정 (이번 입력엔 해당 사례 없음)",
+  "fs 객체 자체가 없거나 null/비객체인 경우 미정의 -> 없거나 null이면 모든 fs 필드 0, 비객체면 INPUT_INVALID로 가정 (해당 사례 없음)",
+  "'그 밖의 비숫자 값'에 배열·객체가 포함되는지 명시 없음 -> INPUT_INVALID로 가정 (해당 사례 없음)",
+  "정수값 실수 판정 기준: 1000.0 외에 1e3 같은 지수 표기, 2^53 초과 실수 등은 언급 없음 -> JSON 리터럴을 Decimal로 정확히 읽어 값이 정수이면 정수로 봄",
+  "inputs.json에서 bsCash는 fs 밖 최상위, 나머지는 fs 안에 있음 -> fs 안의 bsCash나 최상위의 다른 필드는 무시한다고 가정 (해당 사례 없음)",
+  "신용평가 v1.0 §1은 bsCash·bs_ap·bs_equity·pl_revenue·cf_op의 누락/비숫자, 음수 bs_debt 결과를 미정의로 두나, 가치평가 v0.1 §1(누락·null=0, 음수 불가 항목은 INPUT_INVALID)이 우선한다고 보고 적용함",
+  "정의되지 않은 추가 필드(bs_inventory 등)는 유효성 검사 대상이 아니라고 가정 (해당 사례 없음)"
+ ],
+ "results": [
+  {
+   "id": "val4-001",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 0,
+   "earningsValue": 16000,
+   "cashFlowValue": 1600,
+   "low": 0,
+   "mid": 5280,
+   "high": 16000
+  },
+  {
+   "id": "val4-002",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 0,
+   "earningsValue": 16000,
+   "cashFlowValue": 1600,
+   "low": 0,
+   "mid": 5280,
+   "high": 16000
+  },
+  {
+   "id": "val4-003",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 0,
+   "earningsValue": 16000,
+   "cashFlowValue": 1600,
+   "low": 0,
+   "mid": 5280,
+   "high": 16000
+  },
+  {
+   "id": "val4-004",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000,
+   "earningsValue": 24000,
+   "cashFlowValue": 2400,
+   "low": 1000,
+   "mid": 8320,
+   "high": 24000
+  },
+  {
+   "id": "val4-005",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000,
+   "earningsValue": 24000,
+   "cashFlowValue": 2400,
+   "low": 1000,
+   "mid": 8320,
+   "high": 24000
+  },
+  {
+   "id": "val4-006",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000,
+   "earningsValue": 24000,
+   "cashFlowValue": 2400,
+   "low": 1000,
+   "mid": 8320,
+   "high": 24000
+  },
+  {
+   "id": "val4-007",
+   "grade": "AA",
+   "multiple": 10,
+   "nav": 1000,
+   "earningsValue": 20000,
+   "cashFlowValue": 2000,
+   "low": 1000,
+   "mid": 7000,
+   "high": 20000
+  },
+  {
+   "id": "val4-008",
+   "grade": "AA",
+   "multiple": 10,
+   "nav": 1000,
+   "earningsValue": 20000,
+   "cashFlowValue": 2000,
+   "low": 1000,
+   "mid": 7000,
+   "high": 20000
+  },
+  {
+   "id": "val4-009",
+   "grade": "AA",
+   "multiple": 10,
+   "nav": 1000,
+   "earningsValue": 20000,
+   "cashFlowValue": 7010,
+   "low": 1000,
+   "mid": 8503,
+   "high": 20000
+  },
+  {
+   "id": "val4-010",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 1500,
+   "earningsValue": 4200,
+   "cashFlowValue": 1500,
+   "low": 1500,
+   "mid": 2310,
+   "high": 4200
+  },
+  {
+   "id": "val4-011",
+   "grade": "C",
+   "multiple": 2,
+   "nav": 0,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 0,
+   "high": 0
+  },
+  {
+   "id": "val4-012",
+   "grade": "C",
+   "multiple": 2,
+   "nav": 0,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 0,
+   "high": 0
+  },
+  {
+   "id": "val4-013",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 1000,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 400,
+   "high": 1000
+  },
+  {
+   "id": "val4-014",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 1000,
+   "earningsValue": 0,
+   "cashFlowValue": 4200,
+   "low": 0,
+   "mid": 1660,
+   "high": 4200
+  },
+  {
+   "id": "val4-015",
+   "grade": "BB",
+   "multiple": 4,
+   "nav": 1000,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 400,
+   "high": 1000
+  },
+  {
+   "id": "val4-016",
+   "grade": "BB",
+   "multiple": 4,
+   "nav": 1000,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 400,
+   "high": 1000
+  },
+  {
+   "id": "val4-017",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 1000,
+   "earningsValue": 0,
+   "cashFlowValue": 1600,
+   "low": 0,
+   "mid": 880,
+   "high": 1600
+  },
+  {
+   "id": "val4-018",
+   "grade": "AA",
+   "multiple": 10,
+   "nav": 1000,
+   "earningsValue": 20000,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 6400,
+   "high": 20000
+  },
+  {
+   "id": "val4-019",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 0,
+   "earningsValue": 16000,
+   "cashFlowValue": 1600,
+   "low": 0,
+   "mid": 5280,
+   "high": 16000
+  },
+  {
+   "id": "val4-020",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 0,
+   "earningsValue": 16000,
+   "cashFlowValue": 1600,
+   "low": 0,
+   "mid": 5280,
+   "high": 16000
+  },
+  {
+   "id": "val4-021",
+   "grade": "C",
+   "multiple": 2,
+   "nav": 0,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 0,
+   "high": 0
+  },
+  {
+   "id": "val4-022",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 800,
+   "earningsValue": 16000,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 5120,
+   "high": 16000
+  },
+  {
+   "id": "val4-023",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 1,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 0,
+   "high": 1
+  },
+  {
+   "id": "val4-024",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 2,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 1,
+   "high": 2
+  },
+  {
+   "id": "val4-025",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 3,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 1,
+   "high": 3
+  },
+  {
+   "id": "val4-026",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 4,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 2,
+   "high": 4
+  },
+  {
+   "id": "val4-027",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 5,
+   "earningsValue": 0,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 2,
+   "high": 5
+  },
+  {
+   "id": "val4-028",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000000000,
+   "earningsValue": 36000000000,
+   "cashFlowValue": 12000000000,
+   "low": 1000000000,
+   "mid": 14800000000,
+   "high": 36000000000
+  },
+  {
+   "id": "val4-029",
+   "error": "TESTER_ONLY"
+  },
+  {
+   "id": "val4-030",
+   "error": "TESTER_ONLY"
+  },
+  {
+   "id": "val4-031",
+   "error": "INPUT_INVALID"
+  },
+  {
+   "id": "val4-032",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000,
+   "earningsValue": 24000,
+   "cashFlowValue": 2400,
+   "low": 1000,
+   "mid": 8320,
+   "high": 24000
+  },
+  {
+   "id": "val4-033",
+   "error": "INPUT_INVALID"
+  },
+  {
+   "id": "val4-034",
+   "error": "INPUT_INVALID"
+  },
+  {
+   "id": "val4-035",
+   "error": "INPUT_INVALID"
+  },
+  {
+   "id": "val4-036",
+   "error": "INPUT_INVALID"
+  },
+  {
+   "id": "val4-037",
+   "error": "INPUT_INVALID"
+  },
+  {
+   "id": "val4-038",
+   "grade": "BBB",
+   "multiple": 6,
+   "nav": 0,
+   "earningsValue": 12000,
+   "cashFlowValue": 0,
+   "low": 0,
+   "mid": 3600,
+   "high": 12000
+  },
+  {
+   "id": "val4-039",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000,
+   "earningsValue": 24000,
+   "cashFlowValue": 2400,
+   "low": 1000,
+   "mid": 8320,
+   "high": 24000
+  },
+  {
+   "id": "val4-040",
+   "grade": "AA",
+   "multiple": 10,
+   "nav": 1000,
+   "earningsValue": 20000,
+   "cashFlowValue": 2000,
+   "low": 1000,
+   "mid": 7000,
+   "high": 20000
+  },
+  {
+   "id": "val4-041",
+   "error": "TESTER_ONLY"
+  },
+  {
+   "id": "val4-042",
+   "grade": "AAA",
+   "multiple": 12,
+   "nav": 1000,
+   "earningsValue": 24000,
+   "cashFlowValue": 2400,
+   "low": 1000,
+   "mid": 8320,
+   "high": 24000
+  },
+  {
+   "id": "val4-043",
+   "grade": "A",
+   "multiple": 8,
+   "nav": 1000,
+   "earningsValue": 16000,
+   "cashFlowValue": 1600,
+   "low": 1000,
+   "mid": 5680,
+   "high": 16000
+  }
+ ]
+}

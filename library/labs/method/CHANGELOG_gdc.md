@@ -1,8 +1,17 @@
 # GDC 방법론 — 갱신 기록 (CHANGELOG)
 
-`gdc_credit_v*.md` (신용평가), `gdc_valuation_v*.md` (기업가치 평가, P3 예정), `gdc_check_v*.md` (독립 검수)
+`gdc_credit_v*.md` (신용평가), `gdc_valuation_v*.md` (기업가치 평가), `gdc_check_v*.md` (독립 검수)
 의 버전별 변경 내용을 최신순으로 기록한다. klaw의 `CHANGELOG_klaw.md` 와 같은 형식이다.
 버전 표기는 `major.minor[.patch]` 이며, 각 버전의 원문 전체는 저장소 루트의 해당 파일에 둔다.
+
+---
+
+## valuation v0.1 (2026-10-03, P3c-1)
+
+**파일**: [`gdc_valuation_v0_1.md`](../../../gdc_valuation_v0_1.md) · 구현 `js/gdc-valuation.js`(`computeValuation`) · 라운드 4(43건) · 설계 메모 [`securities_funding_memo.md`](securities_funding_memo.md)
+**내용**: 신용평가 v1.0 등급으로 배수(AAA 12 … C 2)를 정하고, 순자산가치·수익가치(영업이익×배수)·현금흐름가치(영업현금흐름×배수) 세 값으로 하한·중간(40/30/30 가중)·상한을 낸다. 정수 입력만 받는다. 배수·가중치는 모두 GDC 설계값, 시뮬레이션 전용이다.
+**검증**: 라운드 4 — 실행 43/43, 독립 검수(다른 모델) 43/43 일치. 검수 중 구현이 문서보다 느슨했던 한 곳(`tester` 생략을 테스터로 취급)을 거절 쪽으로 고쳤다(`rounds/r04-final/reconcile.md`).
+**미해결**: 하한이 0인 경우가 많다, 연간 가정, 입력 재무제표의 신뢰 범위, 등급 경계의 불연속.
 
 ---
 
