@@ -1,0 +1,979 @@
+{
+  "round": "r02",
+  "executed_mode": "simulation",
+  "total": 57,
+  "passed": 57,
+  "byKind": {
+    "credit": {
+      "total": 57,
+      "pass": 57
+    }
+  },
+  "results": [
+    {
+      "id": "cred2-001",
+      "kind": "credit",
+      "note": "순자산 0, 부채 있음 → 5점 (v0은 50)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 71.3
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 71.3
+      }
+    },
+    {
+      "id": "cred2-002",
+      "kind": "credit",
+      "note": "순자산 음수, 부채 있음 → 5점 (v0은 50)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 71.3
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 71.3
+      }
+    },
+    {
+      "id": "cred2-003",
+      "kind": "credit",
+      "note": "순자산 음수, 부채 없음 → 5점 (v0은 50)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 66.3
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 66.3
+      }
+    },
+    {
+      "id": "cred2-004",
+      "kind": "credit",
+      "note": "순자산 0, 부채 0 → 50점 (판단 불가, v0과 같음)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      }
+    },
+    {
+      "id": "cred2-005",
+      "kind": "credit",
+      "note": "순자산 양수, 부채 0 → 100점",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-006",
+      "kind": "credit",
+      "note": "유동비율 경계: 정확히 2.0 → 100",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      }
+    },
+    {
+      "id": "cred2-007",
+      "kind": "credit",
+      "note": "유동비율 경계: 2.0 바로 아래 → 80",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      }
+    },
+    {
+      "id": "cred2-008",
+      "kind": "credit",
+      "note": "유동비율 경계: 정확히 1.5 → 80",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      }
+    },
+    {
+      "id": "cred2-009",
+      "kind": "credit",
+      "note": "유동비율 경계: 1.5 바로 아래 → 60",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-010",
+      "kind": "credit",
+      "note": "유동비율 경계: 정확히 1.0 → 60",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-011",
+      "kind": "credit",
+      "note": "유동비율 경계: 1.0 바로 아래 → 30",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 82.5
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 82.5
+      }
+    },
+    {
+      "id": "cred2-012",
+      "kind": "credit",
+      "note": "유동비율 경계: 정확히 0.5 → 30",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 82.5
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 82.5
+      }
+    },
+    {
+      "id": "cred2-013",
+      "kind": "credit",
+      "note": "유동비율 경계: 0.5 바로 아래 → 10",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      }
+    },
+    {
+      "id": "cred2-014",
+      "kind": "credit",
+      "note": "유동비율 경계: 현금 0 → 10",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      }
+    },
+    {
+      "id": "cred2-015",
+      "kind": "credit",
+      "note": "매입채무 0 → 유동비율 판단 불가 0점",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 75
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 75
+      }
+    },
+    {
+      "id": "cred2-016",
+      "kind": "credit",
+      "note": "부채비율 경계: 정확히 0.3 → 100",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      }
+    },
+    {
+      "id": "cred2-017",
+      "kind": "credit",
+      "note": "부채비율 경계: 0.3 바로 위 → 80",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      }
+    },
+    {
+      "id": "cred2-018",
+      "kind": "credit",
+      "note": "부채비율 경계: 정확히 0.7 → 80",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      }
+    },
+    {
+      "id": "cred2-019",
+      "kind": "credit",
+      "note": "부채비율 경계: 0.7 바로 위 → 55",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 88.8
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 88.8
+      }
+    },
+    {
+      "id": "cred2-020",
+      "kind": "credit",
+      "note": "부채비율 경계: 정확히 1.5 → 55",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 88.8
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 88.8
+      }
+    },
+    {
+      "id": "cred2-021",
+      "kind": "credit",
+      "note": "부채비율 경계: 1.5 바로 위 → 25",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 81.3
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 81.3
+      }
+    },
+    {
+      "id": "cred2-022",
+      "kind": "credit",
+      "note": "부채비율 경계: 정확히 3.0 → 25",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 81.3
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 81.3
+      }
+    },
+    {
+      "id": "cred2-023",
+      "kind": "credit",
+      "note": "부채비율 경계: 3.0 바로 위 → 5",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 76.3
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 76.3
+      }
+    },
+    {
+      "id": "cred2-024",
+      "kind": "credit",
+      "note": "영업이익률 경계: 정확히 0.20 → 100",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      }
+    },
+    {
+      "id": "cred2-025",
+      "kind": "credit",
+      "note": "영업이익률 경계: 0.20 바로 아래 → 75",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 92.5
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 92.5
+      }
+    },
+    {
+      "id": "cred2-026",
+      "kind": "credit",
+      "note": "영업이익률 경계: 정확히 0.10 → 75",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 92.5
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 92.5
+      }
+    },
+    {
+      "id": "cred2-027",
+      "kind": "credit",
+      "note": "영업이익률 경계: 0.10 바로 아래 → 50",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 85
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 85
+      }
+    },
+    {
+      "id": "cred2-028",
+      "kind": "credit",
+      "note": "영업이익률 경계: 정확히 0.05 → 50",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 85
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 85
+      }
+    },
+    {
+      "id": "cred2-029",
+      "kind": "credit",
+      "note": "영업이익률 경계: 0.05 바로 아래 → 25",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      }
+    },
+    {
+      "id": "cred2-030",
+      "kind": "credit",
+      "note": "영업이익률 경계: 정확히 0 → 25",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      }
+    },
+    {
+      "id": "cred2-031",
+      "kind": "credit",
+      "note": "영업이익률 경계: 영업손실 → 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      }
+    },
+    {
+      "id": "cred2-032",
+      "kind": "credit",
+      "note": "매출 0 → 영업이익률 판단 불가 0점",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      }
+    },
+    {
+      "id": "cred2-033",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 정확히 0.5 → 100",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      }
+    },
+    {
+      "id": "cred2-034",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 0.5 바로 아래 → 75",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      }
+    },
+    {
+      "id": "cred2-035",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 정확히 0.25 → 75",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 95
+      }
+    },
+    {
+      "id": "cred2-036",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 0.25 바로 아래 → 50",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-037",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 정확히 0.1 → 50",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-038",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 0.1 바로 아래 → 20",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 84
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 84
+      }
+    },
+    {
+      "id": "cred2-039",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 정확히 0 → 20",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 84
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 84
+      }
+    },
+    {
+      "id": "cred2-040",
+      "kind": "credit",
+      "note": "현금흐름비율 경계: 음수 → 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 80
+      },
+      "actual": {
+        "grade": "AA",
+        "annualRate": 0.01,
+        "score": 80
+      }
+    },
+    {
+      "id": "cred2-041",
+      "kind": "credit",
+      "note": "무차입이면 영업현금흐름이 음수여도 중립 50점",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-042",
+      "kind": "credit",
+      "note": "건실한 중견: 전 지표 상위",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 100
+      }
+    },
+    {
+      "id": "cred2-043",
+      "kind": "credit",
+      "note": "보통 기업",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 53.8
+      },
+      "actual": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 53.8
+      }
+    },
+    {
+      "id": "cred2-044",
+      "kind": "credit",
+      "note": "영업손실이지만 재무구조는 양호 (한계 §7-2)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 70
+      }
+    },
+    {
+      "id": "cred2-045",
+      "kind": "credit",
+      "note": "지급불능에 가까운 기업: 자본잠식 + 영업손실",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 3.8
+      },
+      "actual": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 3.8
+      }
+    },
+    {
+      "id": "cred2-046",
+      "kind": "credit",
+      "note": "개인 사업자: 무차입, 소규모",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-047",
+      "kind": "credit",
+      "note": "빈 재무제표: 현금만 있음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 22.5
+      },
+      "actual": {
+        "grade": "C",
+        "annualRate": 0.05,
+        "score": 22.5
+      }
+    },
+    {
+      "id": "cred2-048",
+      "kind": "credit",
+      "note": "총점이 정확히 90점 (유동 100, 부채 100, 마진 100, 현금흐름 50) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-049",
+      "kind": "credit",
+      "note": "총점이 정확히 90점 (유동 60, 부채 100, 마진 100, 현금흐름 100) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      },
+      "actual": {
+        "grade": "AAA",
+        "annualRate": 0.005,
+        "score": 90
+      }
+    },
+    {
+      "id": "cred2-050",
+      "kind": "credit",
+      "note": "총점이 정확히 65점 (유동 100, 부채 100, 마진 50, 현금흐름 0) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 65
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 65
+      }
+    },
+    {
+      "id": "cred2-051",
+      "kind": "credit",
+      "note": "총점이 정확히 65점 (유동 10, 부채 80, 마진 75, 현금흐름 100) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 65
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 65
+      }
+    },
+    {
+      "id": "cred2-052",
+      "kind": "credit",
+      "note": "총점이 정확히 50점 (유동 100, 부채 100, 마진 0, 현금흐름 0) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 50
+      },
+      "actual": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 50
+      }
+    },
+    {
+      "id": "cred2-053",
+      "kind": "credit",
+      "note": "총점이 정확히 50점 (유동 10, 부채 80, 마진 25, 현금흐름 100) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 50
+      },
+      "actual": {
+        "grade": "BBB",
+        "annualRate": 0.025,
+        "score": 50
+      }
+    },
+    {
+      "id": "cred2-054",
+      "kind": "credit",
+      "note": "총점이 정확히 35점 (유동 60, 부채 80, 마진 0, 현금흐름 0) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BB",
+        "annualRate": 0.035,
+        "score": 35
+      },
+      "actual": {
+        "grade": "BB",
+        "annualRate": 0.035,
+        "score": 35
+      }
+    },
+    {
+      "id": "cred2-055",
+      "kind": "credit",
+      "note": "총점이 정확히 35점 (유동 10, 부채 100, 마진 25, 현금흐름 0) → 경계값은 위 등급",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BB",
+        "annualRate": 0.035,
+        "score": 35
+      },
+      "actual": {
+        "grade": "BB",
+        "annualRate": 0.035,
+        "score": 35
+      }
+    },
+    {
+      "id": "cred2-056",
+      "kind": "credit",
+      "note": "총점 77.50점, 78점 바로 아래 → 아래 등급 (유동 100, 부채 100, 마진 25, 현금흐름 100)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      },
+      "actual": {
+        "grade": "A",
+        "annualRate": 0.015,
+        "score": 77.5
+      }
+    },
+    {
+      "id": "cred2-057",
+      "kind": "credit",
+      "note": "필드테스터가 아닌 계정 → TESTER_ONLY",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TESTER_ONLY"
+      },
+      "actual": {
+        "error": "TESTER_ONLY"
+      }
+    }
+  ]
+}

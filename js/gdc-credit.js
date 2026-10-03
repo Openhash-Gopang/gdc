@@ -17,6 +17,8 @@
 //   법률 자문·은행업/대부업 인허가 검토가 다시 필요하다 — 이 파일을
 //   고치는 것으로 그 절차를 대체할 수 없다.
 //
+// 방법론 원문: gdc_credit_v1_0.md (저장소 루트). 이 파일은 그 문서의 구현이다.
+//
 // 원본 재무제표 기반 신용평가 로직(GRADE_RATES, 4대 지표 계산)은
 // git 이력에 보존돼 있던 버전을 기반으로, 실제 동작하는 서버 스키마
 // (gdc_test_financial_statements) 위에 재작성했다.
@@ -88,8 +90,12 @@ function scoreLiquidity(r) {
   if (r >= 0.5) return 30;
   return 10;
 }
-function scoreDebt(r) { // 낮을수록 고득점(역채점)
-  if (r == null) return 50; // 부채가 아예 없으면(분모 미기재) 중립 처리
+// v1.0(2026-10-03, gdc_credit_v1_0.md §3·§6): 순자산이 0 이하일 때를 부채 유무로 나눈다.
+// v0은 이 경우 부채가 얼마든 중립 50점을 줘서 순자산 0에 부채가 있는 계정(지급불능)이
+// 부채 없는 계정과 같은 점수를 받았다. debt/equity 는 비율이 아니라 원값이다.
+function scoreDebt(debt, equity, r) { // 낮을수록 고득점(역채점)
+  if (equity < 0) return 5;                 // 자본잠식
+  if (!(equity > 0)) return debt > 0 ? 5 : 50; // 순자산 0: 부채가 있으면 최저, 둘 다 0이면 판단 불가
   if (r <= 0.3) return 100;
   if (r <= 0.7) return 80;
   if (r <= 1.5) return 55;
@@ -111,6 +117,37 @@ function scoreCashFlow(r) {
   if (r >= 0.1) return 50;
   if (r >= 0) return 20;
   return 0;
+}
+
+/**
+ * 점수 산정만 하는 순수 함수(네트워크 없음). 방법론 gdc_credit_v1_0.md 의 구현이며,
+ * 서버 worker.js 의 _gdcEvaluateCreditServer 와 반드시 같아야 한다.
+ */
+export function computeCredit(bsCash, fs) {
+  const ratios = computeRatios({ bsCash, fs });
+
+  const liquidityScore = scoreLiquidity(ratios.liquidity);
+  const debtScore = scoreDebt(fs.bs_debt || 0, fs.bs_equity, ratios.debtRatio);
+  const marginScore = scoreMargin(ratios.operatingMargin);
+  const cashFlowScore = scoreCashFlow(ratios.cashFlowRatio);
+
+  const totalScore =
+    liquidityScore * 0.25 +
+    debtScore * 0.25 +
+    marginScore * 0.30 +
+    cashFlowScore * 0.20;
+
+  const grade = scoreToGrade(totalScore);
+  return {
+    grade,
+    annualRate: GRADE_RATES[grade],
+    score: Math.round(totalScore * 10) / 10,
+    ratios,
+    componentScores: {
+      liquidity: liquidityScore, debt: debtScore,
+      operatingMargin: marginScore, cashFlow: cashFlowScore,
+    },
+  };
 }
 
 /**
@@ -137,31 +174,14 @@ export async function evaluateCredit(userGuid) {
   const fs = data.record;
 
   const bsCash = await getBalance(userGuid);
-  const ratios = computeRatios({ bsCash, fs });
-
-  const liquidityScore = scoreLiquidity(ratios.liquidity);
-  const debtScore = scoreDebt(ratios.debtRatio);
-  const marginScore = scoreMargin(ratios.operatingMargin);
-  const cashFlowScore = scoreCashFlow(ratios.cashFlowRatio);
-
-  const totalScore =
-    liquidityScore * 0.25 +
-    debtScore * 0.25 +
-    marginScore * 0.30 +
-    cashFlowScore * 0.20;
-
-  const grade = scoreToGrade(totalScore);
-  const rate = GRADE_RATES[grade];
+  const r = computeCredit(bsCash, fs);
 
   return {
-    grade,
-    annualRate: rate,
-    score: Math.round(totalScore * 10) / 10,
-    ratios,
-    componentScores: {
-      liquidity: liquidityScore, debt: debtScore,
-      operatingMargin: marginScore, cashFlow: cashFlowScore,
-    },
+    grade: r.grade,
+    annualRate: r.annualRate,
+    score: r.score,
+    ratios: r.ratios,
+    componentScores: r.componentScores,
     inputs: { bsCash, ...fs },
     note: '테스트 목적 목업 신용평가 — 실제 금융감독 심사 결과가 아님. ' +
           'bs-cash를 제외한 재무 항목은 필드테스터가 입력한 시나리오 값.',

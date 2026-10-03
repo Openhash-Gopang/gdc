@@ -110,18 +110,46 @@ body{font-family:var(--font);background:var(--bg);color:var(--txt2);line-height:
       <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/method/limits_v0_1.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/method/limits_v0_1.md" target="_blank" rel="noopener">원문</a></div>
     </article>
     <article class="lib-card" data-cat="current">
+      <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운</span></div>
+      <h3>신용평가 방법론 v1.0</h3>
+      <div class="lib-sub">gdc_credit_v1_0.md · 마크다운</div>
+      <p>입력값, 4개 지표와 점수표, 등급·금리표, 반올림 규칙, 구현 위치를 정한 방법론 원문입니다. v0에서 순자산이 0 이하일 때의 부채비율 점수만 고쳤습니다. 가상 시나리오 기준이며 제3자 검증 전입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/gdc_credit_v1_0.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/gdc_credit_v1_0.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="current">
+      <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운</span></div>
+      <h3>독립 검수 지침 v1.0</h3>
+      <div class="lib-sub">gdc_check_v1_0.md · 마크다운</div>
+      <p>방법론 문서와 입력값만 받아 등급을 다시 계산하는 검수자의 지침입니다. 구현 코드와 기대값은 보지 않습니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/gdc_check_v1_0.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/gdc_check_v1_0.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="current">
       <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운 · 2 KB</span></div>
-      <h3>테스트 파이프라인 설계안</h3>
+      <h3>테스트 파이프라인</h3>
       <div class="lib-sub">pipeline.md · 마크다운</div>
-      <p>생성 → 독립 검수 → 대조의 3단계, 소유권·순서·파일 규약을 정한 설계안입니다. klaw 자료실의 파이프라인을 기준으로 했으며 실제 스크립트가 만들어지는 대로 확정합니다.</p>
+      <p>생성 → 독립 검수 → 대조의 3단계와 소유권·파일 규약, 실행·대조 스크립트를 적은 문서입니다. 신용평가는 R02에서 실제로 돌렸고 나머지 상품은 아직 없습니다.</p>
       <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/method/pipeline.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/method/pipeline.md" target="_blank" rel="noopener">원문</a></div>
     </article>
     <article class="lib-card" data-cat="current">
       <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운 · 2 KB</span></div>
       <h3>방법론 변경 이력</h3>
       <div class="lib-sub">CHANGELOG_gdc.md · 마크다운</div>
-      <p>한도 명세와 (앞으로 작성할) 신용평가·기업가치 평가·독립 검수 방법론의 버전별 변경 이력입니다. 방법론 본체는 아직 작성 전입니다.</p>
+      <p>한도 명세와 신용평가 방법론의 버전별 변경 이력입니다. 기업가치 평가 방법론은 아직 작성 전입니다.</p>
       <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/method/CHANGELOG_gdc.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/method/CHANGELOG_gdc.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="report">
+      <div class="lib-top"><span class="lib-chip chip-report">시험 라운드</span><span class="lib-meta">마크다운 · 57건</span></div>
+      <h3>라운드 2 결과 (신용평가 v1.0)</h3>
+      <div class="lib-sub">results.md · 마크다운</div>
+      <p>신용평가 시나리오 57건을 방법론 v1.0 기준으로 돌린 결과(57/57 통과)입니다. 독립 검수와도 57건 모두 일치했지만 검수자는 같은 제작사의 다른 모델이라 완전한 독립 검증은 아닙니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/rounds/r02/results.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/rounds/r02/results.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="report">
+      <div class="lib-top"><span class="lib-chip chip-report">시험 라운드</span><span class="lib-meta">마크다운</span></div>
+      <h3>라운드 2 독립 검수·재검토 기록</h3>
+      <div class="lib-sub">reconcile.md · 마크다운</div>
+      <p>1차·2차 검수가 짚은 사항과 수용/반박, 그에 따른 문서·시험 도구 수정 내역입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/rounds/r02-final/reconcile.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/rounds/r02-final/reconcile.md" target="_blank" rel="noopener">원문</a></div>
     </article>
     <article class="lib-card" data-cat="report">
       <div class="lib-top"><span class="lib-chip chip-report">시험 라운드</span><span class="lib-meta">마크다운 · 2 KB</span></div>

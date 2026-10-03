@@ -1,7 +1,7 @@
 # GDC 테스트 파이프라인 — 소유권·순서·파일 규약 (설계안)
 
-klaw의 `pipeline.md` 를 기준으로 한 설계안이다. P1~P2에서 실제 스크립트를 만들면서 이 문서를 확정한다.
-현재(P0) 구현된 스크립트는 없다.
+klaw의 `pipeline.md` 를 기준으로 하되, R02(2026-10-03)에서 실제로 돌려 본 내용을 반영했다.
+신용평가 파이프라인은 구현됐고, 보험·증권·기업가치는 아직 없다.
 
 ## 1. 3단계
 
@@ -18,13 +18,23 @@ klaw의 `pipeline.md` 를 기준으로 한 설계안이다. P1~P2에서 실제 �
 같은 이름의 결과 파일이 단계에 따라 다른 디렉터리에 생길 수 있으므로 디렉터리로 구분한다.
 검수까지 거친 시나리오는 가장 나중 단계(재검토) 디렉터리의 결과를 권위 있는 결과로 취급한다.
 
-## 3. 디렉터리 규약 (예정)
+## 3. 디렉터리 규약
 
 ```
-rounds/<R>/                  (1) 실행 산출물: <scenario_id>.json, results.csv
-rounds/<R>-check/            (2) 독립 검수 보고서
-rounds/<R>-final/            (3) 재검토 후 최종 결과
+rounds/<R>/                  (1) 실행: scenarios.json(기대값을 실행 전에 기록), results.json, results.md
+rounds/<R>-check/            (2) 독립 검수: results_check.json, report.md(대조), pass1/(명확화 전 1차 기록)
+rounds/<R>-final/            (3) 재검토: reconcile.md(지적별 수용/반박과 조치)
 ```
+
+실행 스크립트(`library/labs/scripts/`):
+
+| 스크립트 | 역할 |
+|----------|------|
+| `run_round.mjs <R>` | scenarios.json을 구현에 돌려 results.json·results.md 생성 (점수 허용오차 0.001, 표시 점수는 소수 첫째 자리 올림 반올림) |
+| `compare_check.mjs <R>` | rounds/<R>/results.json과 rounds/<R>-check/results_check.json을 항목별로 대조해 report.md 생성 |
+
+독립 검수자에게는 방법론 문서와 입력값만 준다(구현 코드·기대값·실행 결과는 주지 않는다). 지침은 `gdc_check_v1_0.md`.
+R02의 검수자는 같은 제작사의 다른 모델이므로 **완전히 독립한 검증이 아니다**. 제3자 검증은 아직 없다.
 
 ## 4. 방법론 버전 관리
 

@@ -141,7 +141,7 @@ gdc/
 
 ### 5-2. 대출 (Loan)
 
-> 아래 금리·신용평가 스펙(§5-2, §5-4)은 v1.0 설계 기록이며 현행 코드(`js/gdc-credit.js`)·사이트와 다르다 (현행: AAA 연 0.5% ~ C 연 5%). 현행 한도는 [library/labs/method/limits_v0_1.md](library/labs/method/limits_v0_1.md).
+> 아래 금리·신용평가 스펙(§5-2, §5-4)은 v1.0 설계 기록이며 현행 코드(`js/gdc-credit.js`)·사이트와 다르다 (현행: AAA 연 0.5% ~ C 연 5%). 현행 신용평가는 [gdc_credit_v1_0.md](gdc_credit_v1_0.md), 현행 한도는 [library/labs/method/limits_v0_1.md](library/labs/method/limits_v0_1.md).
 | 항목 | 스펙 |
 |------|------|
 | 신용 평가 | 재무제표(`extra.fs`) 기반 AI 즉시 평가 (0.1초) |

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "updated": "2026-10-03",
-  "note": "R01은 현행 코드의 기준선 측정(시뮬레이션). 독립 검수·재검토 전.",
+  "note": "R01은 현행 코드의 기준선 측정(시뮬레이션, v0). R02는 신용평가 v1.0 방법론 문서 기준 57건, 독립 검수·대조 완료(같은 제작사 모델이라 완전한 독립은 아님).",
   "rounds": [
     {
       "id": "r01",
@@ -9,8 +9,27 @@
       "baseline": "js/gdc-credit.js (방법론 문서화 이전, v0) + js/gdc-limits.js (limits v0.1)",
       "mode": "simulation",
       "scenarios": 32,
-      "stages": { "run": "done", "check": "pending", "reconcile": "pending" },
+      "stages": {
+        "run": "done",
+        "check": "pending",
+        "reconcile": "pending"
+      },
       "results": "rounds/r01/results.md"
+    },
+    {
+      "id": "r02",
+      "date": "2026-10-03",
+      "baseline": "gdc_credit_v1_0.md (js/gdc-credit.js computeCredit)",
+      "mode": "simulation",
+      "scenarios": 57,
+      "stages": {
+        "run": "done",
+        "check": "done",
+        "reconcile": "done"
+      },
+      "results": "rounds/r02/results.md",
+      "check": "rounds/r02-check/report.md",
+      "final": "rounds/r02-final/reconcile.md"
     }
   ]
 }
