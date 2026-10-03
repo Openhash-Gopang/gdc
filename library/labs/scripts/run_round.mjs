@@ -21,7 +21,7 @@ const dir = path.join(root, 'library/labs/rounds', round);
 const { evaluateCredit } = await import(pathToFileURL(path.join(root, 'js/gdc-credit.js')));
 const { checkTransfer, checkLoan } = await import(pathToFileURL(path.join(root, 'js/gdc-limits.js')));
 
-const SCORE_TOL = 0.1;   // 점수 반올림(소수 첫째 자리) 허용 오차
+const SCORE_TOL = 0.001; // 점수는 소수 첫째 자리 반올림값이므로 사실상 정확히 일치해야 한다. (R01 때는 0.1이어서 동점 반올림 차이를 가렸다)
 const DSR_TOL = 0.0005;
 
 function installFetchMock(inputs) {
@@ -58,7 +58,8 @@ function compare(expected, actual) {
   const diffs = [];
   for (const [k, v] of Object.entries(expected)) {
     const a = actual[k];
-    if (k === 'score') { if (!(typeof a === 'number' && Math.abs(a - v) <= SCORE_TOL)) diffs.push(`${k}: 기대 ${v}, 실제 ${a}`); }
+    // expected 점수는 반올림 전 총점으로 적혀 있을 수 있어(예: 61.25), 방법론 §4대로 소수 첫째 자리에서 올림(동점) 반올림해 비교한다.
+    if (k === 'score') { if (!(typeof a === 'number' && Math.abs(a - Math.round(v * 10 + 1e-9) / 10) <= SCORE_TOL)) diffs.push(`${k}: 기대 ${v}, 실제 ${a}`); }
     else if (k === 'dsr') { if (!(typeof a === 'number' && Math.abs(a - v) <= DSR_TOL)) diffs.push(`${k}: 기대 ${v}, 실제 ${a}`); }
     else if (a !== v) diffs.push(`${k}: 기대 ${v}, 실제 ${a}`);
   }

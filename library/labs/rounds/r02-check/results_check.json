@@ -1,0 +1,799 @@
+{
+ "results": [
+  {
+   "id": "cred2-001",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 71.3,
+   "total": 71.25,
+   "totalExact": "285/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 5,
+    "operatingMargin": 100,
+    "cashFlow": 75
+   }
+  },
+  {
+   "id": "cred2-002",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 71.3,
+   "total": 71.25,
+   "totalExact": "285/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 5,
+    "operatingMargin": 100,
+    "cashFlow": 75
+   }
+  },
+  {
+   "id": "cred2-003",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 66.3,
+   "total": 66.25,
+   "totalExact": "265/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 5,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-004",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 77.5,
+   "total": 77.5,
+   "totalExact": "155/2",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 50,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-005",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-006",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 100.0,
+   "total": 100.0,
+   "totalExact": "100",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-007",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 95.0,
+   "total": 95.0,
+   "totalExact": "95",
+   "componentScores": {
+    "liquidity": 80,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-008",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 95.0,
+   "total": 95.0,
+   "totalExact": "95",
+   "componentScores": {
+    "liquidity": 80,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-009",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 60,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-010",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 60,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-011",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 82.5,
+   "total": 82.5,
+   "totalExact": "165/2",
+   "componentScores": {
+    "liquidity": 30,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-012",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 82.5,
+   "total": 82.5,
+   "totalExact": "165/2",
+   "componentScores": {
+    "liquidity": 30,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-013",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 77.5,
+   "total": 77.5,
+   "totalExact": "155/2",
+   "componentScores": {
+    "liquidity": 10,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-014",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 77.5,
+   "total": 77.5,
+   "totalExact": "155/2",
+   "componentScores": {
+    "liquidity": 10,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-015",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 75.0,
+   "total": 75.0,
+   "totalExact": "75",
+   "componentScores": {
+    "liquidity": 0,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-016",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 100.0,
+   "total": 100.0,
+   "totalExact": "100",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-017",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 95.0,
+   "total": 95.0,
+   "totalExact": "95",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 80,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-018",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 95.0,
+   "total": 95.0,
+   "totalExact": "95",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 80,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-019",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 88.8,
+   "total": 88.75,
+   "totalExact": "355/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 55,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-020",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 88.8,
+   "total": 88.75,
+   "totalExact": "355/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 55,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-021",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 81.3,
+   "total": 81.25,
+   "totalExact": "325/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 25,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-022",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 81.3,
+   "total": 81.25,
+   "totalExact": "325/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 25,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-023",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 76.3,
+   "total": 76.25,
+   "totalExact": "305/4",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 5,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-024",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 100.0,
+   "total": 100.0,
+   "totalExact": "100",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-025",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 92.5,
+   "total": 92.5,
+   "totalExact": "185/2",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 75,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-026",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 92.5,
+   "total": 92.5,
+   "totalExact": "185/2",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 75,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-027",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 85.0,
+   "total": 85.0,
+   "totalExact": "85",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 50,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-028",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 85.0,
+   "total": 85.0,
+   "totalExact": "85",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 50,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-029",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 77.5,
+   "total": 77.5,
+   "totalExact": "155/2",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 25,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-030",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 77.5,
+   "total": 77.5,
+   "totalExact": "155/2",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 25,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-031",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 70.0,
+   "total": 70.0,
+   "totalExact": "70",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 0,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-032",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 70.0,
+   "total": 70.0,
+   "totalExact": "70",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 0,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-033",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 100.0,
+   "total": 100.0,
+   "totalExact": "100",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-034",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 95.0,
+   "total": 95.0,
+   "totalExact": "95",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 75
+   }
+  },
+  {
+   "id": "cred2-035",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 95.0,
+   "total": 95.0,
+   "totalExact": "95",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 75
+   }
+  },
+  {
+   "id": "cred2-036",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-037",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-038",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 84.0,
+   "total": 84.0,
+   "totalExact": "84",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 20
+   }
+  },
+  {
+   "id": "cred2-039",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 84.0,
+   "total": 84.0,
+   "totalExact": "84",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 20
+   }
+  },
+  {
+   "id": "cred2-040",
+   "grade": "AA",
+   "annualRate": 0.01,
+   "score": 80.0,
+   "total": 80.0,
+   "totalExact": "80",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 0
+   }
+  },
+  {
+   "id": "cred2-041",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-042",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 100.0,
+   "total": 100.0,
+   "totalExact": "100",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-043",
+   "grade": "BBB",
+   "annualRate": 0.025,
+   "score": 53.8,
+   "total": 53.75,
+   "totalExact": "215/4",
+   "componentScores": {
+    "liquidity": 60,
+    "debt": 55,
+    "operatingMargin": 50,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-044",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 70.0,
+   "total": 70.0,
+   "totalExact": "70",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 0,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-045",
+   "grade": "C",
+   "annualRate": 0.05,
+   "score": 3.8,
+   "total": 3.75,
+   "totalExact": "15/4",
+   "componentScores": {
+    "liquidity": 10,
+    "debt": 5,
+    "operatingMargin": 0,
+    "cashFlow": 0
+   }
+  },
+  {
+   "id": "cred2-046",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-047",
+   "grade": "C",
+   "annualRate": 0.05,
+   "score": 22.5,
+   "total": 22.5,
+   "totalExact": "45/2",
+   "componentScores": {
+    "liquidity": 0,
+    "debt": 50,
+    "operatingMargin": 0,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-048",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 50
+   }
+  },
+  {
+   "id": "cred2-049",
+   "grade": "AAA",
+   "annualRate": 0.005,
+   "score": 90.0,
+   "total": 90.0,
+   "totalExact": "90",
+   "componentScores": {
+    "liquidity": 60,
+    "debt": 100,
+    "operatingMargin": 100,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-050",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 65.0,
+   "total": 65.0,
+   "totalExact": "65",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 50,
+    "cashFlow": 0
+   }
+  },
+  {
+   "id": "cred2-051",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 65.0,
+   "total": 65.0,
+   "totalExact": "65",
+   "componentScores": {
+    "liquidity": 10,
+    "debt": 80,
+    "operatingMargin": 75,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-052",
+   "grade": "BBB",
+   "annualRate": 0.025,
+   "score": 50.0,
+   "total": 50.0,
+   "totalExact": "50",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 0,
+    "cashFlow": 0
+   }
+  },
+  {
+   "id": "cred2-053",
+   "grade": "BBB",
+   "annualRate": 0.025,
+   "score": 50.0,
+   "total": 50.0,
+   "totalExact": "50",
+   "componentScores": {
+    "liquidity": 10,
+    "debt": 80,
+    "operatingMargin": 25,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-054",
+   "grade": "BB",
+   "annualRate": 0.035,
+   "score": 35.0,
+   "total": 35.0,
+   "totalExact": "35",
+   "componentScores": {
+    "liquidity": 60,
+    "debt": 80,
+    "operatingMargin": 0,
+    "cashFlow": 0
+   }
+  },
+  {
+   "id": "cred2-055",
+   "grade": "BB",
+   "annualRate": 0.035,
+   "score": 35.0,
+   "total": 35.0,
+   "totalExact": "35",
+   "componentScores": {
+    "liquidity": 10,
+    "debt": 100,
+    "operatingMargin": 25,
+    "cashFlow": 0
+   }
+  },
+  {
+   "id": "cred2-056",
+   "grade": "A",
+   "annualRate": 0.015,
+   "score": 77.5,
+   "total": 77.5,
+   "totalExact": "155/2",
+   "componentScores": {
+    "liquidity": 100,
+    "debt": 100,
+    "operatingMargin": 25,
+    "cashFlow": 100
+   }
+  },
+  {
+   "id": "cred2-057",
+   "error": "TESTER_ONLY"
+  }
+ ],
+ "ambiguities": [
+  "§3 debt table: bs_equity = 0 with bs_debt < 0 is not covered (only debt > 0 and debt = 0). Not present in inputs; script treats it as 50 (not > 0).",
+  "§3 says boundaries are inclusive 'to the better side'; debt table uses explicit </<= that agree with this (0.3 -> 100, 0.7 -> 80, 1.5 -> 55, 3.0 -> 25). Applied as written; no conflict found.",
+  "§4 says annualRate must match the grade table posted on gdc.hondi.net; that table cannot be checked from these two files. Used the document's '구현 값' column.",
+  "Output type of the displayed score is not specified (number vs. string); emitted as a number rounded half-up to 1 decimal.",
+  "§1/§7: period of pl_* and cf_op (annual vs quarterly) is undefined; it does not change any ratio computed here, so no assumption needed for these results."
+ ]
+}
