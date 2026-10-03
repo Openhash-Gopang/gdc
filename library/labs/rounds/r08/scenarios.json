@@ -1,0 +1,2016 @@
+{
+ "schema": 1,
+ "round": "r08",
+ "authored": "2026-10-03",
+ "note": "증권 발행·가격 명세 v0.1(issuance_v0_1.md) 기준. expected는 gen_scenarios.py의 참조 계산(명세를 구현 코드와 별개로 옮김)이 실행 전에 냈다.",
+ "scenarios": [
+  {
+   "id": "iss8-001",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "기본 발행: 기존 500단위, 중간 1000₮ → 발행가 200센트, 청약 합계가 요청 이하면 그대로 배정",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 30
+     },
+     {
+      "id": "b",
+      "units": 40
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 30
+     },
+     {
+      "id": "b",
+      "units": 40
+     }
+    ],
+    "unallocatedUnits": 30,
+    "raisedCents": 14000,
+    "newIssuedUnits": 570,
+    "postPriceCents": 200,
+    "bandLowCents": 24,
+    "bandHighCents": 551
+   }
+  },
+  {
+   "id": "iss8-002",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "초과 청약: 안분 배정(버림)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 60
+     },
+     {
+      "id": "b",
+      "units": 70
+     },
+     {
+      "id": "c",
+      "units": 20
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 40
+     },
+     {
+      "id": "b",
+      "units": 46
+     },
+     {
+      "id": "c",
+      "units": 13
+     }
+    ],
+    "unallocatedUnits": 1,
+    "raisedCents": 19800,
+    "newIssuedUnits": 599,
+    "postPriceCents": 200,
+    "bandLowCents": 33,
+    "bandHighCents": 534
+   }
+  },
+  {
+   "id": "iss8-003",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "청약 없음 → 배정 0, 조달 0, 가격 띠는 기존 단위 기준",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [],
+    "unallocatedUnits": 100,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": 200,
+    "bandLowCents": 0,
+    "bandHighCents": 600
+   }
+  },
+  {
+   "id": "iss8-004",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "subscriptions null",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": null
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [],
+    "unallocatedUnits": 100,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": 200,
+    "bandLowCents": 0,
+    "bandHighCents": 600
+   }
+  },
+  {
+   "id": "iss8-005",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "내부자 청약이 20%를 넘으면 상한 (요청 100 → 20)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "co",
+      "units": 50
+     },
+     {
+      "id": "a",
+      "units": 30
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "co",
+      "units": 20
+     },
+     {
+      "id": "a",
+      "units": 30
+     }
+    ],
+    "unallocatedUnits": 50,
+    "raisedCents": 10000,
+    "newIssuedUnits": 550,
+    "postPriceCents": 200,
+    "bandLowCents": 18,
+    "bandHighCents": 564
+   }
+  },
+  {
+   "id": "iss8-006",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "내부자 청약이 상한 이하면 그대로",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "co",
+      "units": 15
+     },
+     {
+      "id": "a",
+      "units": 30
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "co",
+      "units": 15
+     },
+     {
+      "id": "a",
+      "units": 30
+     }
+    ],
+    "unallocatedUnits": 55,
+    "raisedCents": 9000,
+    "newIssuedUnits": 545,
+    "postPriceCents": 200,
+    "bandLowCents": 16,
+    "bandHighCents": 567
+   }
+  },
+  {
+   "id": "iss8-007",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "초과 청약 + 내부자 상한 동시 (T=110)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 60
+     },
+     {
+      "id": "co",
+      "units": 50
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 54
+     },
+     {
+      "id": "co",
+      "units": 20
+     }
+    ],
+    "unallocatedUnits": 26,
+    "raisedCents": 14800,
+    "newIssuedUnits": 574,
+    "postPriceCents": 200,
+    "bandLowCents": 25,
+    "bandHighCents": 549
+   }
+  },
+  {
+   "id": "iss8-008",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "내부자만 청약, 상한 20으로 잘림, 나머지 미배정",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "co",
+      "units": 100
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "co",
+      "units": 20
+     }
+    ],
+    "unallocatedUnits": 80,
+    "raisedCents": 4000,
+    "newIssuedUnits": 520,
+    "postPriceCents": 200,
+    "bandLowCents": 7,
+    "bandHighCents": 585
+   }
+  },
+  {
+   "id": "iss8-009",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "요청 7단위: 내부자 상한 floor(1.4)=1",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 7,
+    "subscriptions": [
+     {
+      "id": "co",
+      "units": 7
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "co",
+      "units": 1
+     }
+    ],
+    "unallocatedUnits": 6,
+    "raisedCents": 200,
+    "newIssuedUnits": 501,
+    "postPriceCents": 200,
+    "bandLowCents": 0,
+    "bandHighCents": 600
+   }
+  },
+  {
+   "id": "iss8-010",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "요청 4단위: 내부자 상한 0 → 내부자 배정 0",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 4,
+    "subscriptions": [
+     {
+      "id": "co",
+      "units": 4
+     },
+     {
+      "id": "a",
+      "units": 4
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "co",
+      "units": 0
+     },
+     {
+      "id": "a",
+      "units": 2
+     }
+    ],
+    "unallocatedUnits": 2,
+    "raisedCents": 400,
+    "newIssuedUnits": 502,
+    "postPriceCents": 200,
+    "bandLowCents": 0,
+    "bandHighCents": 599
+   }
+  },
+  {
+   "id": "iss8-011",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "최초 발행(issuedUnits 0): 발행가 100센트",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 0,
+    "requestUnits": 300,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 100
+     },
+     {
+      "id": "b",
+      "units": 150
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 100,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 100
+     },
+     {
+      "id": "b",
+      "units": 150
+     }
+    ],
+    "unallocatedUnits": 50,
+    "raisedCents": 25000,
+    "newIssuedUnits": 250,
+    "postPriceCents": 500,
+    "bandLowCents": 100,
+    "bandHighCents": 1300
+   }
+  },
+  {
+   "id": "iss8-012",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "최초 발행인데 청약 없음 → 가격 null",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 0,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 100,
+    "allocations": [],
+    "unallocatedUnits": 100,
+    "raisedCents": 0,
+    "newIssuedUnits": 0,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-013",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "최초 발행, 발행 규모가 중간의 50%와 같으면 허용 (mid 1000, 500단위 * 100센트 * 2 = 100000 = 1000*100)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 0,
+    "requestUnits": 500,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 100,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 500
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 50000,
+    "newIssuedUnits": 500,
+    "postPriceCents": 300,
+    "bandLowCents": 100,
+    "bandHighCents": 700
+   }
+  },
+  {
+   "id": "iss8-014",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "최초 발행, 501단위 → RAISE_CAP",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 0,
+    "requestUnits": 501,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 501
+     }
+    ]
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "RAISE_CAP",
+    "priceCents": 100,
+    "allocations": [],
+    "unallocatedUnits": 501,
+    "raisedCents": 0,
+    "newIssuedUnits": 0,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-015",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "기존 있는 발행: 경계 (price 200, 250단위 * 200 * 2 = 100000)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 250,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 250
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 250
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 50000,
+    "newIssuedUnits": 750,
+    "postPriceCents": 200,
+    "bandLowCents": 66,
+    "bandHighCents": 467
+   }
+  },
+  {
+   "id": "iss8-016",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "기존 있는 발행: 251단위 → RAISE_CAP",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 251,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 251
+     }
+    ]
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "RAISE_CAP",
+    "priceCents": 200,
+    "allocations": [],
+    "unallocatedUnits": 251,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-017",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "C 등급 → GRADE_C",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "C",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 10
+     }
+    ]
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "GRADE_C",
+    "priceCents": null,
+    "allocations": [],
+    "unallocatedUnits": 100,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-018",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "C 등급이고 mid 0이면 GRADE_C가 먼저",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "C",
+    "valuation": {
+     "low": 0,
+     "mid": 0,
+     "high": 0
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "GRADE_C",
+    "priceCents": null,
+    "allocations": [],
+    "unallocatedUnits": 100,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-019",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "mid 0 → VALUATION_ZERO",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 0,
+     "high": 100
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "VALUATION_ZERO",
+    "priceCents": null,
+    "allocations": [],
+    "unallocatedUnits": 100,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-020",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "발행가가 0이 되는 경우: mid 1, 기존 101단위 → floor(100/101)=0 → PRICE_ZERO",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "issuedUnits": 101,
+    "requestUnits": 1,
+    "subscriptions": []
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "PRICE_ZERO",
+    "priceCents": 0,
+    "allocations": [],
+    "unallocatedUnits": 1,
+    "raisedCents": 0,
+    "newIssuedUnits": 101,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-021",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "mid 1, 기존 100단위 → 발행가 1센트",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "issuedUnits": 100,
+    "requestUnits": 1,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 1
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 1,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 1
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 1,
+    "newIssuedUnits": 101,
+    "postPriceCents": 1,
+    "bandLowCents": 0,
+    "bandHighCents": 1
+   }
+  },
+  {
+   "id": "iss8-022",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "RAISE_CAP이 PRICE_ZERO보다 뒤: PRICE_ZERO 우선",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "issuedUnits": 200,
+    "requestUnits": 100000,
+    "subscriptions": []
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "PRICE_ZERO",
+    "priceCents": 0,
+    "allocations": [],
+    "unallocatedUnits": 100000,
+    "raisedCents": 0,
+    "newIssuedUnits": 200,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-023",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "가격 띠: low > 0, high > mid",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 400,
+     "mid": 1000,
+     "high": 2500
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 100
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 100
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 20000,
+    "newIssuedUnits": 600,
+    "postPriceCents": 200,
+    "bandLowCents": 100,
+    "bandHighCents": 450
+   }
+  },
+  {
+   "id": "iss8-024",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "가격 띠 올림: high*100+조달 이 나누어떨어지지 않음",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 3,
+     "mid": 7,
+     "high": 11
+    },
+    "issuedUnits": 3,
+    "requestUnits": 1,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 1
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 233,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 1
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 233,
+    "newIssuedUnits": 4,
+    "postPriceCents": 233,
+    "bandLowCents": 133,
+    "bandHighCents": 334
+   }
+  },
+  {
+   "id": "iss8-025",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "low = mid = high",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 1000,
+     "mid": 1000,
+     "high": 1000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 100
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 100
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 20000,
+    "newIssuedUnits": 600,
+    "postPriceCents": 200,
+    "bandLowCents": 200,
+    "bandHighCents": 200
+   }
+  },
+  {
+   "id": "iss8-026",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "청약 수량이 요청과 같으면 안분 아님 (T == 요청)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 50
+     },
+     {
+      "id": "b",
+      "units": 50
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 50
+     },
+     {
+      "id": "b",
+      "units": 50
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 20000,
+    "newIssuedUnits": 600,
+    "postPriceCents": 200,
+    "bandLowCents": 33,
+    "bandHighCents": 534
+   }
+  },
+  {
+   "id": "iss8-027",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "안분에서 버림으로 전부 미배정 (T=3 요청 2: 각 floor(2/3)=0)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 2,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 1
+     },
+     {
+      "id": "b",
+      "units": 1
+     },
+     {
+      "id": "c",
+      "units": 1
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 0
+     },
+     {
+      "id": "b",
+      "units": 0
+     },
+     {
+      "id": "c",
+      "units": 0
+     }
+    ],
+    "unallocatedUnits": 2,
+    "raisedCents": 0,
+    "newIssuedUnits": 500,
+    "postPriceCents": 200,
+    "bandLowCents": 0,
+    "bandHighCents": 600
+   }
+  },
+  {
+   "id": "iss8-028",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "큰 발행: 요청 100000, 기존 0, mid 100000",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 100000,
+     "high": 100000
+    },
+    "issuedUnits": 0,
+    "requestUnits": 100000,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 100000
+     }
+    ]
+   },
+   "expected": {
+    "status": "rejected",
+    "reason": "RAISE_CAP",
+    "priceCents": 100,
+    "allocations": [],
+    "unallocatedUnits": 100000,
+    "raisedCents": 0,
+    "newIssuedUnits": 0,
+    "postPriceCents": null,
+    "bandLowCents": null,
+    "bandHighCents": null
+   }
+  },
+  {
+   "id": "iss8-029",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "청약자 id가 issuerId와 같은 대소문자 다름은 내부자 아님",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "CO",
+      "units": 100
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "CO",
+      "units": 100
+     }
+    ],
+    "unallocatedUnits": 0,
+    "raisedCents": 20000,
+    "newIssuedUnits": 600,
+    "postPriceCents": 200,
+    "bandLowCents": 33,
+    "bandHighCents": 534
+   }
+  },
+  {
+   "id": "iss8-030",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "청약 순서가 결과 순서",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "z",
+      "units": 10
+     },
+     {
+      "id": "a",
+      "units": 20
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "z",
+      "units": 10
+     },
+     {
+      "id": "a",
+      "units": 20
+     }
+    ],
+    "unallocatedUnits": 70,
+    "raisedCents": 6000,
+    "newIssuedUnits": 530,
+    "postPriceCents": 200,
+    "bandLowCents": 11,
+    "bandHighCents": 578
+   }
+  },
+  {
+   "id": "iss8-031",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "추가 키는 무시",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000,
+     "note": "x"
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 5,
+      "memo": "x"
+     }
+    ],
+    "extra": "x"
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 5
+     }
+    ],
+    "unallocatedUnits": 95,
+    "raisedCents": 1000,
+    "newIssuedUnits": 505,
+    "postPriceCents": 200,
+    "bandLowCents": 1,
+    "bandHighCents": 597
+   }
+  },
+  {
+   "id": "iss8-032",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "requestUnits 100.0 은 정수",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100.0,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 10
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 10
+     }
+    ],
+    "unallocatedUnits": 90,
+    "raisedCents": 2000,
+    "newIssuedUnits": 510,
+    "postPriceCents": 200,
+    "bandLowCents": 3,
+    "bandHighCents": 593
+   }
+  },
+  {
+   "id": "iss8-033",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUER 빈 문자열",
+   "inputs": {
+    "issuerId": "",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "ISSUER_INVALID"
+   }
+  },
+  {
+   "id": "iss8-034",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUER 누락",
+   "inputs": {
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "issuedUnits": 0,
+    "requestUnits": 1
+   },
+   "expected": {
+    "error": "ISSUER_INVALID"
+   }
+  },
+  {
+   "id": "iss8-035",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUER 숫자",
+   "inputs": {
+    "issuerId": 5,
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "ISSUER_INVALID"
+   }
+  },
+  {
+   "id": "iss8-036",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUER 공백만 → 유효",
+   "inputs": {
+    "issuerId": " ",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 1
+     }
+    ]
+   },
+   "expected": {
+    "status": "issued",
+    "reason": null,
+    "priceCents": 200,
+    "allocations": [
+     {
+      "id": "a",
+      "units": 1
+     }
+    ],
+    "unallocatedUnits": 99,
+    "raisedCents": 200,
+    "newIssuedUnits": 501,
+    "postPriceCents": 200,
+    "bandLowCents": 0,
+    "bandHighCents": 600
+   }
+  },
+  {
+   "id": "iss8-037",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "GRADE D",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "D",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "GRADE_INVALID"
+   }
+  },
+  {
+   "id": "iss8-038",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "GRADE 소문자",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "a",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "GRADE_INVALID"
+   }
+  },
+  {
+   "id": "iss8-039",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "GRADE 누락",
+   "inputs": {
+    "issuerId": "co",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "issuedUnits": 0,
+    "requestUnits": 1
+   },
+   "expected": {
+    "error": "GRADE_INVALID"
+   }
+  },
+  {
+   "id": "iss8-040",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION 객체 아님",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": 5,
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-041",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION 누락",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "issuedUnits": 0,
+    "requestUnits": 1
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-042",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION low > mid",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 5,
+     "mid": 4,
+     "high": 9
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-043",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION mid > high",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 9,
+     "high": 4
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-044",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION 음수",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": -1,
+     "mid": 1,
+     "high": 2
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-045",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION 소수",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1.5,
+     "high": 2
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-046",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "VALUATION 키 누락",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-047",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUED 음수",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": -1,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "ISSUED_INVALID"
+   }
+  },
+  {
+   "id": "iss8-048",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUED 소수",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 1.5,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "ISSUED_INVALID"
+   }
+  },
+  {
+   "id": "iss8-049",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "ISSUED 누락",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "requestUnits": 1
+   },
+   "expected": {
+    "error": "ISSUED_INVALID"
+   }
+  },
+  {
+   "id": "iss8-050",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "REQUEST 0",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 0,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "REQUEST_INVALID"
+   }
+  },
+  {
+   "id": "iss8-051",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "REQUEST 100001",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100001,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "REQUEST_INVALID"
+   }
+  },
+  {
+   "id": "iss8-052",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "REQUEST 누락",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1,
+     "high": 1
+    },
+    "issuedUnits": 0
+   },
+   "expected": {
+    "error": "REQUEST_INVALID"
+   }
+  },
+  {
+   "id": "iss8-053",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "SUBSCRIPTIONS 배열 아님",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": "x"
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-054",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "SUBSCRIPTIONS units 0",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 0
+     }
+    ]
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-055",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "SUBSCRIPTIONS units 소수",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 1.5
+     }
+    ]
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-056",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "SUBSCRIPTIONS id 중복",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 1
+     },
+     {
+      "id": "a",
+      "units": 2
+     }
+    ]
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-057",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "SUBSCRIPTIONS 원소 null",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     null
+    ]
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-058",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "SUBSCRIPTIONS id 빈 문자열",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "",
+      "units": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-059",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "입력 오류가 거절 판정보다 먼저다 (C 등급 + 청약 오류)",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "C",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": [
+     {
+      "id": "a",
+      "units": 0
+     }
+    ]
+   },
+   "expected": {
+    "error": "SUBSCRIPTIONS_INVALID"
+   }
+  },
+  {
+   "id": "iss8-060",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "검사 순서: ISSUER와 GRADE가 모두 틀리면 ISSUER",
+   "inputs": {
+    "issuerId": "",
+    "grade": "D",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 100,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "ISSUER_INVALID"
+   }
+  },
+  {
+   "id": "iss8-061",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "검사 순서: VALUATION과 REQUEST가 모두 틀리면 VALUATION",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": null,
+    "issuedUnits": 500,
+    "requestUnits": 0,
+    "subscriptions": []
+   },
+   "expected": {
+    "error": "VALUATION_INVALID"
+   }
+  },
+  {
+   "id": "iss8-062",
+   "kind": "issuance",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "검사 순서: REQUEST와 SUBSCRIPTIONS가 모두 틀리면 REQUEST",
+   "inputs": {
+    "issuerId": "co",
+    "grade": "A",
+    "valuation": {
+     "low": 0,
+     "mid": 1000,
+     "high": 3000
+    },
+    "issuedUnits": 500,
+    "requestUnits": 0,
+    "subscriptions": "x"
+   },
+   "expected": {
+    "error": "REQUEST_INVALID"
+   }
+  }
+ ]
+}

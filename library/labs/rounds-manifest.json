@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "updated": "2026-10-03",
-  "note": "R01은 현행 코드의 기준선(시뮬레이션, v0). R02 신용평가 v1.0, R03 적금 v0.1, R04 기업가치 v0.1, R05 보험 v0.1, R06 증권 운용·이자 재원 v0.1, R07 적금 v0.2(수익 연동) — 독립 검수·재검토 완료(검수자는 같은 제작사의 다른 모델이라 완전한 독립은 아님).",
+  "note": "R01은 현행 코드의 기준선(시뮬레이션, v0). R02 신용평가 v1.0, R03 적금 v0.1, R04 기업가치 v0.1, R05 보험 v0.1, R06 증권 운용·이자 재원 v0.1, R07 적금 v0.2(수익 연동), R08 증권 발행·가격 v0.1 — 독립 검수·재검토 완료(검수자는 같은 제작사의 다른 모델이라 완전한 독립은 아님).",
   "rounds": [
     {
       "id": "r01",
@@ -105,6 +105,21 @@
       "results": "rounds/r07/results.md",
       "check": "rounds/r07-check/report.md",
       "final": "rounds/r07-final/reconcile.md"
+    },
+    {
+      "id": "r08",
+      "date": "2026-10-03",
+      "baseline": "library/labs/method/issuance_v0_1.md (js/gdc-issuance.js evaluateIssuance)",
+      "mode": "simulation",
+      "scenarios": 62,
+      "stages": {
+        "run": "done",
+        "check": "done",
+        "reconcile": "done"
+      },
+      "results": "rounds/r08/results.md",
+      "check": "rounds/r08-check/report.md",
+      "final": "rounds/r08-final/reconcile.md"
     }
   ]
 }
