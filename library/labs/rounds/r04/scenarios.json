@@ -1,0 +1,1271 @@
+{
+  "schema": 1,
+  "round": "r04",
+  "authored": "2026-10-03",
+  "note": "기업가치 평가 v0.1(gdc_valuation_v0_1.md) 기준. expected는 생성기가 실행 전에 계산했다(등급은 R02 독립 검수 스크립트의 신용평가 구현으로 산정).",
+  "scenarios": [
+    {
+      "id": "val4-001",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 A",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 500,
+          "bs_equity": 0,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-002",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 A",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 500,
+          "bs_equity": -300,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-003",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 A",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": -300,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-004",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 AAA",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-005",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 AAA",
+      "inputs": {
+        "bsCash": 2000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-006",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 AAA",
+      "inputs": {
+        "bsCash": 1999,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-007",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 AA",
+      "inputs": {
+        "bsCash": 999,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-008",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 AA",
+      "inputs": {
+        "bsCash": 500,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-009",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 AA",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 701,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 701
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 7010,
+        "low": 1000,
+        "mid": 8503,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-010",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 BBB",
+      "inputs": {
+        "bsCash": 600,
+        "fs": {
+          "bs_ar": 400,
+          "bs_ap": 800,
+          "bs_debt": 1200,
+          "bs_equity": 1500,
+          "pl_revenue": 8000,
+          "pl_cogs": 5600,
+          "pl_opex": 1700,
+          "cf_op": 250
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1500,
+        "earningsValue": 4200,
+        "cashFlowValue": 1500,
+        "low": 1500,
+        "mid": 2310,
+        "high": 4200
+      }
+    },
+    {
+      "id": "val4-011",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 C",
+      "inputs": {
+        "bsCash": 100,
+        "fs": {
+          "bs_ar": 100,
+          "bs_ap": 2000,
+          "bs_debt": 3000,
+          "bs_equity": -500,
+          "pl_revenue": 5000,
+          "pl_cogs": 4000,
+          "pl_opex": 2500,
+          "cf_op": -400
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      }
+    },
+    {
+      "id": "val4-012",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 C",
+      "inputs": {
+        "bsCash": 500,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 0,
+          "bs_debt": 0,
+          "bs_equity": 0,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      }
+    },
+    {
+      "id": "val4-013",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 BBB",
+      "inputs": {
+        "bsCash": 2000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 300,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 10001,
+          "pl_opex": 0,
+          "cf_op": -1
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      }
+    },
+    {
+      "id": "val4-014",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 BBB",
+      "inputs": {
+        "bsCash": 0,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 700,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 10000,
+          "pl_opex": 0,
+          "cf_op": 700
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 4200,
+        "low": 0,
+        "mid": 1660,
+        "high": 4200
+      }
+    },
+    {
+      "id": "val4-015",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 BB",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 700,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 10001,
+          "pl_opex": 0,
+          "cf_op": -1
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BB",
+        "multiple": 4,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      }
+    },
+    {
+      "id": "val4-016",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "신용평가 R02 입력 재사용: 등급 BB",
+      "inputs": {
+        "bsCash": 0,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 1000,
+          "bs_debt": 300,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 10000,
+          "pl_opex": 0,
+          "cf_op": -1
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BB",
+        "multiple": 4,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      }
+    },
+    {
+      "id": "val4-017",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "영업손실(OP<0) → 수익가치 0",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 9000,
+          "pl_opex": 2000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 880,
+        "high": 1600
+      }
+    },
+    {
+      "id": "val4-018",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "영업활동 현금흐름 음수 → 현금흐름가치 0",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": -500
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 6400,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-019",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "순자산 음수 → 순자산가치 0",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": -300,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-020",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "순자산 0",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 0,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-021",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "모두 0인 입력",
+      "inputs": {
+        "bsCash": 0,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 0,
+          "bs_debt": 0,
+          "bs_equity": 0,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      }
+    },
+    {
+      "id": "val4-022",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "필드 누락은 0으로 본다",
+      "inputs": {
+        "bsCash": 500,
+        "fs": {
+          "bs_equity": 800,
+          "pl_revenue": 5000,
+          "pl_cogs": 3000
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 800,
+        "earningsValue": 16000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 5120,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-023",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "중간값 반올림: 순자산만 1, 나머지 0 (N=40 → 내림 또는 올림은 §4 공식)",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 1,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 1
+      }
+    },
+    {
+      "id": "val4-024",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "중간값 반올림: 순자산만 2, 나머지 0 (N=80 → 내림 또는 올림은 §4 공식)",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 2,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 2,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 1,
+        "high": 2
+      }
+    },
+    {
+      "id": "val4-025",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "중간값 반올림: 순자산만 3, 나머지 0 (N=120 → 내림 또는 올림은 §4 공식)",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 3,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 3,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 1,
+        "high": 3
+      }
+    },
+    {
+      "id": "val4-026",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "중간값 반올림: 순자산만 4, 나머지 0 (N=160 → 내림 또는 올림은 §4 공식)",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 4,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 4,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 2,
+        "high": 4
+      }
+    },
+    {
+      "id": "val4-027",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "중간값 반올림: 순자산만 5, 나머지 0 (N=200 → 내림 또는 올림은 §4 공식)",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 0,
+          "bs_equity": 5,
+          "pl_revenue": 0,
+          "pl_cogs": 0,
+          "pl_opex": 0,
+          "cf_op": 0
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 5,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 2,
+        "high": 5
+      }
+    },
+    {
+      "id": "val4-028",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "큰 값 입력",
+      "inputs": {
+        "bsCash": 1000000000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 100000000,
+          "bs_debt": 100000000,
+          "bs_equity": 1000000000,
+          "pl_revenue": 10000000000,
+          "pl_cogs": 6000000000,
+          "pl_opex": 1000000000,
+          "cf_op": 1000000000
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000000000,
+        "earningsValue": 36000000000,
+        "cashFlowValue": 12000000000,
+        "low": 1000000000,
+        "mid": 14800000000,
+        "high": 36000000000
+      }
+    },
+    {
+      "id": "val4-029",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "테스터가 아니면 TESTER_ONLY",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": false
+      },
+      "expected": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "val4-030",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "테스터가 아니고 입력도 잘못이면 TESTER_ONLY가 먼저",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1.5,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": false
+      },
+      "expected": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "val4-031",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "소수 금액 → INPUT_INVALID",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 100.5,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-032",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "정수값 실수(JSON 1000.0은 정수 1000)",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000.0,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000.0,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000.0,
+        "mid": 8320.0,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-033",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "음수 불가 항목이 음수 → INPUT_INVALID",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": -1,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-034",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "음수 매출 → INPUT_INVALID",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": -100,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-035",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "음수 현금 → INPUT_INVALID",
+      "inputs": {
+        "bsCash": -1,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-036",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "숫자가 아닌 값 → INPUT_INVALID",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": "abc",
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-037",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "cf_op 소수 → INPUT_INVALID",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 0.5
+        },
+        "tester": true
+      },
+      "expected": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-038",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "순자산이 음수일 때 부채 있음, 등급 낮음",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 5000,
+          "bs_equity": -1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": -10
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 0,
+        "earningsValue": 12000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 3600,
+        "high": 12000
+      }
+    },
+    {
+      "id": "val4-039",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "등급 경계 인근: 부채만 바꿔 점수 경계 이동",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 700,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-040",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "등급 경계 인근: 부채 701",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 701,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-041",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "tester 필드를 생략하면 테스터가 아니다",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        }
+      },
+      "expected": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "val4-042",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "null 필드는 0으로 본다",
+      "inputs": {
+        "bsCash": 1000,
+        "fs": {
+          "bs_ar": null,
+          "bs_ap": 500,
+          "bs_debt": null,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-043",
+      "kind": "valuation",
+      "product": "securities",
+      "moves_balance": false,
+      "note": "bsCash를 생략하면 0",
+      "inputs": {
+        "fs": {
+          "bs_ar": 0,
+          "bs_ap": 500,
+          "bs_debt": 200,
+          "bs_equity": 1000,
+          "pl_revenue": 10000,
+          "pl_cogs": 7000,
+          "pl_opex": 1000,
+          "cf_op": 200
+        },
+        "tester": true
+      },
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 1000,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 1000,
+        "mid": 5680,
+        "high": 16000
+      }
+    }
+  ]
+}

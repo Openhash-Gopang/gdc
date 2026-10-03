@@ -1,0 +1,1049 @@
+{
+  "round": "r04",
+  "executed_mode": "simulation",
+  "total": 43,
+  "passed": 43,
+  "byKind": {
+    "valuation": {
+      "total": 43,
+      "pass": 43
+    }
+  },
+  "results": [
+    {
+      "id": "val4-001",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 A",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-002",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 A",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-003",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 A",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-004",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 AAA",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-005",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 AAA",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-006",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 AAA",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-007",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 AA",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      },
+      "actual": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-008",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 AA",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      },
+      "actual": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-009",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 AA",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 7010,
+        "low": 1000,
+        "mid": 8503,
+        "high": 20000
+      },
+      "actual": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 7010,
+        "low": 1000,
+        "mid": 8503,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-010",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 BBB",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1500,
+        "earningsValue": 4200,
+        "cashFlowValue": 1500,
+        "low": 1500,
+        "mid": 2310,
+        "high": 4200
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1500,
+        "earningsValue": 4200,
+        "cashFlowValue": 1500,
+        "low": 1500,
+        "mid": 2310,
+        "high": 4200
+      }
+    },
+    {
+      "id": "val4-011",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 C",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      },
+      "actual": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      }
+    },
+    {
+      "id": "val4-012",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 C",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      },
+      "actual": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      }
+    },
+    {
+      "id": "val4-013",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 BBB",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      }
+    },
+    {
+      "id": "val4-014",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 BBB",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 4200,
+        "low": 0,
+        "mid": 1660,
+        "high": 4200
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 4200,
+        "low": 0,
+        "mid": 1660,
+        "high": 4200
+      }
+    },
+    {
+      "id": "val4-015",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 BB",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BB",
+        "multiple": 4,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      },
+      "actual": {
+        "grade": "BB",
+        "multiple": 4,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      }
+    },
+    {
+      "id": "val4-016",
+      "kind": "valuation",
+      "note": "신용평가 R02 입력 재사용: 등급 BB",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BB",
+        "multiple": 4,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      },
+      "actual": {
+        "grade": "BB",
+        "multiple": 4,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 400,
+        "high": 1000
+      }
+    },
+    {
+      "id": "val4-017",
+      "kind": "valuation",
+      "note": "영업손실(OP<0) → 수익가치 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 880,
+        "high": 1600
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 1000,
+        "earningsValue": 0,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 880,
+        "high": 1600
+      }
+    },
+    {
+      "id": "val4-018",
+      "kind": "valuation",
+      "note": "영업활동 현금흐름 음수 → 현금흐름가치 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 6400,
+        "high": 20000
+      },
+      "actual": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 6400,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-019",
+      "kind": "valuation",
+      "note": "순자산 음수 → 순자산가치 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-020",
+      "kind": "valuation",
+      "note": "순자산 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 0,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 0,
+        "mid": 5280,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-021",
+      "kind": "valuation",
+      "note": "모두 0인 입력",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      },
+      "actual": {
+        "grade": "C",
+        "multiple": 2,
+        "nav": 0,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 0
+      }
+    },
+    {
+      "id": "val4-022",
+      "kind": "valuation",
+      "note": "필드 누락은 0으로 본다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 800,
+        "earningsValue": 16000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 5120,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 800,
+        "earningsValue": 16000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 5120,
+        "high": 16000
+      }
+    },
+    {
+      "id": "val4-023",
+      "kind": "valuation",
+      "note": "중간값 반올림: 순자산만 1, 나머지 0 (N=40 → 내림 또는 올림은 §4 공식)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 1
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 1,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 0,
+        "high": 1
+      }
+    },
+    {
+      "id": "val4-024",
+      "kind": "valuation",
+      "note": "중간값 반올림: 순자산만 2, 나머지 0 (N=80 → 내림 또는 올림은 §4 공식)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 2,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 1,
+        "high": 2
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 2,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 1,
+        "high": 2
+      }
+    },
+    {
+      "id": "val4-025",
+      "kind": "valuation",
+      "note": "중간값 반올림: 순자산만 3, 나머지 0 (N=120 → 내림 또는 올림은 §4 공식)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 3,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 1,
+        "high": 3
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 3,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 1,
+        "high": 3
+      }
+    },
+    {
+      "id": "val4-026",
+      "kind": "valuation",
+      "note": "중간값 반올림: 순자산만 4, 나머지 0 (N=160 → 내림 또는 올림은 §4 공식)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 4,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 2,
+        "high": 4
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 4,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 2,
+        "high": 4
+      }
+    },
+    {
+      "id": "val4-027",
+      "kind": "valuation",
+      "note": "중간값 반올림: 순자산만 5, 나머지 0 (N=200 → 내림 또는 올림은 §4 공식)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 5,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 2,
+        "high": 5
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 5,
+        "earningsValue": 0,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 2,
+        "high": 5
+      }
+    },
+    {
+      "id": "val4-028",
+      "kind": "valuation",
+      "note": "큰 값 입력",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000000000,
+        "earningsValue": 36000000000,
+        "cashFlowValue": 12000000000,
+        "low": 1000000000,
+        "mid": 14800000000,
+        "high": 36000000000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000000000,
+        "earningsValue": 36000000000,
+        "cashFlowValue": 12000000000,
+        "low": 1000000000,
+        "mid": 14800000000,
+        "high": 36000000000
+      }
+    },
+    {
+      "id": "val4-029",
+      "kind": "valuation",
+      "note": "테스터가 아니면 TESTER_ONLY",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TESTER_ONLY"
+      },
+      "actual": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "val4-030",
+      "kind": "valuation",
+      "note": "테스터가 아니고 입력도 잘못이면 TESTER_ONLY가 먼저",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TESTER_ONLY"
+      },
+      "actual": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "val4-031",
+      "kind": "valuation",
+      "note": "소수 금액 → INPUT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "INPUT_INVALID"
+      },
+      "actual": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-032",
+      "kind": "valuation",
+      "note": "정수값 실수(JSON 1000.0은 정수 1000)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-033",
+      "kind": "valuation",
+      "note": "음수 불가 항목이 음수 → INPUT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "INPUT_INVALID"
+      },
+      "actual": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-034",
+      "kind": "valuation",
+      "note": "음수 매출 → INPUT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "INPUT_INVALID"
+      },
+      "actual": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-035",
+      "kind": "valuation",
+      "note": "음수 현금 → INPUT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "INPUT_INVALID"
+      },
+      "actual": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-036",
+      "kind": "valuation",
+      "note": "숫자가 아닌 값 → INPUT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "INPUT_INVALID"
+      },
+      "actual": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-037",
+      "kind": "valuation",
+      "note": "cf_op 소수 → INPUT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "INPUT_INVALID"
+      },
+      "actual": {
+        "error": "INPUT_INVALID"
+      }
+    },
+    {
+      "id": "val4-038",
+      "kind": "valuation",
+      "note": "순자산이 음수일 때 부채 있음, 등급 낮음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 0,
+        "earningsValue": 12000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 3600,
+        "high": 12000
+      },
+      "actual": {
+        "grade": "BBB",
+        "multiple": 6,
+        "nav": 0,
+        "earningsValue": 12000,
+        "cashFlowValue": 0,
+        "low": 0,
+        "mid": 3600,
+        "high": 12000
+      }
+    },
+    {
+      "id": "val4-039",
+      "kind": "valuation",
+      "note": "등급 경계 인근: 부채만 바꿔 점수 경계 이동",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-040",
+      "kind": "valuation",
+      "note": "등급 경계 인근: 부채 701",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      },
+      "actual": {
+        "grade": "AA",
+        "multiple": 10,
+        "nav": 1000,
+        "earningsValue": 20000,
+        "cashFlowValue": 2000,
+        "low": 1000,
+        "mid": 7000,
+        "high": 20000
+      }
+    },
+    {
+      "id": "val4-041",
+      "kind": "valuation",
+      "note": "tester 필드를 생략하면 테스터가 아니다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TESTER_ONLY"
+      },
+      "actual": {
+        "error": "TESTER_ONLY"
+      }
+    },
+    {
+      "id": "val4-042",
+      "kind": "valuation",
+      "note": "null 필드는 0으로 본다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      },
+      "actual": {
+        "grade": "AAA",
+        "multiple": 12,
+        "nav": 1000,
+        "earningsValue": 24000,
+        "cashFlowValue": 2400,
+        "low": 1000,
+        "mid": 8320,
+        "high": 24000
+      }
+    },
+    {
+      "id": "val4-043",
+      "kind": "valuation",
+      "note": "bsCash를 생략하면 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 1000,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 1000,
+        "mid": 5680,
+        "high": 16000
+      },
+      "actual": {
+        "grade": "A",
+        "multiple": 8,
+        "nav": 1000,
+        "earningsValue": 16000,
+        "cashFlowValue": 1600,
+        "low": 1000,
+        "mid": 5680,
+        "high": 16000
+      }
+    }
+  ]
+}
