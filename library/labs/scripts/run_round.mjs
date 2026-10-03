@@ -20,7 +20,7 @@ const dir = path.join(root, 'library/labs/rounds', round);
 
 const { evaluateCredit } = await import(pathToFileURL(path.join(root, 'js/gdc-credit.js')));
 const { checkTransfer, checkLoan } = await import(pathToFileURL(path.join(root, 'js/gdc-limits.js')));
-const { evaluateSavings } = await import(pathToFileURL(path.join(root, 'js/gdc-savings.js')));
+const { evaluateSavings, evaluateSavingsLinked } = await import(pathToFileURL(path.join(root, 'js/gdc-savings.js')));
 const { evaluateInsurance } = await import(pathToFileURL(path.join(root, 'js/gdc-insurance.js')));
 const { evaluateSecurities } = await import(pathToFileURL(path.join(root, 'js/gdc-securities.js')));
 const { computeValuation } = await import(pathToFileURL(path.join(root, 'js/gdc-valuation.js')));
@@ -55,6 +55,7 @@ async function runOne(s) {
   }
   if (s.kind === 'transfer') return checkTransfer(s.inputs);
   if (s.kind === 'loan_limit') return checkLoan(s.inputs);
+  if (s.kind === 'savings_linked') return evaluateSavingsLinked(s.inputs);
   if (s.kind === 'savings') return evaluateSavings(s.inputs);
   if (s.kind === 'insurance') return evaluateInsurance(s.inputs);
   if (s.kind === 'securities') return evaluateSecurities(s.inputs);

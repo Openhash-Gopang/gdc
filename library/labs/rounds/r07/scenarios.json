@@ -1,0 +1,1935 @@
+{
+ "schema": 1,
+ "round": "r07",
+ "authored": "2026-10-03",
+ "note": "적금 명세 v0.2(savings_v0_2.md, 수익 연동 이자) 기준. expected는 gen_scenarios.py의 참조 계산(명세를 구현 코드와 별개로 옮김)이 실행 전에 냈다.",
+ "scenarios": [
+  {
+   "id": "sav7-001",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "6개월 전부 납입, 재원 일정: 잔액 500..3000, 전체 10000, 재원 100센트/월",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 3000,
+    "accruedCents": 105,
+    "interest": 1.05,
+    "payout": 3001.05
+   }
+  },
+  {
+   "id": "sav7-002",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "12개월 전부 납입, 재원 100/월, 전체 20000",
+   "inputs": {
+    "monthlyAmount": 1000,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 20000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 12,
+    "paidCount": 12,
+    "principal": 12000,
+    "accruedCents": 390,
+    "interest": 3.9,
+    "payout": 12003.9
+   }
+  },
+  {
+   "id": "sav7-003",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "재원이 전부 0 → 이자 0, 원금만",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 0,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 0,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 0,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 0,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 0,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 0,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 3000,
+    "accruedCents": 0,
+    "interest": 0.0,
+    "payout": 3000.0
+   }
+  },
+  {
+   "id": "sav7-004",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "계약이 전체 잔액의 전부(totalBalance == 잔액): 재원 전부를 받는다",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 77,
+      "totalBalance": 500
+     },
+     {
+      "poolCents": 77,
+      "totalBalance": 1000
+     },
+     {
+      "poolCents": 77,
+      "totalBalance": 1500
+     },
+     {
+      "poolCents": 77,
+      "totalBalance": 2000
+     },
+     {
+      "poolCents": 77,
+      "totalBalance": 2500
+     },
+     {
+      "poolCents": 77,
+      "totalBalance": 3000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 3000,
+    "accruedCents": 462,
+    "interest": 4.62,
+    "payout": 3004.62
+   }
+  },
+  {
+   "id": "sav7-005",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "totalBalance가 잔액보다 작으면 SETTLEMENT_INCONSISTENT",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 10,
+      "totalBalance": 499
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENT_INCONSISTENT"
+   }
+  },
+  {
+   "id": "sav7-006",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "1월은 정상, 3월에 불일치(잔액 1500 > 1400) → 오류",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 10,
+      "totalBalance": 1000
+     },
+     {
+      "poolCents": 10,
+      "totalBalance": 1000
+     },
+     {
+      "poolCents": 10,
+      "totalBalance": 1400
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENT_INCONSISTENT"
+   }
+  },
+  {
+   "id": "sav7-007",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "몫 버림: 100*500/1500 = 33.33 → 33",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 1500
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 1,
+    "paidCount": 1,
+    "principal": 500,
+    "accruedCents": 33,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-008",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "달마다 버림 후 합산 (50 + 66 = 116 ...)",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 1000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 1500
+     },
+     {
+      "poolCents": 0,
+      "totalBalance": 2000
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 3,
+    "paidCount": 3,
+    "principal": 1500,
+    "accruedCents": 116,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-009",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "active: 이자 0, payout null, accruedCents는 보인다",
+   "inputs": {
+    "monthlyAmount": 300,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 4,
+    "paidCount": 4,
+    "principal": 1200,
+    "accruedCents": 30,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-010",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "outcomes 비어 있음 → active, endMonth 0",
+   "inputs": {
+    "monthlyAmount": 300,
+    "termMonths": 12,
+    "outcomes": [],
+    "settlements": []
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 0,
+    "paidCount": 0,
+    "principal": 0,
+    "accruedCents": 0,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-011",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "미납 달에도 잔액은 유지되어 이자가 계속 발생",
+   "inputs": {
+    "monthlyAmount": 400,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "missed",
+     "paid",
+     "missed",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 200,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 200,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 200,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 200,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 200,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 200,
+      "totalBalance": 5000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 4,
+    "principal": 1600,
+    "accruedCents": 208,
+    "interest": 2.08,
+    "payout": 1602.08
+   }
+  },
+  {
+   "id": "sav7-012",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "1월 미납: 잔액 0인 달은 이자 0 (totalBalance 0이어도 오류 아님)",
+   "inputs": {
+    "monthlyAmount": 400,
+    "termMonths": 6,
+    "outcomes": [
+     "missed",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 50,
+      "totalBalance": 0
+     },
+     {
+      "poolCents": 50,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 50,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 50,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 50,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 50,
+      "totalBalance": 5000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 5,
+    "principal": 2000,
+    "accruedCents": 60,
+    "interest": 0.6,
+    "payout": 2000.6
+   }
+  },
+  {
+   "id": "sav7-013",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "1월 미납, totalBalance 0, 잔액 0 → 0",
+   "inputs": {
+    "monthlyAmount": 400,
+    "termMonths": 6,
+    "outcomes": [
+     "missed"
+    ],
+    "settlements": [
+     {
+      "poolCents": 50,
+      "totalBalance": 0
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 1,
+    "paidCount": 0,
+    "principal": 0,
+    "accruedCents": 0,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-014",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "2회 연속 미납 → 자동 해지, 이자는 발생분의 절반",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "missed",
+     "missed",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ]
+   },
+   "expected": {
+    "status": "auto_terminated",
+    "endMonth": 4,
+    "paidCount": 2,
+    "principal": 1000,
+    "accruedCents": 87,
+    "interest": 0.43,
+    "payout": 1000.43
+   }
+  },
+  {
+   "id": "sav7-015",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "1월 미납 후 2월 미납 → 2월 끝 자동 해지, 원금 0, 이자 0",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "missed",
+     "missed"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ]
+   },
+   "expected": {
+    "status": "auto_terminated",
+    "endMonth": 2,
+    "paidCount": 0,
+    "principal": 0,
+    "accruedCents": 0,
+    "interest": 0.0,
+    "payout": 0.0
+   }
+  },
+  {
+   "id": "sav7-016",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "1월 미납 후 2월 납입은 연속 아님",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "missed",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 5,
+    "principal": 2500,
+    "accruedCents": 186,
+    "interest": 1.86,
+    "payout": 2501.86
+   }
+  },
+  {
+   "id": "sav7-017",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "사용자 해지: 4월 말, 이자는 발생분의 절반(버림)",
+   "inputs": {
+    "monthlyAmount": 600,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 101,
+      "totalBalance": 3000
+     },
+     {
+      "poolCents": 101,
+      "totalBalance": 3000
+     },
+     {
+      "poolCents": 101,
+      "totalBalance": 3000
+     },
+     {
+      "poolCents": 101,
+      "totalBalance": 3000
+     }
+    ],
+    "cancelAt": 4
+   },
+   "expected": {
+    "status": "cancelled",
+    "endMonth": 4,
+    "paidCount": 4,
+    "principal": 2400,
+    "accruedCents": 200,
+    "interest": 1.0,
+    "payout": 2401.0
+   }
+  },
+  {
+   "id": "sav7-018",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "해지 이자 절반 버림: 발생분 홀수 센트",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 3,
+      "totalBalance": 500
+     },
+     {
+      "poolCents": 3,
+      "totalBalance": 1000
+     }
+    ],
+    "cancelAt": 2
+   },
+   "expected": {
+    "status": "cancelled",
+    "endMonth": 2,
+    "paidCount": 2,
+    "principal": 1000,
+    "accruedCents": 6,
+    "interest": 0.03,
+    "payout": 1000.03
+   }
+  },
+  {
+   "id": "sav7-019",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "cancelAt == termMonths → 만기 (이자 전부)",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ],
+    "cancelAt": 6
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 3000,
+    "accruedCents": 261,
+    "interest": 2.61,
+    "payout": 3002.61
+   }
+  },
+  {
+   "id": "sav7-020",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "자동 해지가 cancelAt보다 앞서면 cancelAt 무시",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "missed",
+     "missed",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ],
+    "cancelAt": 6
+   },
+   "expected": {
+    "status": "auto_terminated",
+    "endMonth": 3,
+    "paidCount": 1,
+    "principal": 500,
+    "accruedCents": 36,
+    "interest": 0.18,
+    "payout": 500.18
+   }
+  },
+  {
+   "id": "sav7-021",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "해지 뒤 달의 입력은 읽지 않는다 (불일치가 뒤에 있어도 오류 아님)",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 1
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 1
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 1
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 1
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 1
+     }
+    ],
+    "cancelAt": 3
+   },
+   "expected": {
+    "status": "cancelled",
+    "endMonth": 3,
+    "paidCount": 3,
+    "principal": 1500,
+    "accruedCents": 74,
+    "interest": 0.37,
+    "payout": 1500.37
+   }
+  },
+  {
+   "id": "sav7-022",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "만기 달 2회 연속 미납 → auto_terminated",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "missed",
+     "missed"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ]
+   },
+   "expected": {
+    "status": "auto_terminated",
+    "endMonth": 6,
+    "paidCount": 4,
+    "principal": 2000,
+    "accruedCents": 224,
+    "interest": 1.12,
+    "payout": 2001.12
+   }
+  },
+  {
+   "id": "sav7-023",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "cancelAt null",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ],
+    "cancelAt": null
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 3000,
+    "accruedCents": 261,
+    "interest": 2.61,
+    "payout": 3002.61
+   }
+  },
+  {
+   "id": "sav7-024",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "rateBp 같은 추가 키는 무시",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 4000
+     }
+    ],
+    "rateBp": 50
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 3000,
+    "accruedCents": 261,
+    "interest": 2.61,
+    "payout": 3002.61
+   }
+  },
+  {
+   "id": "sav7-025",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "큰 재원: poolCents 1000000, 잔액 비중 5%",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 1000000,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 1,
+    "paidCount": 1,
+    "principal": 500,
+    "accruedCents": 50000,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-026",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "totalBalance가 잔액과 같은 경계 (500 == 500) 허용",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 10,
+      "totalBalance": 500
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 1,
+    "paidCount": 1,
+    "principal": 500,
+    "accruedCents": 10,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-027",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "최소 납입 100, 최대 1000 모두 정상",
+   "inputs": {
+    "monthlyAmount": 100,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 5000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 5000
+     }
+    ]
+   },
+   "expected": {
+    "status": "matured",
+    "endMonth": 6,
+    "paidCount": 6,
+    "principal": 600,
+    "accruedCents": 42,
+    "interest": 0.42,
+    "payout": 600.42
+   }
+  },
+  {
+   "id": "sav7-028",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "1000.0 은 정수",
+   "inputs": {
+    "monthlyAmount": 1000.0,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 10,
+      "totalBalance": 2000
+     }
+    ]
+   },
+   "expected": {
+    "status": "active",
+    "endMonth": 1,
+    "paidCount": 1,
+    "principal": 1000,
+    "accruedCents": 5,
+    "interest": 0,
+    "payout": null
+   }
+  },
+  {
+   "id": "sav7-029",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "AMOUNT 99",
+   "inputs": {
+    "monthlyAmount": 99,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "AMOUNT_INVALID"
+   }
+  },
+  {
+   "id": "sav7-030",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "AMOUNT 1001",
+   "inputs": {
+    "monthlyAmount": 1001,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "AMOUNT_INVALID"
+   }
+  },
+  {
+   "id": "sav7-031",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "AMOUNT 누락",
+   "inputs": {
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "AMOUNT_INVALID"
+   }
+  },
+  {
+   "id": "sav7-032",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "TERM 9",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 9,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "TERM_INVALID"
+   }
+  },
+  {
+   "id": "sav7-033",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "OUTCOMES 길이 초과",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "OUTCOMES_INVALID"
+   }
+  },
+  {
+   "id": "sav7-034",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "OUTCOMES 원소 이상",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "late"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "OUTCOMES_INVALID"
+   }
+  },
+  {
+   "id": "sav7-035",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS 누락",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid"
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-036",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS null",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid"
+    ],
+    "settlements": null
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-037",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS 길이가 outcomes보다 짧음",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-038",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS 길이가 outcomes보다 김",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-039",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS poolCents 음수",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": -1,
+      "totalBalance": 1000
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-040",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS totalBalance 소수",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 1,
+      "totalBalance": 1000.5
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-041",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS 원소 null",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     null
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-042",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS 키 누락",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-043",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "SETTLEMENTS 형식 오류는 종료 뒤 달에도 적용",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": -5,
+      "totalBalance": 1
+     }
+    ],
+    "cancelAt": 3
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-044",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "CANCEL 0",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ],
+    "cancelAt": 0
+   },
+   "expected": {
+    "error": "CANCEL_INVALID"
+   }
+  },
+  {
+   "id": "sav7-045",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "CANCEL outcomes 길이 초과",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 12,
+    "outcomes": [
+     "paid",
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     },
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ],
+    "cancelAt": 4
+   },
+   "expected": {
+    "error": "CANCEL_INVALID"
+   }
+  },
+  {
+   "id": "sav7-046",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "검사 순서: AMOUNT와 SETTLEMENTS가 모두 틀리면 AMOUNT",
+   "inputs": {
+    "monthlyAmount": 50,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid"
+    ],
+    "settlements": []
+   },
+   "expected": {
+    "error": "AMOUNT_INVALID"
+   }
+  },
+  {
+   "id": "sav7-047",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "검사 순서: SETTLEMENTS와 CANCEL이 모두 틀리면 SETTLEMENTS",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid",
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 100,
+      "totalBalance": 10000
+     }
+    ],
+    "cancelAt": 9
+   },
+   "expected": {
+    "error": "SETTLEMENTS_INVALID"
+   }
+  },
+  {
+   "id": "sav7-048",
+   "kind": "savings_linked",
+   "product": "savings",
+   "moves_balance": false,
+   "note": "검사 순서: 형식이 맞고 불일치와 CANCEL 이 없으면 SETTLEMENT_INCONSISTENT 는 처리 중에만",
+   "inputs": {
+    "monthlyAmount": 500,
+    "termMonths": 6,
+    "outcomes": [
+     "paid"
+    ],
+    "settlements": [
+     {
+      "poolCents": 1,
+      "totalBalance": 100
+     }
+    ]
+   },
+   "expected": {
+    "error": "SETTLEMENT_INCONSISTENT"
+   }
+  }
+ ]
+}

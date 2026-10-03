@@ -58,3 +58,40 @@ export function evaluateSavings({ monthlyAmount, termMonths, rateBp, outcomes, c
   const interest = interestCents / 100;
   return { status, endMonth, paidCount, principal, interest, payout: (principal * 100 + interestCents) / 100 };
 }
+
+// ══════════════════════════════════════════════════════════════
+// v0.2 — 수익 연동 이자 (library/labs/method/savings_v0_2.md). v0.1 의 evaluateSavings 는 확정 이율형 가정의 기록으로 그대로 둔다.
+// ══════════════════════════════════════════════════════════════
+const isObjV2 = (x) => x !== null && typeof x === 'object' && !Array.isArray(x);
+
+export function evaluateSavingsLinked(input) {
+  const { monthlyAmount, termMonths, outcomes, settlements, cancelAt } = isObjV2(input) ? input : {};
+  if (!isInt(monthlyAmount) || monthlyAmount < SAVINGS.minMonthly || monthlyAmount > SAVINGS.maxMonthly) return { error: 'AMOUNT_INVALID' };
+  if (!SAVINGS.terms.includes(termMonths)) return { error: 'TERM_INVALID' };
+  if (!Array.isArray(outcomes) || outcomes.length > termMonths || outcomes.some(o => o !== 'paid' && o !== 'missed')) return { error: 'OUTCOMES_INVALID' };
+  if (!Array.isArray(settlements) || settlements.length !== outcomes.length
+    || settlements.some(s => !isObjV2(s) || !isInt(s.poolCents) || s.poolCents < 0 || !isInt(s.totalBalance) || s.totalBalance < 0)) return { error: 'SETTLEMENTS_INVALID' };
+  if (cancelAt !== undefined && cancelAt !== null) {
+    if (!isInt(cancelAt) || cancelAt < 1 || cancelAt > termMonths || cancelAt > outcomes.length) return { error: 'CANCEL_INVALID' };
+  }
+
+  let paidCount = 0;
+  let accruedCents = 0;
+  let status = 'active';
+  let endMonth = 0;
+  for (let k = 1; k <= outcomes.length; k++) {
+    endMonth = k;
+    if (outcomes[k - 1] === 'paid') paidCount++;
+    const balance = paidCount * monthlyAmount;
+    const st = settlements[k - 1];
+    if (balance > st.totalBalance) return { error: 'SETTLEMENT_INCONSISTENT' };
+    if (balance > 0) accruedCents += Math.floor((st.poolCents * balance) / st.totalBalance);
+    if (outcomes[k - 1] === 'missed' && k >= 2 && outcomes[k - 2] === 'missed') { status = 'auto_terminated'; break; }
+    if (cancelAt === k && k < termMonths) { status = 'cancelled'; break; }
+    if (k === termMonths) { status = 'matured'; break; }
+  }
+  const principal = paidCount * monthlyAmount;
+  if (status === 'active') return { status, endMonth, paidCount, principal, accruedCents, interest: 0, payout: null };
+  const interestCents = status === 'matured' ? accruedCents : Math.floor(accruedCents / 2);
+  return { status, endMonth, paidCount, principal, accruedCents, interest: interestCents / 100, payout: (principal * 100 + interestCents) / 100 };
+}
