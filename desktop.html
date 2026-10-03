@@ -6,17 +6,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>GDC — Gopang Digital Currency</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css">
 <style>
 :root{
-  --bg:#f6f6f4;--sur:#fff;
-  --bd:rgba(20,24,22,.1);--bd2:rgba(20,24,22,.18);
-  --t1:#181c1a;--t2:#4c534e;--t3:#93998f;
-  --brand:#3ecf8e;--brand-dk:#1f8f5c;--brand-bg:rgba(62,207,142,.08);--brand-bd:rgba(62,207,142,.28);
+  --bg:#f8f9fa;--sur:#fff;
+  --bd:#e5e7eb;--bd2:#d1d5db;
+  --t1:#111827;--t2:#374151;--t3:#6b7280;
+  --brand:#3ecf8e;--brand-dk:#2baa74;--brand-bg:#f0fdf9;--brand-bd:#bbf7d0;
   --clause:#1f5c46;--clause-bg:rgba(31,92,70,.06);
-  --font:'Noto Sans KR',-apple-system,sans-serif;
+  --font:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif;
   --r:6px;--r2:10px;
   --measure:640px;
 }
@@ -37,48 +36,48 @@ a{text-decoration:none;color:inherit}
 .clause-hd h2{font-size:21px;font-weight:600;color:var(--t1);letter-spacing:-.2px}
 .clause-sub{font-size:14px;color:var(--t2);max-width:var(--measure);margin:2px 0 28px}
 
-/* ── NAV ── */
-.nav{background:rgba(246,246,244,.86);backdrop-filter:blur(10px);border-bottom:.5px solid var(--bd);position:sticky;top:0;z-index:100}
-@media(prefers-color-scheme:dark){.nav{background:rgba(16,19,17,.86)}}
-.nav-inner{max-width:960px;margin:0 auto;padding:0 24px;height:54px;display:flex;align-items:center;gap:28px}
-.logo{display:flex;align-items:center;gap:9px;font-size:14px;font-weight:600;color:var(--t1)}
-.logo-mark{width:26px;height:26px;background:var(--brand);border-radius:6px;display:flex;align-items:center;justify-content:center;color:#fff}
-.nav-links{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none}
-.nav-links::-webkit-scrollbar{display:none}
-.nav-links a{padding:6px 11px;border-radius:var(--r);font-size:13px;color:var(--t2);white-space:nowrap;transition:color .12s,background .12s}
-.nav-links a:hover{color:var(--t1);background:rgba(0,0,0,.045)}
-@media(prefers-color-scheme:dark){.nav-links a:hover{background:rgba(255,255,255,.06)}}
-.nav-right{display:flex;gap:8px;align-items:center;flex-shrink:0}
+/* ── TOPBAR (klaw.hondi.net 과 같은 어두운 상단바) ── */
+.topbar{display:flex;align-items:center;gap:14px;background:#0b0f19;padding:12px 24px;flex-wrap:wrap;row-gap:6px;position:sticky;top:0;z-index:100}
+.topbar-back{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#fff;color:#0b0f19;font-size:16px;flex:none}
+.topbar-back:hover{background:#e5e7eb}
+.topbar-brand{display:inline-flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:15px;flex:none}
+.topbar-brand:hover{opacity:.85}
+.topbar-logo{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:#4f46e5;color:#fff;font-weight:800;font-size:13px;flex:none}
+.topbar .tabs{display:flex;flex-wrap:wrap;gap:2px}
+.topbar .tab-btn{padding:8px 14px;border-radius:7px;font-size:13px;font-weight:600;color:#94a3b8;white-space:nowrap}
+.topbar .tab-btn.active{background:#1e2b45;color:#fff}
+.topbar .tab-btn:not(.active):hover{background:#141a2e;color:#fff}
+.topbar-right{display:flex;gap:8px;align-items:center;flex:none;margin-left:auto}
+@media(max-width:900px){.topbar .tabs{order:3;flex-basis:100%;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}.topbar .tabs::-webkit-scrollbar{display:none}}
 .btn{display:inline-flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--r);font-size:13px;font-weight:500;font-family:var(--font);cursor:pointer;border:.5px solid var(--bd2);background:var(--sur);color:var(--t1);transition:all .12s;white-space:nowrap}
 .btn:hover{background:var(--bg)}
 .btn-brand{background:var(--brand);border-color:var(--brand);color:#fff}
 .btn-brand:hover{background:var(--brand-dk);border-color:var(--brand-dk)}
-@media(max-width:760px){.nav-links{display:none}}
 
-/* ── ANNOUNCE BAR (single, merged) ── */
-.announce{background:var(--sur);border-bottom:.5px solid var(--bd);padding:8px 20px;display:flex;align-items:center;gap:10px;font-size:12.5px;color:var(--t2);flex-wrap:wrap}
-.announce b{color:var(--t1);font-weight:600}
-.announce a{color:var(--clause);font-weight:500}
-.announce a:hover{text-decoration:underline}
-.announce-close{margin-left:auto;background:none;border:none;cursor:pointer;color:var(--t3);font-size:14px;padding:2px}
+/* ── NOTICE (klaw 자료실의 면책 문구 상자와 같은 모양) ── */
+.announce{max-width:1080px;margin:22px auto 0;background:#fffbeb;border:1px solid #fde68a;border-radius:10px;padding:10px 38px 10px 14px;position:relative;font-size:12.5px;color:#78350f;line-height:1.7}
+.announce b{font-weight:700}
+.announce a{color:#78350f;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+.announce-close{position:absolute;right:10px;top:8px;background:none;border:none;cursor:pointer;color:#92400e;font-size:14px;padding:2px}
+@media(max-width:1128px){.announce{margin-left:24px;margin-right:24px}}
 
-/* ── HERO ── */
-.hero{max-width:760px;margin:0 auto;padding:72px 24px 56px;text-align:center}
-.hero-badge{display:inline-flex;align-items:center;gap:6px;border:.5px solid var(--brand-bd);background:var(--brand-bg);border-radius:20px;padding:4px 12px;font-size:12px;color:var(--clause);margin-bottom:22px}
-.pulse{width:6px;height:6px;border-radius:50%;background:var(--brand);animation:pulse 2s infinite}
+/* ── HERO (klaw 자료실의 어두운 히어로와 같은 구성) ── */
+.hero-dark{background:#0b0f19;padding:36px 24px 40px}
+.hero-dark-inner{max-width:1080px;margin:0 auto}
+.repro-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#4ade80;background:#141a2e;border:1px solid #1f4a38;border-radius:99px;padding:4px 12px;margin-bottom:14px}
+.repro-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#3ecf8e;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-.hero h1{font-size:36px;font-weight:600;letter-spacing:-.6px;line-height:1.42;color:var(--t1);margin-bottom:16px}
-.hero-sub{font-size:15.5px;color:var(--t2);max-width:600px;margin:0 auto 30px;line-height:1.75}
-.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
-.hero-actions .btn{padding:9px 18px;font-size:13.5px}
-
-.stat-strip{border:.5px solid var(--bd);border-radius:var(--r2);background:var(--sur);display:grid;grid-template-columns:repeat(4,1fr);max-width:680px;margin:0 auto}
-.stat{padding:18px 16px;border-right:.5px solid var(--bd)}
-.stat:last-child{border-right:none}
-.stat-val{font-size:19px;font-weight:600;color:var(--t1);margin-bottom:3px;font-variant-numeric:tabular-nums}
-.stat-lbl{font-size:11.5px;color:var(--t3)}
-.stat-flag{font-size:9.5px;font-weight:700;color:var(--clause);vertical-align:super;margin-left:1px}
-@media(max-width:640px){.hero h1{font-size:26px}.stat-strip{grid-template-columns:1fr 1fr}}
+.hero-dark h1{font-size:26px;font-weight:700;letter-spacing:-.4px;line-height:1.4;color:#f1f5f9;margin-bottom:10px}
+.hero-dark p{font-size:13.5px;color:#cbd5e1;margin-bottom:18px;max-width:760px;line-height:1.75}
+.repro-pills{display:flex;flex-wrap:wrap;gap:8px}
+.repro-pill{font-size:12px;font-weight:600;color:#e2e8f0;background:#141a2e;border:1px solid #374357;border-radius:9px;padding:8px 12px}
+a.repro-pill:hover{border-color:#4ade80}
+.repro-stats{display:flex;flex-wrap:wrap;gap:24px;margin-top:18px;padding-top:18px;border-top:1px solid #1f4a38}
+.repro-stat b{display:block;font-size:18px;color:#4ade80;line-height:1.3;font-variant-numeric:tabular-nums}
+.repro-stat span{font-size:11.5px;color:#94a3b8}
+.stat-flag{font-size:9.5px;font-weight:700;color:#4ade80;vertical-align:super;margin-left:1px}
+@media(max-width:640px){.hero-dark h1{font-size:21px}}
+@media (prefers-reduced-motion: reduce){.repro-badge::before{animation:none}}
 
 /* ── SECTION ── */
 .section{padding:56px 0}
@@ -208,73 +207,44 @@ table.rt td.grn{color:var(--clause)!important;font-weight:500}
 </head>
 <body>
 
+<header class="topbar">
+  <a class="topbar-back" href="https://hondi.net" aria-label="혼디 홈으로 돌아가기">←</a>
+  <a class="topbar-brand" href="https://hondi.net"><span class="topbar-logo">H</span> 혼디</a>
+  <nav class="tabs" aria-label="GDC 메뉴">
+    <a class="tab-btn" href="#principles">원칙</a>
+    <a class="tab-btn" href="#features">서비스</a>
+    <a class="tab-btn" href="#rates">금리</a>
+    <a class="tab-btn" href="#credit">신용평가</a>
+    <a class="tab-btn" href="#tech">기술</a>
+    <a class="tab-btn" href="#pool">FIAT POOL</a>
+    <a class="tab-btn" href="library.html">자료실</a>
+    <a class="tab-btn" href="dashboard.html">대시보드</a>
+  </nav>
+  <div class="topbar-right"><a href="webapp.html" class="btn btn-brand">GDC 앱 열기</a></div>
+</header>
+
+<section class="hero-dark"><div class="hero-dark-inner">
+  <span class="repro-badge">OpenHash 원장 연동 · 필드 테스트 — 혼디 구독료·서비스 결제 운영 중</span>
+  <h1>5천만 인구와 5백만 기관의 재무제표를<br>화폐 하나로 잇는 게 목표입니다</h1>
+  <p>고팡은 모든 사용자의 재무제표를 자동으로 생성하고, 매 거래마다 갱신하며, 전체 인구와 기관의 재무제표를 상호 연동하는 것을 목표로 합니다. 이 재무제표의 현금 계정이 곧 GDC입니다. 필드 테스트 기간 동안 GDC는 혼디의 구독료와 K-Law 등 개별 서비스의 결제 수단으로 쓰입니다. 결제 통화 기능, 예금 이자, 대출, 투자는 은행·보험사·증권사 컨소시엄이 구성된 이후 다음 단계로 넓혀갈 계획입니다.</p>
+  <div class="repro-pills">
+    <a class="repro-pill" style="text-decoration:none" href="webapp.html">💳 GDC 앱 열기</a>
+    <a class="repro-pill" style="text-decoration:none" href="#tech">📄 기술 개요 보기</a>
+    <a class="repro-pill" style="text-decoration:none" href="library.html">📚 자료실(방법론·시험 라운드)</a>
+  </div>
+  <div class="repro-stats">
+    <div class="repro-stat"><b>1 ₮</b><span>= KRW 1,000원 기준가</span></div>
+    <div class="repro-stat" title="예치·보관은 이자 없이 운영됩니다 — 은행업 인가 없이 이자를 약속하면 유사수신행위법 위반 소지가 있습니다."><b>무이자</b><span>예치·보관 <span class="stat-flag">LIVE</span></span></div>
+    <div class="repro-stat"><b>구독료</b><span>혼디 서비스 결제 <span class="stat-flag">LIVE</span></span></div>
+    <div class="repro-stat"><b>특허 출원</b><span>AI 신용평가 엔진 <span class="stat-flag">목표</span></span></div>
+  </div>
+</div></section>
+
 <div class="announce" id="site-banner">
   <b>GDC</b>는 오픈소스 공동체입니다 — 소스와 특허 출원 기술의 방향 모두
   <a href="https://github.com/Openhash-Gopang/gdc" target="_blank" rel="noopener">GitHub에서 열람·기여</a>할 수 있습니다.
   현재 <b>필드테스트 단계</b>로 금융기관 종사자 필드테스터에 한정되며 상용 금융 서비스가 아닙니다.
   <button class="announce-close" onclick="document.getElementById('site-banner').style.display='none'" aria-label="닫기">✕</button>
-</div>
-
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="desktop.html" class="logo">
-      <div class="logo-mark"><svg viewBox="0 0 28 34" width="14" height="17" fill="currentColor" xmlns="http://www.w3.org/2000/svg" aria-label="T"><rect x="0" y="0" width="28" height="5" rx="1.5"/><rect x="11" y="5" width="6" height="29" rx="1.5"/></svg></div>
-      GDC
-    </a>
-    <div class="nav-links">
-      <a href="#principles">원칙</a>
-      <a href="#features">서비스</a>
-      <a href="#rates">금리</a>
-      <a href="#credit">신용평가</a>
-      <a href="#tech">기술</a>
-      <a href="#pool">FIAT POOL</a>
-      <a href="dashboard.html">대시보드</a>
-    </div>
-    <div class="nav-right">
-      <a href="dashboard.html" class="btn">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 4h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M5 16h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/><path d="M15 12h4a1 1 0 0 1 1 1v6a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-6a1 1 0 0 1 1 -1"/><path d="M15 4h4a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1v-2a1 1 0 0 1 1 -1"/></svg>
-        대시보드
-      </a>
-      <a href="webapp.html" class="btn btn-brand">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
-        GDC 앱 열기
-      </a>
-    </div>
-  </div>
-</nav>
-
-<div class="hero">
-  <div class="hero-badge"><span class="pulse"></span>OpenHash 원장 연동 · 필드 테스트 — 혼디 구독료·서비스 결제 운영 중</div>
-  <h1>5천만 인구와 5백만 기관의 재무제표를<br>화폐 하나로 잇는 게 목표입니다</h1>
-  <p class="hero-sub">고팡은 모든 사용자의 재무제표를 자동으로 생성하고, 매 거래마다 갱신하며, 전체 인구와 기관의 재무제표를 상호 연동하는 것을 목표로 합니다. 이 재무제표의 현금 계정이 곧 GDC입니다. 필드 테스트 기간 동안 GDC는 혼디의 구독료와 K-Law 등 개별 서비스의 결제 수단으로 쓰입니다. 결제 통화 기능, 예금 이자, 대출, 투자는 은행·보험사·증권사 컨소시엄이 구성된 이후 다음 단계로 넓혀갈 계획입니다.</p>
-  <div class="hero-actions">
-    <a href="webapp.html" class="btn btn-brand">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M17 8v-3a1 1 0 0 0 -1 -1h-10a2 2 0 0 0 0 4h12a1 1 0 0 1 1 1v3m0 4v3a1 1 0 0 1 -1 1h-12a2 2 0 0 1 -2 -2v-12"/><path d="M20 12v4h-4a2 2 0 0 1 0 -4h4"/></svg>
-      GDC 앱 열기
-    </a>
-    <a href="#tech" class="btn">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      기술 개요 보기
-    </a>
-  </div>
-  <div class="stat-strip">
-    <div class="stat">
-      <div class="stat-val">1 ₮</div>
-      <div class="stat-lbl">= KRW 1,000원 기준가</div>
-    </div>
-    <div class="stat" title="예치·보관은 이자 없이 운영됩니다 — 은행업 인가 없이 이자를 약속하면 유사수신행위법 위반 소지가 있습니다.">
-      <div class="stat-val">무이자</div>
-      <div class="stat-lbl">예치·보관 <span class="stat-flag">LIVE</span></div>
-    </div>
-    <div class="stat">
-      <div class="stat-val">구독료</div>
-      <div class="stat-lbl">혼디 서비스 결제 <span class="stat-flag">LIVE</span></div>
-    </div>
-    <div class="stat">
-      <div class="stat-val">특허 출원</div>
-      <div class="stat-lbl">AI 신용평가 엔진 <span class="stat-flag">목표</span></div>
-    </div>
-  </div>
 </div>
 
 <hr class="divider">
@@ -540,6 +510,7 @@ table.rt td.grn{color:var(--clause)!important;font-weight:500}
           <li><a href="dashboard.html">대시보드</a></li>
           <li><a href="#rates">금리 안내</a></li>
           <li><a href="#tech">기술 개요</a></li>
+          <li><a href="library.html">자료실</a></li>
         </ul>
       </div>
       <div>
@@ -644,7 +615,7 @@ window.K_AUTH_CONFIG = { serviceLabel: 'GDC' };
   var sections = ['principles','features','rates','credit','tech','pool'];
   var items = {};
   sections.forEach(function(id) {
-    var el = document.querySelector('.nav-links a[href="#' + id + '"]');
+    var el = document.querySelector('.topbar .tab-btn[href="#' + id + '"]');
     if (el) items[id] = el;
   });
   function onScroll() {
@@ -655,12 +626,10 @@ window.K_AUTH_CONFIG = { serviceLabel: 'GDC' };
       if (sec && sec.offsetTop <= scrollY) active = id;
     });
     Object.keys(items).forEach(function(id) {
-      items[id].style.color = '';
-      items[id].style.background = '';
+      items[id].classList.remove('active');
     });
     if (active && items[active]) {
-      items[active].style.color = 'var(--t1)';
-      items[active].style.background = 'var(--brand-bg)';
+      items[active].classList.add('active');
     }
   }
   window.addEventListener('scroll', onScroll, { passive: true });

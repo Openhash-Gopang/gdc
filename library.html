@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<link rel="icon" href="data:,">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GDC 자료실</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+<style>
+:root {
+  --bg:#f8f9fa; --sur:#ffffff; --bdr:#e5e7eb; --bdr2:#d1d5db;
+  --txt:#111827; --txt2:#374151; --txt3:#6b7280; --txt4:#9ca3af;
+  --pri:#3ecf8e; --pri-dk:#2baa74; --pri-bg:#f0fdf9; --pri-bd:#bbf7d0;
+  --blue-bg:#eff6ff; --org-bg:#fffbeb; --pur-bg:#f5f3ff; --gry-bg:#f3f4f6;
+  --font:'Pretendard',-apple-system,'Apple SD Gothic Neo',sans-serif; --r:10px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font);background:var(--bg);color:var(--txt2);line-height:1.7}
+.wrap{max-width:1080px;margin:0 auto;padding:32px 24px 100px}
+.hero h1{font-size:22px;color:var(--txt);margin-bottom:6px}
+.hero p{font-size:13.5px;color:var(--txt3);margin-bottom:18px}
+.notice{background:var(--org-bg);border:1px solid #fde68a;border-radius:var(--r);padding:10px 14px;font-size:12.5px;color:#78350f;margin-bottom:18px}
+.tabs{display:flex;flex-wrap:wrap;gap:4px;background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:4px;margin-bottom:20px}
+.tab-btn{padding:8px 14px;border:none;background:none;border-radius:7px;font-family:var(--font);font-size:13px;font-weight:600;color:var(--txt3);cursor:pointer}
+.tab-btn.active{background:var(--pri-bg);color:var(--pri-dk)}
+.tab-btn:not(.active):hover{background:var(--bg);color:var(--txt)}
+.lib-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media (max-width:980px){.lib-grid{grid-template-columns:1fr 1fr}}
+@media (max-width:640px){.lib-grid{grid-template-columns:1fr}}
+.lib-card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--r);padding:18px 18px 16px;display:flex;flex-direction:column;transition:border-color .15s,box-shadow .15s}
+.lib-card:hover{border-color:var(--bdr2);box-shadow:0 4px 14px rgba(17,24,39,.06)}
+.lib-card[hidden]{display:none}
+.lib-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.lib-chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.chip-current{background:var(--pri-bg);color:var(--pri-dk)}
+.chip-biz{background:var(--org-bg);color:#92400e}
+.chip-report{background:#ecfeff;color:#0e7490}
+.chip-dev{background:var(--blue-bg);color:#1d4ed8}
+.chip-archive{background:var(--gry-bg);color:var(--txt3)}
+.lib-meta{font-size:11px;color:var(--txt4);text-align:right}
+.lib-card h3{font-size:14.5px;line-height:1.45;color:var(--txt);margin-bottom:3px}
+.lib-sub{font-size:12px;color:var(--pri-dk);font-weight:600;margin-bottom:8px;word-break:break-all}
+.lib-card p{font-size:12.8px;color:var(--txt3);line-height:1.65;margin-bottom:14px;flex:1}
+.lib-actions{display:flex;flex-wrap:wrap;gap:6px;padding-top:12px;border-top:1px solid var(--bdr)}
+.btn{display:inline-flex;align-items:center;font-family:var(--font);font-size:12.5px;font-weight:600;padding:6px 12px;border-radius:7px;border:1px solid var(--bdr2);color:var(--txt2);background:var(--sur);text-decoration:none}
+.btn:hover{background:var(--bg);color:var(--txt)}
+.btn-pri{background:var(--pri);border-color:var(--pri);color:#fff}
+.btn-pri:hover{background:var(--pri-dk);border-color:var(--pri-dk);color:#fff}
+
+.hero-dark{background:#0b0f19;padding:28px 24px 32px}
+.hero-dark-inner{max-width:1080px;margin:0 auto}
+.hero-dark-inner .repro-badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;color:#4ade80;background:#141a2e;border:1px solid #1f4a38;border-radius:99px;padding:4px 12px;margin-bottom:14px}
+.hero-dark-inner .repro-badge::before{content:"";width:6px;height:6px;border-radius:50%;background:#3ecf8e}
+.hero-dark-inner h2{font-size:19px;color:#f1f5f9;margin-bottom:6px;line-height:1.4}
+.hero-dark-inner p{font-size:13px;color:#cbd5e1;margin-bottom:16px;max-width:680px}
+.hero-dark-inner .repro-pills{display:flex;flex-wrap:wrap;gap:8px}
+.hero-dark-inner .repro-pill{font-size:12px;font-weight:600;color:#e2e8f0;background:#141a2e;border:1px solid #374357;border-radius:9px;padding:8px 12px}
+.hero-dark-inner .repro-stats{display:flex;flex-wrap:wrap;gap:24px;margin-top:16px;padding-top:16px;border-top:1px solid #1f4a38}
+.hero-dark-inner .repro-stat b{display:block;font-size:18px;color:#4ade80;line-height:1.3}
+.hero-dark-inner .repro-stat span{font-size:11.5px;color:#94a3b8}
+
+.topbar{display:flex;align-items:center;gap:14px;background:#0b0f19;padding:12px 24px;flex-wrap:wrap;row-gap:6px}
+.topbar-back{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:#fff;color:#0b0f19;font-size:16px;text-decoration:none;flex:none}
+.topbar-back:hover{background:#e5e7eb}
+.topbar-brand{display:inline-flex;align-items:center;gap:8px;color:#fff;font-weight:700;font-size:15px;text-decoration:none;flex:none}
+.topbar-brand:hover{opacity:.85}
+.topbar-logo{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:7px;background:#4f46e5;color:#fff;font-weight:800;font-size:13px;flex:none}
+.topbar .tabs{background:none;border:none;padding:0;margin:0;gap:2px}
+.topbar .tab-btn{color:#94a3b8}
+.topbar .tab-btn.active{background:#1e2b45;color:#fff}
+.topbar .tab-btn:not(.active):hover{background:#141a2e;color:#fff}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="topbar-back" href="desktop.html" aria-label="GDC 홈으로 돌아가기">←</a>
+  <a class="topbar-brand" href="https://hondi.net"><span class="topbar-logo">H</span> 혼디</a>
+  <div class="tabs" id="lib-tabs"><button class="tab-btn active" data-filter="all">전체</button><button class="tab-btn" data-filter="current">현행 방법론</button><button class="tab-btn" data-filter="report">시험 라운드</button><button class="tab-btn" data-filter="biz">사업·소개</button><button class="tab-btn" data-filter="dev">개발 문서</button><button class="tab-btn" data-filter="archive">이전 버전</button></div>
+</header>
+<section class="hero-dark"><div class="hero-dark-inner">
+  <span class="repro-badge">필드테스트 · 시험 라운드 진행 중</span>
+  <h2>시나리오로 검증하는 GDC 신용평가와 거래 한도</h2>
+  <p>재무제표 입력에서 신용등급과 금리를 내는 과정, 이체·예치·대출의 한도 검사를 가상의 시나리오로 시험하는 자료실입니다. 시나리오의 기대 결과는 실행 전에 적고, 결과·방법론 변경 이력을 함께 공개해 제3자가 같은 절차로 다시 확인할 수 있게 합니다.</p>
+  <div class="repro-pills">
+    <span class="repro-pill">📐 한도 명세 v0.1</span>
+    <span class="repro-pill">🧪 시나리오 32건</span>
+    <span class="repro-pill">📊 라운드 1 기준선 측정</span>
+    <span class="repro-pill">🔎 독립 검수 대기</span>
+  </div>
+  <div class="repro-stats">
+    <div class="repro-stat"><b>32건</b><span>라운드 1 시나리오(신용평가 10 · 이체 11 · 대출 11)</span></div>
+    <div class="repro-stat"><b>v0.1</b><span>필드테스트 한도 명세</span></div>
+    <div class="repro-stat"><b>시뮬레이션</b><span>라운드 1은 현행 코드의 기준선(독립 검수 전)</span></div>
+    <div class="repro-stat"><b>테스터 한정</b><span>현직 금융기관 종사자 필드테스터 계정</span></div>
+  </div>
+</div></section>
+<div class="wrap">
+  <div class="hero">
+    <h1>GDC 자료실</h1>
+    <p>GDC의 방법론 원문, 시험 라운드 기록, 백서와 개발 문서를 한곳에 모았습니다. 필요한 문서를 골라 읽거나 내려받으세요.</p>
+  </div>
+  <div class="notice"><b>면책 문구</b> — 이 자료실 문서에 수록된 모든 데이터는 가상의 시나리오와 자체 실험 결과이며 제3자의 검증을 거치지 않았습니다. 또한 일부는 초안 상태입니다. 따라서 이 자료실 문서의 어떠한 내용도 어떠한 용도로도 인용하거나 이용해서는 안 됩니다. GDC 필드테스트는 상용 금융 서비스가 아닙니다.</div>
+
+  <div class="lib-grid" id="lib-grid">
+    <article class="lib-card" data-cat="current">
+      <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운 · 8 KB</span></div>
+      <h3>필드테스트 한도 명세 v0.1</h3>
+      <div class="lib-sub">limits_v0_1.md · 마크다운</div>
+      <p>이체·예치·대출의 한도 값, 검사 순서, 값마다의 근거(참고값인지 GDC 설계값인지)를 적은 명세입니다. 서버(hondi-proxy)에 이식할 때의 기준 문서입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/method/limits_v0_1.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/method/limits_v0_1.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="current">
+      <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운 · 2 KB</span></div>
+      <h3>테스트 파이프라인 설계안</h3>
+      <div class="lib-sub">pipeline.md · 마크다운</div>
+      <p>생성 → 독립 검수 → 대조의 3단계, 소유권·순서·파일 규약을 정한 설계안입니다. klaw 자료실의 파이프라인을 기준으로 했으며 실제 스크립트가 만들어지는 대로 확정합니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/method/pipeline.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/method/pipeline.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="current">
+      <div class="lib-top"><span class="lib-chip chip-current">현행 방법론</span><span class="lib-meta">마크다운 · 2 KB</span></div>
+      <h3>방법론 변경 이력</h3>
+      <div class="lib-sub">CHANGELOG_gdc.md · 마크다운</div>
+      <p>한도 명세와 (앞으로 작성할) 신용평가·기업가치 평가·독립 검수 방법론의 버전별 변경 이력입니다. 방법론 본체는 아직 작성 전입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/method/CHANGELOG_gdc.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/method/CHANGELOG_gdc.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="report">
+      <div class="lib-top"><span class="lib-chip chip-report">시험 라운드</span><span class="lib-meta">마크다운 · 2 KB</span></div>
+      <h3>라운드 1 결과 (기준선, 시뮬레이션)</h3>
+      <div class="lib-sub">results.md · 마크다운</div>
+      <p>신용평가 10건, 이체 한도 11건, 대출 한도 11건 — 시나리오 32건을 현행 코드에 돌린 기준선 측정입니다. 독립 검수와 대조는 아직 진행 전입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/rounds/r01/results.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/rounds/r01/results.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="report">
+      <div class="lib-top"><span class="lib-chip chip-report">시험 라운드</span><span class="lib-meta">JSON · 시나리오 32건</span></div>
+      <h3>라운드 1 시나리오 원본</h3>
+      <div class="lib-sub">scenarios.json · JSON</div>
+      <p>라운드 1에 쓴 시나리오 전체입니다. 기대 결과를 실행 전에 적어 두었고, 서버 테스트가 같은 시나리오로 서버 구현과 기준 구현이 일치하는지 대조합니다. 입력값은 모두 가상입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/rounds/r01/scenarios.json" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/rounds/r01/scenarios.json" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="report">
+      <div class="lib-top"><span class="lib-chip chip-report">시험 라운드</span><span class="lib-meta">안내 · 마크다운</span></div>
+      <h3>시험 라운드 운영 규칙</h3>
+      <div class="lib-sub">README.md · 마크다운</div>
+      <p>라운드마다 실행·독립 검수·재검토 디렉터리를 두는 규약과, 라운드 하나를 실행하는 방법을 적은 문서입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/labs/rounds/README.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/labs/rounds/README.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="biz">
+      <div class="lib-top"><span class="lib-chip chip-biz">사업·소개</span><span class="lib-meta">마크다운 · 32 KB</span></div>
+      <h3>GDC 백서 v1.1</h3>
+      <div class="lib-sub">GDC_WHITEPAPER_v1_1.md · 마크다운</div>
+      <p>GDC의 목적, 구조, 통화 기준가(1₮ = KRW 1,000), market→gdc→tax 연동 파이프라인을 설명하는 백서입니다. 이 사이트 상단 배너가 연결하는 문서입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/business/GDC_WHITEPAPER_v1_1.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/business/GDC_WHITEPAPER_v1_1.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="biz">
+      <div class="lib-top"><span class="lib-chip chip-biz">사업·소개</span><span class="lib-meta">마크다운 · 52 KB</span></div>
+      <h3>GDC 공개 백서 v1.5</h3>
+      <div class="lib-sub">GDC_Whitepaper_v1.5.md · 마크다운</div>
+      <p>고팡 비영리 운영 원칙과 통화 풀 공공 귀속 선언을 담은 공개 백서입니다(2026년 5월 발행본).</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/business/GDC_Whitepaper_v1.5.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/business/GDC_Whitepaper_v1.5.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="biz">
+      <div class="lib-top"><span class="lib-chip chip-biz">사업·소개</span><span class="lib-meta">마크다운</span></div>
+      <h3>GDC 로드맵</h3>
+      <div class="lib-sub">GDC_ROADMAP.md · 마크다운</div>
+      <p>GDC 갱신 계획서(v1.2)와 klaw 형식 전환 단계(P0~P4)의 진행 상태를 적은 문서입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/GDC_ROADMAP.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/GDC_ROADMAP.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="dev">
+      <div class="lib-top"><span class="lib-chip chip-dev">개발 문서</span><span class="lib-meta">마크다운 · 21 KB</span></div>
+      <h3>고팡 서브서비스 인수인계 지시서</h3>
+      <div class="lib-sub">GOPANG_HANDOVER.md · 마크다운</div>
+      <p>서브서비스 개발을 이어받는 쪽을 위한 인수인계 문서입니다(2026.6.3 작성).</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/dev/GOPANG_HANDOVER.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/dev/GOPANG_HANDOVER.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="dev">
+      <div class="lib-top"><span class="lib-chip chip-dev">개발 문서</span><span class="lib-meta">마크다운 · 10 KB</span></div>
+      <h3>GDC L1 이관 세션 요약</h3>
+      <div class="lib-sub">session-summary-2026-07-07-gdc-l1-migration.md · 마크다운</div>
+      <p>GDC 데이터를 L1 PocketBase로 옮기는 작업(2026.7.7)의 요약입니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/dev/session-summary-2026-07-07-gdc-l1-migration.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/dev/session-summary-2026-07-07-gdc-l1-migration.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+    <article class="lib-card" data-cat="archive">
+      <div class="lib-top"><span class="lib-chip chip-archive">이전 버전</span><span class="lib-meta">마크다운 · 27 KB</span></div>
+      <h3>GDC 백서 v1.0</h3>
+      <div class="lib-sub">GDC_WHITEPAPER_v1_0.md · 마크다운</div>
+      <p>v1.1 이전의 백서입니다. 기록 보존용이며 현행 내용과 다를 수 있습니다.</p>
+      <div class="lib-actions"><a class="btn btn-pri" href="https://github.com/Openhash-Gopang/gdc/blob/main/library/business/GDC_WHITEPAPER_v1_0.md" target="_blank" rel="noopener">읽기</a><a class="btn" href="https://raw.githubusercontent.com/Openhash-Gopang/gdc/main/library/business/GDC_WHITEPAPER_v1_0.md" target="_blank" rel="noopener">원문</a></div>
+    </article>
+  </div>
+</div>
+<script>
+(function () {
+  var tabs = document.querySelectorAll('#lib-tabs .tab-btn');
+  var cards = document.querySelectorAll('#lib-grid .lib-card');
+  tabs.forEach(function (b) {
+    b.addEventListener('click', function () {
+      tabs.forEach(function (x) { x.classList.remove('active'); });
+      b.classList.add('active');
+      var f = b.getAttribute('data-filter');
+      cards.forEach(function (c) { c.hidden = !(f === 'all' || c.getAttribute('data-cat') === f); });
+    });
+  });
+})();
+</script>
+</body>
+</html>
