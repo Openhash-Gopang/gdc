@@ -22,6 +22,7 @@ const byId = new Map(chk.results.map(r => [r.id, r]));
 
 const SAV = ['status', 'endMonth', 'paidCount', 'principal', 'interest', 'payout'];
 const INS = ['status', 'endMonth', 'paidCount', 'premiumTotal', 'claimResults', 'totalPayout', 'remainingCoverage'];
+const SEC = ['compliant', 'violations', 'investedCost', 'grossIncome', 'net', 'distributable', 'newCarry', 'poolCents', 'shares', 'undistributedCents', 'obligationCents', 'shortfallCents'];
 const same = (x, y) => JSON.stringify(x) === JSON.stringify(y);
 const VAL = ['grade', 'multiple', 'nav', 'earningsValue', 'cashFlowValue', 'low', 'mid', 'high'];
 const rows = [];
@@ -29,12 +30,12 @@ for (const r of run.results) {
   const c = byId.get(r.id);
   const diffs = [];
   if (!c) { diffs.push('검수 결과 없음'); }
-  else if (r.kind === 'savings' || r.kind === 'valuation' || r.kind === 'insurance') {
+  else if (r.kind === 'savings' || r.kind === 'valuation' || r.kind === 'insurance' || r.kind === 'securities') {
     if (r.expected.error || c.error || r.actual.error) {
       if ((r.actual.error || null) !== (c.error || null)) diffs.push(`오류: 구현 ${r.actual.error}, 검수 ${c.error}`);
       if ((r.expected.error || null) !== (c.error || null)) diffs.push(`오류: expected ${r.expected.error}, 검수 ${c.error}`);
     } else {
-      for (const k of (r.kind === 'valuation' ? VAL : r.kind === 'insurance' ? INS : SAV)) {
+      for (const k of (r.kind === 'valuation' ? VAL : r.kind === 'insurance' ? INS : r.kind === 'securities' ? SEC : SAV)) {
         if (!same(c[k], r.actual[k])) diffs.push(`${k}: 구현 ${JSON.stringify(r.actual[k])}, 검수 ${JSON.stringify(c[k])}`);
         if (!same(c[k], r.expected[k])) diffs.push(`${k}: expected ${JSON.stringify(r.expected[k])}, 검수 ${JSON.stringify(c[k])}`);
       }
@@ -55,7 +56,7 @@ for (const r of run.results) {
 const okCount = rows.filter(r => r.ok).length;
 const lines = [
   `# ${round}-check 대조 결과 (파이프라인 2단계 — 독립 검수 vs 실행)`, '',
-  `검수자는 방법론·명세 문서(credit: gdc_credit_v1_0.md, savings: savings_v0_1.md, valuation: gdc_valuation_v0_1.md, insurance: insurance_v0_1.md와 그것이 인용하는 신용평가 문서)와 시나리오 입력만 받았고 expected 값과 구현 코드는 보지 못했다.`,
+  `검수자는 방법론·명세 문서(credit: gdc_credit_v1_0.md, savings: savings_v0_1.md, valuation: gdc_valuation_v0_1.md, insurance: insurance_v0_1.md, securities: securities_v0_1.md와 그것이 인용하는 신용평가 문서)와 시나리오 입력만 받았고 expected 값과 구현 코드는 보지 못했다.`,
   `**일치 ${okCount} / ${rows.length}**`, '',
   ...(chk.ambiguities?.length ? ['## 검수자가 짚은 문서의 모호한 곳', '', ...chk.ambiguities.map((a, i) => `${i + 1}. ${a}`), ''] : ['검수자가 짚은 모호한 곳: 없음', '']),
   '| ID | 결과 | 차이 |', '|---|---|---|',

@@ -1,0 +1,2392 @@
+{
+ "schema": 1,
+ "round": "r06",
+ "authored": "2026-10-03",
+ "note": "증권 운용·이자 재원 명세 v0.1(securities_v0_1.md) 기준. expected는 gen_scenarios.py의 참조 계산(명세를 구현 코드와 별개로 옮김)이 실행 전에 냈다.",
+ "scenarios": [
+  {
+   "id": "sec6-001",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "기본: 수익 40, 비용 10 → 순수익 30, 배분율 50% → 재원 1500센트, 가중 1:2",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 10,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 200,
+      "income": 40
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 100
+     },
+     {
+      "id": "y",
+      "weight": 2,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 200,
+    "grossIncome": 40,
+    "net": 30,
+    "distributable": 30,
+    "newCarry": 0,
+    "poolCents": 1500,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 500
+     },
+     {
+      "id": "y",
+      "cents": 1000
+     }
+    ],
+    "undistributedCents": 1500,
+    "obligationCents": 100,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-002",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "종목·예치자 없음",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 0,
+    "grossIncome": 0,
+    "net": 0,
+    "distributable": 0,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-003",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "종목 없음, positions null, depositors null",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": null,
+    "depositors": null
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 0,
+    "grossIncome": 0,
+    "net": 0,
+    "distributable": 0,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-004",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "수익 0 → 이자 0",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 0
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 50
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 0,
+    "net": 0,
+    "distributable": 0,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 0,
+    "obligationCents": 50,
+    "shortfallCents": 50
+   }
+  },
+  {
+   "id": "sec6-005",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "비용이 수익보다 크면 순수익 음수, 분배 0, 부족분이 새 이월 결손",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 30,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 10,
+    "net": -20,
+    "distributable": 0,
+    "newCarry": 20,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-006",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "이월 결손이 순수익보다 크면 남은 결손 이월",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 10,
+    "carryDeficit": 100,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 50
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 50,
+    "net": 40,
+    "distributable": 0,
+    "newCarry": 60,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-007",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "이월 결손이 순수익과 같으면 분배 0, newCarry 0",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 10,
+    "carryDeficit": 40,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 50
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 50,
+    "net": 40,
+    "distributable": 0,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-008",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "이월 결손이 순수익보다 작으면 차액 분배",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 10,
+    "carryDeficit": 15,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 50
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 50,
+    "net": 40,
+    "distributable": 25,
+    "newCarry": 0,
+    "poolCents": 1250,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 1250
+     }
+    ],
+    "undistributedCents": 1250,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-009",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "순수익 음수 + 이월 결손 → newCarry는 합산",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 20,
+    "carryDeficit": 7,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 5
+     }
+    ],
+    "depositors": []
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 5,
+    "net": -15,
+    "distributable": 0,
+    "newCarry": 22,
+    "poolCents": 0,
+    "shares": [],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-010",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "배분율 0 → 재원 0, 전액 남음",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 0,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 100
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 300
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 100,
+    "net": 100,
+    "distributable": 100,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 10000,
+    "obligationCents": 300,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-011",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "배분율 8000(상한)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 8000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 100
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 100,
+    "net": 100,
+    "distributable": 100,
+    "newCarry": 0,
+    "poolCents": 8000,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 8000
+     }
+    ],
+    "undistributedCents": 2000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-012",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "배분율 1bp, 버림",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 1,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 99
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 99,
+    "net": 99,
+    "distributable": 99,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 9900,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-013",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "재원 센트 버림: 7*3333/100=233.31→233",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 3333,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 7
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 7,
+    "net": 7,
+    "distributable": 7,
+    "newCarry": 0,
+    "poolCents": 233,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 233
+     }
+    ],
+    "undistributedCents": 467,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-014",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "몫 버림: 재원 100센트를 가중 1:1:1로 → 33,33,33 (남는 1센트는 undistributed)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 2
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     },
+     {
+      "id": "y",
+      "weight": 1,
+      "promised": 0
+     },
+     {
+      "id": "z",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 2,
+    "net": 2,
+    "distributable": 2,
+    "newCarry": 0,
+    "poolCents": 100,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 33
+     },
+     {
+      "id": "y",
+      "cents": 33
+     },
+     {
+      "id": "z",
+      "cents": 33
+     }
+    ],
+    "undistributedCents": 101,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-015",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "가중치 0인 예치자는 몫 0",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 20
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 0,
+      "promised": 0
+     },
+     {
+      "id": "y",
+      "weight": 5,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 20,
+    "net": 20,
+    "distributable": 20,
+    "newCarry": 0,
+    "poolCents": 1000,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     },
+     {
+      "id": "y",
+      "cents": 1000
+     }
+    ],
+    "undistributedCents": 1000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-016",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "가중치 합 0 → 모두 0, 재원은 남음",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 20
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 0,
+      "promised": 10
+     },
+     {
+      "id": "y",
+      "weight": 0,
+      "promised": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 20,
+    "net": 20,
+    "distributable": 20,
+    "newCarry": 0,
+    "poolCents": 1000,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     },
+     {
+      "id": "y",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 2000,
+    "obligationCents": 20,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-017",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "예치자 한 명",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 20
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 7,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 20,
+    "net": 20,
+    "distributable": 20,
+    "newCarry": 0,
+    "poolCents": 1000,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 1000
+     }
+    ],
+    "undistributedCents": 1000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-018",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "확정 이율형: 약정 합계가 순수익(센트)보다 크면 부족액",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 800
+     },
+     {
+      "id": "y",
+      "weight": 1,
+      "promised": 700
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 500,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 250
+     },
+     {
+      "id": "y",
+      "cents": 250
+     }
+    ],
+    "undistributedCents": 500,
+    "obligationCents": 1500,
+    "shortfallCents": 500
+   }
+  },
+  {
+   "id": "sec6-019",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "확정 이율형: 약정이 정확히 순수익(센트)과 같으면 부족 0",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 1000
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 500,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 500
+     }
+    ],
+    "undistributedCents": 500,
+    "obligationCents": 1000,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-020",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "확정 이율형: 순수익 음수면 약정 전부가 부족",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 5,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 0
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 250
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 0,
+    "net": -5,
+    "distributable": 0,
+    "newCarry": 5,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 0,
+    "obligationCents": 250,
+    "shortfallCents": 250
+   }
+  },
+  {
+   "id": "sec6-021",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "여러 종목 합산",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 4,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "AAA",
+      "cost": 100,
+      "income": 5
+     },
+     {
+      "id": "b",
+      "grade": "BBB",
+      "cost": 150,
+      "income": 12
+     },
+     {
+      "id": "c",
+      "grade": "BB",
+      "cost": 50,
+      "income": 0
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 3,
+      "promised": 0
+     },
+     {
+      "id": "y",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 300,
+    "grossIncome": 17,
+    "net": 13,
+    "distributable": 13,
+    "newCarry": 0,
+    "poolCents": 650,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 487
+     },
+     {
+      "id": "y",
+      "cents": 162
+     }
+    ],
+    "undistributedCents": 651,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-022",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "C 등급 종목 → GRADE_C (계산은 계속)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "C",
+      "cost": 100,
+      "income": 10
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "GRADE_C"
+    ],
+    "investedCost": 100,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 500,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 500
+     }
+    ],
+    "undistributedCents": 500,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-023",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "종목 하나가 원금의 20%와 같으면 위반 아님 (200 = 1000/5)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 200,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 500,
+    "shares": [],
+    "undistributedCents": 1000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-024",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "종목 하나가 원금의 20%를 넘으면 ISSUER_CONCENTRATION (201)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 201,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "ISSUER_CONCENTRATION"
+    ],
+    "investedCost": 201,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 500,
+    "shares": [],
+    "undistributedCents": 1000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-025",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "운용 원가가 원금의 70%와 같으면 위반 아님 (4종목 700... 단 각 ≤200)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "b",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "c",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "d",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 700,
+    "grossIncome": 40,
+    "net": 40,
+    "distributable": 40,
+    "newCarry": 0,
+    "poolCents": 2000,
+    "shares": [],
+    "undistributedCents": 4000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-026",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "운용 원가가 원금의 70%를 넘으면 INVESTED_CAP (701)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "b",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "c",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "d",
+      "grade": "A",
+      "cost": 101,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "INVESTED_CAP"
+    ],
+    "investedCost": 701,
+    "grossIncome": 40,
+    "net": 40,
+    "distributable": 40,
+    "newCarry": 0,
+    "poolCents": 2000,
+    "shares": [],
+    "undistributedCents": 4000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-027",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "세 위반이 모두 있으면 순서대로 GRADE_C, ISSUER_CONCENTRATION, INVESTED_CAP",
+   "inputs": {
+    "principal": 100,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "C",
+      "cost": 60,
+      "income": 5
+     },
+     {
+      "id": "b",
+      "grade": "A",
+      "cost": 20,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "GRADE_C",
+     "ISSUER_CONCENTRATION",
+     "INVESTED_CAP"
+    ],
+    "investedCost": 80,
+    "grossIncome": 6,
+    "net": 6,
+    "distributable": 6,
+    "newCarry": 0,
+    "poolCents": 300,
+    "shares": [],
+    "undistributedCents": 600,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-028",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "집중도만 위반 (원금 100, 종목 21)",
+   "inputs": {
+    "principal": 100,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 21,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "ISSUER_CONCENTRATION"
+    ],
+    "investedCost": 21,
+    "grossIncome": 1,
+    "net": 1,
+    "distributable": 1,
+    "newCarry": 0,
+    "poolCents": 50,
+    "shares": [],
+    "undistributedCents": 100,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-029",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "원금 0이고 종목이 있으면 집중도·운용 상한 위반",
+   "inputs": {
+    "principal": 0,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 1,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "ISSUER_CONCENTRATION",
+     "INVESTED_CAP"
+    ],
+    "investedCost": 1,
+    "grossIncome": 1,
+    "net": 1,
+    "distributable": 1,
+    "newCarry": 0,
+    "poolCents": 50,
+    "shares": [],
+    "undistributedCents": 100,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-030",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "원금 0이고 종목 없으면 위반 없음",
+   "inputs": {
+    "principal": 0,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 0,
+    "grossIncome": 0,
+    "net": 0,
+    "distributable": 0,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-031",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "원금 5, 종목 cost 1 (1*5=5 > 5 아님) 집중도 위반 아님",
+   "inputs": {
+    "principal": 5,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 1,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 1,
+    "grossIncome": 1,
+    "net": 1,
+    "distributable": 1,
+    "newCarry": 0,
+    "poolCents": 50,
+    "shares": [],
+    "undistributedCents": 100,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-032",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "원금 10, 종목 cost 7 → 운용 상한 경계(70 = 70)는 위반 아님, 집중도(35>10)만 위반",
+   "inputs": {
+    "principal": 10,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 7,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "compliant": false,
+    "violations": [
+     "ISSUER_CONCENTRATION"
+    ],
+    "investedCost": 7,
+    "grossIncome": 1,
+    "net": 1,
+    "distributable": 1,
+    "newCarry": 0,
+    "poolCents": 50,
+    "shares": [],
+    "undistributedCents": 100,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-033",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PRINCIPAL 음수",
+   "inputs": {
+    "principal": -1,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "error": "PRINCIPAL_INVALID"
+   }
+  },
+  {
+   "id": "sec6-034",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PRINCIPAL 누락",
+   "inputs": {
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 0
+   },
+   "expected": {
+    "error": "PRINCIPAL_INVALID"
+   }
+  },
+  {
+   "id": "sec6-035",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PRINCIPAL 소수",
+   "inputs": {
+    "principal": 10.5,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "error": "PRINCIPAL_INVALID"
+   }
+  },
+  {
+   "id": "sec6-036",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PRINCIPAL 1000.0 은 정수",
+   "inputs": {
+    "principal": 1000.0,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 500,
+    "shares": [],
+    "undistributedCents": 1000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-037",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PRINCIPAL true",
+   "inputs": {
+    "principal": true,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "error": "PRINCIPAL_INVALID"
+   }
+  },
+  {
+   "id": "sec6-038",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 배열 아님",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": {
+     "id": "a"
+    }
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-039",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 원소 null",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     null
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-040",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS id 빈 문자열",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "",
+      "grade": "A",
+      "cost": 100,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-041",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS id 숫자",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": 1,
+      "grade": "A",
+      "cost": 100,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-042",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 등급 소문자",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "a",
+      "cost": 100,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-043",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 등급 없음(D)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "D",
+      "cost": 100,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-044",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS cost 0",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 0,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-045",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS income 음수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": -1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-046",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS income 소수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 1.5
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-047",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS id 중복",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     },
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-048",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 추가 키는 무시",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 5,
+      "memo": "x"
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 5,
+    "net": 5,
+    "distributable": 5,
+    "newCarry": 0,
+    "poolCents": 250,
+    "shares": [],
+    "undistributedCents": 500,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-049",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "COST 음수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": -1,
+    "carryDeficit": 0,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "error": "COST_INVALID"
+   }
+  },
+  {
+   "id": "sec6-050",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "COST 누락",
+   "inputs": {
+    "principal": 1000,
+    "carryDeficit": 0,
+    "payoutBp": 0
+   },
+   "expected": {
+    "error": "COST_INVALID"
+   }
+  },
+  {
+   "id": "sec6-051",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "CARRY 음수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": -1,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "error": "CARRY_INVALID"
+   }
+  },
+  {
+   "id": "sec6-052",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "CARRY null",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": null,
+    "payoutBp": 5000
+   },
+   "expected": {
+    "error": "CARRY_INVALID"
+   }
+  },
+  {
+   "id": "sec6-053",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PAYOUT 8001",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 8001
+   },
+   "expected": {
+    "error": "PAYOUT_INVALID"
+   }
+  },
+  {
+   "id": "sec6-054",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PAYOUT 음수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": -1
+   },
+   "expected": {
+    "error": "PAYOUT_INVALID"
+   }
+  },
+  {
+   "id": "sec6-055",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "PAYOUT 누락",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0
+   },
+   "expected": {
+    "error": "PAYOUT_INVALID"
+   }
+  },
+  {
+   "id": "sec6-056",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "DEPOSITORS 배열 아님",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "depositors": "x"
+   },
+   "expected": {
+    "error": "DEPOSITORS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-057",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "DEPOSITORS weight 음수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "depositors": [
+     {
+      "id": "x",
+      "weight": -1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "error": "DEPOSITORS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-058",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "DEPOSITORS promised 소수",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0.5
+     }
+    ]
+   },
+   "expected": {
+    "error": "DEPOSITORS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-059",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "DEPOSITORS id 중복",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     },
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "error": "DEPOSITORS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-060",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "DEPOSITORS weight 누락",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "depositors": [
+     {
+      "id": "x",
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "error": "DEPOSITORS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-061",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "검사 순서: PRINCIPAL과 POSITIONS가 모두 틀리면 PRINCIPAL",
+   "inputs": {
+    "principal": -5,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     "x"
+    ]
+   },
+   "expected": {
+    "error": "PRINCIPAL_INVALID"
+   }
+  },
+  {
+   "id": "sec6-062",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "검사 순서: POSITIONS와 COST가 모두 틀리면 POSITIONS",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": -1,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     "x"
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-063",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "검사 순서: PAYOUT과 DEPOSITORS가 모두 틀리면 PAYOUT",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 9000,
+    "depositors": "x"
+   },
+   "expected": {
+    "error": "PAYOUT_INVALID"
+   }
+  },
+  {
+   "id": "sec6-064",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "위반이 있어도 입력 오류가 먼저다",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "C",
+      "cost": 100,
+      "income": 1
+     },
+     {
+      "id": "a",
+      "grade": "C",
+      "cost": 100,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-065",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 원소에 grade 키 없음",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "cost": 100,
+      "income": 1
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-066",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "POSITIONS 원소에 income null",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": null
+     }
+    ]
+   },
+   "expected": {
+    "error": "POSITIONS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-067",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "DEPOSITORS 원소에 promised null",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": null
+     }
+    ]
+   },
+   "expected": {
+    "error": "DEPOSITORS_INVALID"
+   }
+  },
+  {
+   "id": "sec6-068",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "positions 빈 배열 + 원금 0 → 위반 없음",
+   "inputs": {
+    "principal": 0,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": []
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 0,
+    "grossIncome": 0,
+    "net": 0,
+    "distributable": 0,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [],
+    "undistributedCents": 0,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-069",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "가중치 합 0이면 distributable 전액이 남는다",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 30
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 0,
+      "promised": 0
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 30,
+    "net": 30,
+    "distributable": 30,
+    "newCarry": 0,
+    "poolCents": 1500,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 3000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  },
+  {
+   "id": "sec6-070",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "확정 이율형 부족액은 payoutBp와 무관 (payoutBp 0)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 0,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ],
+    "depositors": [
+     {
+      "id": "x",
+      "weight": 1,
+      "promised": 1500
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 100,
+    "grossIncome": 10,
+    "net": 10,
+    "distributable": 10,
+    "newCarry": 0,
+    "poolCents": 0,
+    "shares": [
+     {
+      "id": "x",
+      "cents": 0
+     }
+    ],
+    "undistributedCents": 1000,
+    "obligationCents": 1500,
+    "shortfallCents": 500
+   }
+  },
+  {
+   "id": "sec6-071",
+   "kind": "securities",
+   "product": "securities",
+   "moves_balance": false,
+   "note": "운용 원가 경계와 집중도 경계가 동시에 정확히 같음 (원금 1000: 종목 200 x 3 + 100 = 700, 각 ≤ 200)",
+   "inputs": {
+    "principal": 1000,
+    "serverCost": 0,
+    "carryDeficit": 0,
+    "payoutBp": 5000,
+    "positions": [
+     {
+      "id": "a",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "b",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "c",
+      "grade": "A",
+      "cost": 200,
+      "income": 10
+     },
+     {
+      "id": "d",
+      "grade": "A",
+      "cost": 100,
+      "income": 10
+     }
+    ]
+   },
+   "expected": {
+    "compliant": true,
+    "violations": [],
+    "investedCost": 700,
+    "grossIncome": 40,
+    "net": 40,
+    "distributable": 40,
+    "newCarry": 0,
+    "poolCents": 2000,
+    "shares": [],
+    "undistributedCents": 4000,
+    "obligationCents": 0,
+    "shortfallCents": 0
+   }
+  }
+ ]
+}

@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "updated": "2026-10-03",
-  "note": "R01은 현행 코드의 기준선(시뮬레이션, v0). R02 신용평가 v1.0, R03 적금 v0.1, R04 기업가치 v0.1, R05 보험 v0.1 — 독립 검수·재검토 완료(검수자는 같은 제작사의 다른 모델이라 완전한 독립은 아님).",
+  "note": "R01은 현행 코드의 기준선(시뮬레이션, v0). R02 신용평가 v1.0, R03 적금 v0.1, R04 기업가치 v0.1, R05 보험 v0.1, R06 증권 운용·이자 재원 v0.1 — 독립 검수·재검토 완료(검수자는 같은 제작사의 다른 모델이라 완전한 독립은 아님).",
   "rounds": [
     {
       "id": "r01",
@@ -75,6 +75,21 @@
       "results": "rounds/r05/results.md",
       "check": "rounds/r05-check/report.md",
       "final": "rounds/r05-final/reconcile.md"
+    },
+    {
+      "id": "r06",
+      "date": "2026-10-03",
+      "baseline": "library/labs/method/securities_v0_1.md (js/gdc-securities.js evaluateSecurities)",
+      "mode": "simulation",
+      "scenarios": 71,
+      "stages": {
+        "run": "done",
+        "check": "done",
+        "reconcile": "done"
+      },
+      "results": "rounds/r06/results.md",
+      "check": "rounds/r06-check/report.md",
+      "final": "rounds/r06-final/reconcile.md"
     }
   ]
 }

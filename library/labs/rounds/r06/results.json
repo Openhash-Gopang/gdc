@@ -1,0 +1,2073 @@
+{
+  "round": "r06",
+  "executed_mode": "simulation",
+  "total": 71,
+  "passed": 71,
+  "byKind": {
+    "securities": {
+      "total": 71,
+      "pass": 71
+    }
+  },
+  "results": [
+    {
+      "id": "sec6-001",
+      "kind": "securities",
+      "note": "기본: 수익 40, 비용 10 → 순수익 30, 배분율 50% → 재원 1500센트, 가중 1:2",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 200,
+        "grossIncome": 40,
+        "net": 30,
+        "distributable": 30,
+        "newCarry": 0,
+        "poolCents": 1500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 500
+          },
+          {
+            "id": "y",
+            "cents": 1000
+          }
+        ],
+        "undistributedCents": 1500,
+        "obligationCents": 100,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 200,
+        "grossIncome": 40,
+        "net": 30,
+        "distributable": 30,
+        "newCarry": 0,
+        "poolCents": 1500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 500
+          },
+          {
+            "id": "y",
+            "cents": 1000
+          }
+        ],
+        "undistributedCents": 1500,
+        "obligationCents": 100,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-002",
+      "kind": "securities",
+      "note": "종목·예치자 없음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-003",
+      "kind": "securities",
+      "note": "종목 없음, positions null, depositors null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-004",
+      "kind": "securities",
+      "note": "수익 0 → 이자 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 50,
+        "shortfallCents": 50
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 50,
+        "shortfallCents": 50
+      }
+    },
+    {
+      "id": "sec6-005",
+      "kind": "securities",
+      "note": "비용이 수익보다 크면 순수익 음수, 분배 0, 부족분이 새 이월 결손",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": -20,
+        "distributable": 0,
+        "newCarry": 20,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": -20,
+        "distributable": 0,
+        "newCarry": 20,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-006",
+      "kind": "securities",
+      "note": "이월 결손이 순수익보다 크면 남은 결손 이월",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 50,
+        "net": 40,
+        "distributable": 0,
+        "newCarry": 60,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 50,
+        "net": 40,
+        "distributable": 0,
+        "newCarry": 60,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-007",
+      "kind": "securities",
+      "note": "이월 결손이 순수익과 같으면 분배 0, newCarry 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 50,
+        "net": 40,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 50,
+        "net": 40,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-008",
+      "kind": "securities",
+      "note": "이월 결손이 순수익보다 작으면 차액 분배",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 50,
+        "net": 40,
+        "distributable": 25,
+        "newCarry": 0,
+        "poolCents": 1250,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 1250
+          }
+        ],
+        "undistributedCents": 1250,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 50,
+        "net": 40,
+        "distributable": 25,
+        "newCarry": 0,
+        "poolCents": 1250,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 1250
+          }
+        ],
+        "undistributedCents": 1250,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-009",
+      "kind": "securities",
+      "note": "순수익 음수 + 이월 결손 → newCarry는 합산",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 5,
+        "net": -15,
+        "distributable": 0,
+        "newCarry": 22,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 5,
+        "net": -15,
+        "distributable": 0,
+        "newCarry": 22,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-010",
+      "kind": "securities",
+      "note": "배분율 0 → 재원 0, 전액 남음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 100,
+        "net": 100,
+        "distributable": 100,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 10000,
+        "obligationCents": 300,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 100,
+        "net": 100,
+        "distributable": 100,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 10000,
+        "obligationCents": 300,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-011",
+      "kind": "securities",
+      "note": "배분율 8000(상한)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 100,
+        "net": 100,
+        "distributable": 100,
+        "newCarry": 0,
+        "poolCents": 8000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 8000
+          }
+        ],
+        "undistributedCents": 2000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 100,
+        "net": 100,
+        "distributable": 100,
+        "newCarry": 0,
+        "poolCents": 8000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 8000
+          }
+        ],
+        "undistributedCents": 2000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-012",
+      "kind": "securities",
+      "note": "배분율 1bp, 버림",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 99,
+        "net": 99,
+        "distributable": 99,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 9900,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 99,
+        "net": 99,
+        "distributable": 99,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 9900,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-013",
+      "kind": "securities",
+      "note": "재원 센트 버림: 7*3333/100=233.31→233",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 7,
+        "net": 7,
+        "distributable": 7,
+        "newCarry": 0,
+        "poolCents": 233,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 233
+          }
+        ],
+        "undistributedCents": 467,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 7,
+        "net": 7,
+        "distributable": 7,
+        "newCarry": 0,
+        "poolCents": 233,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 233
+          }
+        ],
+        "undistributedCents": 467,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-014",
+      "kind": "securities",
+      "note": "몫 버림: 재원 100센트를 가중 1:1:1로 → 33,33,33 (남는 1센트는 undistributed)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 2,
+        "net": 2,
+        "distributable": 2,
+        "newCarry": 0,
+        "poolCents": 100,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 33
+          },
+          {
+            "id": "y",
+            "cents": 33
+          },
+          {
+            "id": "z",
+            "cents": 33
+          }
+        ],
+        "undistributedCents": 101,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 2,
+        "net": 2,
+        "distributable": 2,
+        "newCarry": 0,
+        "poolCents": 100,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 33
+          },
+          {
+            "id": "y",
+            "cents": 33
+          },
+          {
+            "id": "z",
+            "cents": 33
+          }
+        ],
+        "undistributedCents": 101,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-015",
+      "kind": "securities",
+      "note": "가중치 0인 예치자는 몫 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 20,
+        "net": 20,
+        "distributable": 20,
+        "newCarry": 0,
+        "poolCents": 1000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          },
+          {
+            "id": "y",
+            "cents": 1000
+          }
+        ],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 20,
+        "net": 20,
+        "distributable": 20,
+        "newCarry": 0,
+        "poolCents": 1000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          },
+          {
+            "id": "y",
+            "cents": 1000
+          }
+        ],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-016",
+      "kind": "securities",
+      "note": "가중치 합 0 → 모두 0, 재원은 남음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 20,
+        "net": 20,
+        "distributable": 20,
+        "newCarry": 0,
+        "poolCents": 1000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          },
+          {
+            "id": "y",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 2000,
+        "obligationCents": 20,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 20,
+        "net": 20,
+        "distributable": 20,
+        "newCarry": 0,
+        "poolCents": 1000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          },
+          {
+            "id": "y",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 2000,
+        "obligationCents": 20,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-017",
+      "kind": "securities",
+      "note": "예치자 한 명",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 20,
+        "net": 20,
+        "distributable": 20,
+        "newCarry": 0,
+        "poolCents": 1000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 1000
+          }
+        ],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 20,
+        "net": 20,
+        "distributable": 20,
+        "newCarry": 0,
+        "poolCents": 1000,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 1000
+          }
+        ],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-018",
+      "kind": "securities",
+      "note": "확정 이율형: 약정 합계가 순수익(센트)보다 크면 부족액",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 250
+          },
+          {
+            "id": "y",
+            "cents": 250
+          }
+        ],
+        "undistributedCents": 500,
+        "obligationCents": 1500,
+        "shortfallCents": 500
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 250
+          },
+          {
+            "id": "y",
+            "cents": 250
+          }
+        ],
+        "undistributedCents": 500,
+        "obligationCents": 1500,
+        "shortfallCents": 500
+      }
+    },
+    {
+      "id": "sec6-019",
+      "kind": "securities",
+      "note": "확정 이율형: 약정이 정확히 순수익(센트)과 같으면 부족 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 500
+          }
+        ],
+        "undistributedCents": 500,
+        "obligationCents": 1000,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 500
+          }
+        ],
+        "undistributedCents": 500,
+        "obligationCents": 1000,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-020",
+      "kind": "securities",
+      "note": "확정 이율형: 순수익 음수면 약정 전부가 부족",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 0,
+        "net": -5,
+        "distributable": 0,
+        "newCarry": 5,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 250,
+        "shortfallCents": 250
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 0,
+        "net": -5,
+        "distributable": 0,
+        "newCarry": 5,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 0,
+        "obligationCents": 250,
+        "shortfallCents": 250
+      }
+    },
+    {
+      "id": "sec6-021",
+      "kind": "securities",
+      "note": "여러 종목 합산",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 300,
+        "grossIncome": 17,
+        "net": 13,
+        "distributable": 13,
+        "newCarry": 0,
+        "poolCents": 650,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 487
+          },
+          {
+            "id": "y",
+            "cents": 162
+          }
+        ],
+        "undistributedCents": 651,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 300,
+        "grossIncome": 17,
+        "net": 13,
+        "distributable": 13,
+        "newCarry": 0,
+        "poolCents": 650,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 487
+          },
+          {
+            "id": "y",
+            "cents": 162
+          }
+        ],
+        "undistributedCents": 651,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-022",
+      "kind": "securities",
+      "note": "C 등급 종목 → GRADE_C (계산은 계속)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "GRADE_C"
+        ],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 500
+          }
+        ],
+        "undistributedCents": 500,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "GRADE_C"
+        ],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 500
+          }
+        ],
+        "undistributedCents": 500,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-023",
+      "kind": "securities",
+      "note": "종목 하나가 원금의 20%와 같으면 위반 아님 (200 = 1000/5)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 200,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 200,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-024",
+      "kind": "securities",
+      "note": "종목 하나가 원금의 20%를 넘으면 ISSUER_CONCENTRATION (201)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION"
+        ],
+        "investedCost": 201,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION"
+        ],
+        "investedCost": 201,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-025",
+      "kind": "securities",
+      "note": "운용 원가가 원금의 70%와 같으면 위반 아님 (4종목 700... 단 각 ≤200)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 700,
+        "grossIncome": 40,
+        "net": 40,
+        "distributable": 40,
+        "newCarry": 0,
+        "poolCents": 2000,
+        "shares": [],
+        "undistributedCents": 4000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 700,
+        "grossIncome": 40,
+        "net": 40,
+        "distributable": 40,
+        "newCarry": 0,
+        "poolCents": 2000,
+        "shares": [],
+        "undistributedCents": 4000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-026",
+      "kind": "securities",
+      "note": "운용 원가가 원금의 70%를 넘으면 INVESTED_CAP (701)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "INVESTED_CAP"
+        ],
+        "investedCost": 701,
+        "grossIncome": 40,
+        "net": 40,
+        "distributable": 40,
+        "newCarry": 0,
+        "poolCents": 2000,
+        "shares": [],
+        "undistributedCents": 4000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "INVESTED_CAP"
+        ],
+        "investedCost": 701,
+        "grossIncome": 40,
+        "net": 40,
+        "distributable": 40,
+        "newCarry": 0,
+        "poolCents": 2000,
+        "shares": [],
+        "undistributedCents": 4000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-027",
+      "kind": "securities",
+      "note": "세 위반이 모두 있으면 순서대로 GRADE_C, ISSUER_CONCENTRATION, INVESTED_CAP",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "GRADE_C",
+          "ISSUER_CONCENTRATION",
+          "INVESTED_CAP"
+        ],
+        "investedCost": 80,
+        "grossIncome": 6,
+        "net": 6,
+        "distributable": 6,
+        "newCarry": 0,
+        "poolCents": 300,
+        "shares": [],
+        "undistributedCents": 600,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "GRADE_C",
+          "ISSUER_CONCENTRATION",
+          "INVESTED_CAP"
+        ],
+        "investedCost": 80,
+        "grossIncome": 6,
+        "net": 6,
+        "distributable": 6,
+        "newCarry": 0,
+        "poolCents": 300,
+        "shares": [],
+        "undistributedCents": 600,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-028",
+      "kind": "securities",
+      "note": "집중도만 위반 (원금 100, 종목 21)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION"
+        ],
+        "investedCost": 21,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION"
+        ],
+        "investedCost": 21,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-029",
+      "kind": "securities",
+      "note": "원금 0이고 종목이 있으면 집중도·운용 상한 위반",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION",
+          "INVESTED_CAP"
+        ],
+        "investedCost": 1,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION",
+          "INVESTED_CAP"
+        ],
+        "investedCost": 1,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-030",
+      "kind": "securities",
+      "note": "원금 0이고 종목 없으면 위반 없음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-031",
+      "kind": "securities",
+      "note": "원금 5, 종목 cost 1 (1*5=5 > 5 아님) 집중도 위반 아님",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 1,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 1,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-032",
+      "kind": "securities",
+      "note": "원금 10, 종목 cost 7 → 운용 상한 경계(70 = 70)는 위반 아님, 집중도(35>10)만 위반",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION"
+        ],
+        "investedCost": 7,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": false,
+        "violations": [
+          "ISSUER_CONCENTRATION"
+        ],
+        "investedCost": 7,
+        "grossIncome": 1,
+        "net": 1,
+        "distributable": 1,
+        "newCarry": 0,
+        "poolCents": 50,
+        "shares": [],
+        "undistributedCents": 100,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-033",
+      "kind": "securities",
+      "note": "PRINCIPAL 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PRINCIPAL_INVALID"
+      },
+      "actual": {
+        "error": "PRINCIPAL_INVALID"
+      }
+    },
+    {
+      "id": "sec6-034",
+      "kind": "securities",
+      "note": "PRINCIPAL 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PRINCIPAL_INVALID"
+      },
+      "actual": {
+        "error": "PRINCIPAL_INVALID"
+      }
+    },
+    {
+      "id": "sec6-035",
+      "kind": "securities",
+      "note": "PRINCIPAL 소수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PRINCIPAL_INVALID"
+      },
+      "actual": {
+        "error": "PRINCIPAL_INVALID"
+      }
+    },
+    {
+      "id": "sec6-036",
+      "kind": "securities",
+      "note": "PRINCIPAL 1000.0 은 정수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 500,
+        "shares": [],
+        "undistributedCents": 1000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-037",
+      "kind": "securities",
+      "note": "PRINCIPAL true",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PRINCIPAL_INVALID"
+      },
+      "actual": {
+        "error": "PRINCIPAL_INVALID"
+      }
+    },
+    {
+      "id": "sec6-038",
+      "kind": "securities",
+      "note": "POSITIONS 배열 아님",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-039",
+      "kind": "securities",
+      "note": "POSITIONS 원소 null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-040",
+      "kind": "securities",
+      "note": "POSITIONS id 빈 문자열",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-041",
+      "kind": "securities",
+      "note": "POSITIONS id 숫자",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-042",
+      "kind": "securities",
+      "note": "POSITIONS 등급 소문자",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-043",
+      "kind": "securities",
+      "note": "POSITIONS 등급 없음(D)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-044",
+      "kind": "securities",
+      "note": "POSITIONS cost 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-045",
+      "kind": "securities",
+      "note": "POSITIONS income 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-046",
+      "kind": "securities",
+      "note": "POSITIONS income 소수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-047",
+      "kind": "securities",
+      "note": "POSITIONS id 중복",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-048",
+      "kind": "securities",
+      "note": "POSITIONS 추가 키는 무시",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 5,
+        "net": 5,
+        "distributable": 5,
+        "newCarry": 0,
+        "poolCents": 250,
+        "shares": [],
+        "undistributedCents": 500,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 5,
+        "net": 5,
+        "distributable": 5,
+        "newCarry": 0,
+        "poolCents": 250,
+        "shares": [],
+        "undistributedCents": 500,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-049",
+      "kind": "securities",
+      "note": "COST 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "COST_INVALID"
+      },
+      "actual": {
+        "error": "COST_INVALID"
+      }
+    },
+    {
+      "id": "sec6-050",
+      "kind": "securities",
+      "note": "COST 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "COST_INVALID"
+      },
+      "actual": {
+        "error": "COST_INVALID"
+      }
+    },
+    {
+      "id": "sec6-051",
+      "kind": "securities",
+      "note": "CARRY 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CARRY_INVALID"
+      },
+      "actual": {
+        "error": "CARRY_INVALID"
+      }
+    },
+    {
+      "id": "sec6-052",
+      "kind": "securities",
+      "note": "CARRY null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CARRY_INVALID"
+      },
+      "actual": {
+        "error": "CARRY_INVALID"
+      }
+    },
+    {
+      "id": "sec6-053",
+      "kind": "securities",
+      "note": "PAYOUT 8001",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PAYOUT_INVALID"
+      },
+      "actual": {
+        "error": "PAYOUT_INVALID"
+      }
+    },
+    {
+      "id": "sec6-054",
+      "kind": "securities",
+      "note": "PAYOUT 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PAYOUT_INVALID"
+      },
+      "actual": {
+        "error": "PAYOUT_INVALID"
+      }
+    },
+    {
+      "id": "sec6-055",
+      "kind": "securities",
+      "note": "PAYOUT 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PAYOUT_INVALID"
+      },
+      "actual": {
+        "error": "PAYOUT_INVALID"
+      }
+    },
+    {
+      "id": "sec6-056",
+      "kind": "securities",
+      "note": "DEPOSITORS 배열 아님",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "DEPOSITORS_INVALID"
+      },
+      "actual": {
+        "error": "DEPOSITORS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-057",
+      "kind": "securities",
+      "note": "DEPOSITORS weight 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "DEPOSITORS_INVALID"
+      },
+      "actual": {
+        "error": "DEPOSITORS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-058",
+      "kind": "securities",
+      "note": "DEPOSITORS promised 소수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "DEPOSITORS_INVALID"
+      },
+      "actual": {
+        "error": "DEPOSITORS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-059",
+      "kind": "securities",
+      "note": "DEPOSITORS id 중복",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "DEPOSITORS_INVALID"
+      },
+      "actual": {
+        "error": "DEPOSITORS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-060",
+      "kind": "securities",
+      "note": "DEPOSITORS weight 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "DEPOSITORS_INVALID"
+      },
+      "actual": {
+        "error": "DEPOSITORS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-061",
+      "kind": "securities",
+      "note": "검사 순서: PRINCIPAL과 POSITIONS가 모두 틀리면 PRINCIPAL",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PRINCIPAL_INVALID"
+      },
+      "actual": {
+        "error": "PRINCIPAL_INVALID"
+      }
+    },
+    {
+      "id": "sec6-062",
+      "kind": "securities",
+      "note": "검사 순서: POSITIONS와 COST가 모두 틀리면 POSITIONS",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-063",
+      "kind": "securities",
+      "note": "검사 순서: PAYOUT과 DEPOSITORS가 모두 틀리면 PAYOUT",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "PAYOUT_INVALID"
+      },
+      "actual": {
+        "error": "PAYOUT_INVALID"
+      }
+    },
+    {
+      "id": "sec6-064",
+      "kind": "securities",
+      "note": "위반이 있어도 입력 오류가 먼저다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-065",
+      "kind": "securities",
+      "note": "POSITIONS 원소에 grade 키 없음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-066",
+      "kind": "securities",
+      "note": "POSITIONS 원소에 income null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "POSITIONS_INVALID"
+      },
+      "actual": {
+        "error": "POSITIONS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-067",
+      "kind": "securities",
+      "note": "DEPOSITORS 원소에 promised null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "DEPOSITORS_INVALID"
+      },
+      "actual": {
+        "error": "DEPOSITORS_INVALID"
+      }
+    },
+    {
+      "id": "sec6-068",
+      "kind": "securities",
+      "note": "positions 빈 배열 + 원금 0 → 위반 없음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 0,
+        "grossIncome": 0,
+        "net": 0,
+        "distributable": 0,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [],
+        "undistributedCents": 0,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-069",
+      "kind": "securities",
+      "note": "가중치 합 0이면 distributable 전액이 남는다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 30,
+        "net": 30,
+        "distributable": 30,
+        "newCarry": 0,
+        "poolCents": 1500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 3000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 30,
+        "net": 30,
+        "distributable": 30,
+        "newCarry": 0,
+        "poolCents": 1500,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 3000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    },
+    {
+      "id": "sec6-070",
+      "kind": "securities",
+      "note": "확정 이율형 부족액은 payoutBp와 무관 (payoutBp 0)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 1000,
+        "obligationCents": 1500,
+        "shortfallCents": 500
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 100,
+        "grossIncome": 10,
+        "net": 10,
+        "distributable": 10,
+        "newCarry": 0,
+        "poolCents": 0,
+        "shares": [
+          {
+            "id": "x",
+            "cents": 0
+          }
+        ],
+        "undistributedCents": 1000,
+        "obligationCents": 1500,
+        "shortfallCents": 500
+      }
+    },
+    {
+      "id": "sec6-071",
+      "kind": "securities",
+      "note": "운용 원가 경계와 집중도 경계가 동시에 정확히 같음 (원금 1000: 종목 200 x 3 + 100 = 700, 각 ≤ 200)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 700,
+        "grossIncome": 40,
+        "net": 40,
+        "distributable": 40,
+        "newCarry": 0,
+        "poolCents": 2000,
+        "shares": [],
+        "undistributedCents": 4000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      },
+      "actual": {
+        "compliant": true,
+        "violations": [],
+        "investedCost": 700,
+        "grossIncome": 40,
+        "net": 40,
+        "distributable": 40,
+        "newCarry": 0,
+        "poolCents": 2000,
+        "shares": [],
+        "undistributedCents": 4000,
+        "obligationCents": 0,
+        "shortfallCents": 0
+      }
+    }
+  ]
+}

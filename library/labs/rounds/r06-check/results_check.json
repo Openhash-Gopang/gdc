@@ -1,0 +1,865 @@
+{
+ "results": [
+  {
+   "id": "sec6-001",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 200,
+   "grossIncome": 40,
+   "net": 30,
+   "distributable": 30,
+   "newCarry": 0,
+   "poolCents": 1500,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 500
+    },
+    {
+     "id": "y",
+     "cents": 1000
+    }
+   ],
+   "undistributedCents": 1500,
+   "obligationCents": 100,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-002",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 0,
+   "grossIncome": 0,
+   "net": 0,
+   "distributable": 0,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-003",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 0,
+   "grossIncome": 0,
+   "net": 0,
+   "distributable": 0,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-004",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 0,
+   "net": 0,
+   "distributable": 0,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 0,
+   "obligationCents": 50,
+   "shortfallCents": 50
+  },
+  {
+   "id": "sec6-005",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 10,
+   "net": -20,
+   "distributable": 0,
+   "newCarry": 20,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-006",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 50,
+   "net": 40,
+   "distributable": 0,
+   "newCarry": 60,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-007",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 50,
+   "net": 40,
+   "distributable": 0,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-008",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 50,
+   "net": 40,
+   "distributable": 25,
+   "newCarry": 0,
+   "poolCents": 1250,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 1250
+    }
+   ],
+   "undistributedCents": 1250,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-009",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 5,
+   "net": -15,
+   "distributable": 0,
+   "newCarry": 22,
+   "poolCents": 0,
+   "shares": [],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-010",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 100,
+   "net": 100,
+   "distributable": 100,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 10000,
+   "obligationCents": 300,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-011",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 100,
+   "net": 100,
+   "distributable": 100,
+   "newCarry": 0,
+   "poolCents": 8000,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 8000
+    }
+   ],
+   "undistributedCents": 2000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-012",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 99,
+   "net": 99,
+   "distributable": 99,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 9900,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-013",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 7,
+   "net": 7,
+   "distributable": 7,
+   "newCarry": 0,
+   "poolCents": 233,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 233
+    }
+   ],
+   "undistributedCents": 467,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-014",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 2,
+   "net": 2,
+   "distributable": 2,
+   "newCarry": 0,
+   "poolCents": 100,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 33
+    },
+    {
+     "id": "y",
+     "cents": 33
+    },
+    {
+     "id": "z",
+     "cents": 33
+    }
+   ],
+   "undistributedCents": 101,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-015",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 20,
+   "net": 20,
+   "distributable": 20,
+   "newCarry": 0,
+   "poolCents": 1000,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    },
+    {
+     "id": "y",
+     "cents": 1000
+    }
+   ],
+   "undistributedCents": 1000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-016",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 20,
+   "net": 20,
+   "distributable": 20,
+   "newCarry": 0,
+   "poolCents": 1000,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    },
+    {
+     "id": "y",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 2000,
+   "obligationCents": 20,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-017",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 20,
+   "net": 20,
+   "distributable": 20,
+   "newCarry": 0,
+   "poolCents": 1000,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 1000
+    }
+   ],
+   "undistributedCents": 1000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-018",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 500,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 250
+    },
+    {
+     "id": "y",
+     "cents": 250
+    }
+   ],
+   "undistributedCents": 500,
+   "obligationCents": 1500,
+   "shortfallCents": 500
+  },
+  {
+   "id": "sec6-019",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 500,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 500
+    }
+   ],
+   "undistributedCents": 500,
+   "obligationCents": 1000,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-020",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 0,
+   "net": -5,
+   "distributable": 0,
+   "newCarry": 5,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 0,
+   "obligationCents": 250,
+   "shortfallCents": 250
+  },
+  {
+   "id": "sec6-021",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 300,
+   "grossIncome": 17,
+   "net": 13,
+   "distributable": 13,
+   "newCarry": 0,
+   "poolCents": 650,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 487
+    },
+    {
+     "id": "y",
+     "cents": 162
+    }
+   ],
+   "undistributedCents": 651,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-022",
+   "compliant": false,
+   "violations": [
+    "GRADE_C"
+   ],
+   "investedCost": 100,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 500,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 500
+    }
+   ],
+   "undistributedCents": 500,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-023",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 200,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 500,
+   "shares": [],
+   "undistributedCents": 1000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-024",
+   "compliant": false,
+   "violations": [
+    "ISSUER_CONCENTRATION"
+   ],
+   "investedCost": 201,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 500,
+   "shares": [],
+   "undistributedCents": 1000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-025",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 700,
+   "grossIncome": 40,
+   "net": 40,
+   "distributable": 40,
+   "newCarry": 0,
+   "poolCents": 2000,
+   "shares": [],
+   "undistributedCents": 4000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-026",
+   "compliant": false,
+   "violations": [
+    "INVESTED_CAP"
+   ],
+   "investedCost": 701,
+   "grossIncome": 40,
+   "net": 40,
+   "distributable": 40,
+   "newCarry": 0,
+   "poolCents": 2000,
+   "shares": [],
+   "undistributedCents": 4000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-027",
+   "compliant": false,
+   "violations": [
+    "GRADE_C",
+    "ISSUER_CONCENTRATION",
+    "INVESTED_CAP"
+   ],
+   "investedCost": 80,
+   "grossIncome": 6,
+   "net": 6,
+   "distributable": 6,
+   "newCarry": 0,
+   "poolCents": 300,
+   "shares": [],
+   "undistributedCents": 600,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-028",
+   "compliant": false,
+   "violations": [
+    "ISSUER_CONCENTRATION"
+   ],
+   "investedCost": 21,
+   "grossIncome": 1,
+   "net": 1,
+   "distributable": 1,
+   "newCarry": 0,
+   "poolCents": 50,
+   "shares": [],
+   "undistributedCents": 100,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-029",
+   "compliant": false,
+   "violations": [
+    "ISSUER_CONCENTRATION",
+    "INVESTED_CAP"
+   ],
+   "investedCost": 1,
+   "grossIncome": 1,
+   "net": 1,
+   "distributable": 1,
+   "newCarry": 0,
+   "poolCents": 50,
+   "shares": [],
+   "undistributedCents": 100,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-030",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 0,
+   "grossIncome": 0,
+   "net": 0,
+   "distributable": 0,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-031",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 1,
+   "grossIncome": 1,
+   "net": 1,
+   "distributable": 1,
+   "newCarry": 0,
+   "poolCents": 50,
+   "shares": [],
+   "undistributedCents": 100,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-032",
+   "compliant": false,
+   "violations": [
+    "ISSUER_CONCENTRATION"
+   ],
+   "investedCost": 7,
+   "grossIncome": 1,
+   "net": 1,
+   "distributable": 1,
+   "newCarry": 0,
+   "poolCents": 50,
+   "shares": [],
+   "undistributedCents": 100,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-033",
+   "error": "PRINCIPAL_INVALID"
+  },
+  {
+   "id": "sec6-034",
+   "error": "PRINCIPAL_INVALID"
+  },
+  {
+   "id": "sec6-035",
+   "error": "PRINCIPAL_INVALID"
+  },
+  {
+   "id": "sec6-036",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 500,
+   "shares": [],
+   "undistributedCents": 1000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-037",
+   "error": "PRINCIPAL_INVALID"
+  },
+  {
+   "id": "sec6-038",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-039",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-040",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-041",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-042",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-043",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-044",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-045",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-046",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-047",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-048",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 5,
+   "net": 5,
+   "distributable": 5,
+   "newCarry": 0,
+   "poolCents": 250,
+   "shares": [],
+   "undistributedCents": 500,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-049",
+   "error": "COST_INVALID"
+  },
+  {
+   "id": "sec6-050",
+   "error": "COST_INVALID"
+  },
+  {
+   "id": "sec6-051",
+   "error": "CARRY_INVALID"
+  },
+  {
+   "id": "sec6-052",
+   "error": "CARRY_INVALID"
+  },
+  {
+   "id": "sec6-053",
+   "error": "PAYOUT_INVALID"
+  },
+  {
+   "id": "sec6-054",
+   "error": "PAYOUT_INVALID"
+  },
+  {
+   "id": "sec6-055",
+   "error": "PAYOUT_INVALID"
+  },
+  {
+   "id": "sec6-056",
+   "error": "DEPOSITORS_INVALID"
+  },
+  {
+   "id": "sec6-057",
+   "error": "DEPOSITORS_INVALID"
+  },
+  {
+   "id": "sec6-058",
+   "error": "DEPOSITORS_INVALID"
+  },
+  {
+   "id": "sec6-059",
+   "error": "DEPOSITORS_INVALID"
+  },
+  {
+   "id": "sec6-060",
+   "error": "DEPOSITORS_INVALID"
+  },
+  {
+   "id": "sec6-061",
+   "error": "PRINCIPAL_INVALID"
+  },
+  {
+   "id": "sec6-062",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-063",
+   "error": "PAYOUT_INVALID"
+  },
+  {
+   "id": "sec6-064",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-065",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-066",
+   "error": "POSITIONS_INVALID"
+  },
+  {
+   "id": "sec6-067",
+   "error": "DEPOSITORS_INVALID"
+  },
+  {
+   "id": "sec6-068",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 0,
+   "grossIncome": 0,
+   "net": 0,
+   "distributable": 0,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [],
+   "undistributedCents": 0,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-069",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 30,
+   "net": 30,
+   "distributable": 30,
+   "newCarry": 0,
+   "poolCents": 1500,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 3000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  },
+  {
+   "id": "sec6-070",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 100,
+   "grossIncome": 10,
+   "net": 10,
+   "distributable": 10,
+   "newCarry": 0,
+   "poolCents": 0,
+   "shares": [
+    {
+     "id": "x",
+     "cents": 0
+    }
+   ],
+   "undistributedCents": 1000,
+   "obligationCents": 1500,
+   "shortfallCents": 500
+  },
+  {
+   "id": "sec6-071",
+   "compliant": true,
+   "violations": [],
+   "investedCost": 700,
+   "grossIncome": 40,
+   "net": 40,
+   "distributable": 40,
+   "newCarry": 0,
+   "poolCents": 2000,
+   "shares": [],
+   "undistributedCents": 4000,
+   "obligationCents": 0,
+   "shortfallCents": 0
+  }
+ ],
+ "ambiguities": [
+  "오류 검사는 표의 행 순서(필드 단위)대로 첫 실패를 반환한다고 해석함 (예: payoutBp 9000 + depositors 문자열 → PAYOUT_INVALID). 한 필드 내 원소 검사 순서는 같은 코드라 결과 무관.",
+  "positions/depositors 생략·null이면 shares=[] , W=0 → undistributedCents = distributable×100 으로 계산.",
+  "id '비어 있지 않은 문자열': 공백만 있는 문자열(예: ' ')도 비어 있지 않은 것으로 봄(명세 침묵; 시나리오에는 없음).",
+  "정수형 실수(1000.0)는 출력에서 정수로 정규화함. JSON 지수표기/매우 큰 수(정밀도 손실 float)의 처리 기준은 명세가 침묵.",
+  "principal=0이고 종목이 있으면 ISSUER_CONCENTRATION과 INVESTED_CAP이 둘 다 위반(cost≥1이므로 식으로도 동일)으로 둘 다 기록.",
+  "net이 음수여도 출력 net은 음수 그대로, poolCents는 distributable(≥0) 기준이라 floor 음수 처리 문제 없음.",
+  "최상위 inputs가 객체가 아닌 경우의 처리는 명세가 침묵(시나리오에는 없음)."
+ ]
+}
