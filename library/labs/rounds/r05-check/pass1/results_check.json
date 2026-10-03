@@ -1,0 +1,693 @@
+{
+ "results": [
+  {
+   "id": "ins5-001",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "premiumTotal": 10.08,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-002",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "premiumTotal": 20.04,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-003",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 20.04,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-004",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "premiumTotal": 400.08,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 10000
+  },
+  {
+   "id": "ins5-005",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 0.54,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 100
+  },
+  {
+   "id": "ins5-006",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "premiumTotal": 12.0,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 600
+  },
+  {
+   "id": "ins5-007",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [
+    {
+     "month": 1,
+     "loss": 900,
+     "payout": 0,
+     "reason": "WAITING"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-008",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 500,
+     "payout": 400,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 400,
+   "remainingCoverage": 600
+  },
+  {
+   "id": "ins5-009",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 100,
+     "payout": 0,
+     "reason": "BELOW_DEDUCTIBLE"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-010",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 101,
+     "payout": 1,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 1,
+   "remainingCoverage": 999
+  },
+  {
+   "id": "ins5-011",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [
+    {
+     "month": 3,
+     "loss": 1,
+     "payout": 0,
+     "reason": "BELOW_DEDUCTIBLE"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-012",
+   "status": "exhausted",
+   "endMonth": 2,
+   "paidCount": 2,
+   "premiumTotal": 1.68,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 1100,
+     "payout": 1000,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 1000,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-013",
+   "status": "exhausted",
+   "endMonth": 2,
+   "paidCount": 2,
+   "premiumTotal": 1.68,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 1101,
+     "payout": 1000,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 1000,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-014",
+   "status": "exhausted",
+   "endMonth": 4,
+   "paidCount": 4,
+   "premiumTotal": 6.68,
+   "claimResults": [
+    {
+     "month": 3,
+     "loss": 700,
+     "payout": 600,
+     "reason": "PAID"
+    },
+    {
+     "month": 4,
+     "loss": 900,
+     "payout": 400,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 1000,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-015",
+   "status": "exhausted",
+   "endMonth": 2,
+   "paidCount": 2,
+   "premiumTotal": 0.84,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 1000,
+     "payout": 500,
+     "reason": "PARTIAL"
+    },
+    {
+     "month": 2,
+     "loss": 300,
+     "payout": 0,
+     "reason": "EXHAUSTED"
+    }
+   ],
+   "totalPayout": 500,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-016",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 300,
+     "payout": 200,
+     "reason": "PAID"
+    },
+    {
+     "month": 2,
+     "loss": 400,
+     "payout": 300,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 500,
+   "remainingCoverage": 500
+  },
+  {
+   "id": "ins5-017",
+   "status": "exhausted",
+   "endMonth": 2,
+   "paidCount": 2,
+   "premiumTotal": 1.68,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 300,
+     "payout": 200,
+     "reason": "PAID"
+    },
+    {
+     "month": 2,
+     "loss": 1000,
+     "payout": 800,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 1000,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-018",
+   "status": "exhausted",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 1.02,
+   "claimResults": [
+    {
+     "month": 6,
+     "loss": 500,
+     "payout": 200,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 200,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-019",
+   "status": "exhausted",
+   "endMonth": 5,
+   "paidCount": 5,
+   "premiumTotal": 0.85,
+   "claimResults": [
+    {
+     "month": 5,
+     "loss": 500,
+     "payout": 200,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 200,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-020",
+   "status": "exhausted",
+   "endMonth": 3,
+   "paidCount": 3,
+   "premiumTotal": 0.51,
+   "claimResults": [
+    {
+     "month": 3,
+     "loss": 500,
+     "payout": 200,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 200,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-021",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "premiumTotal": 4.2,
+   "claimResults": [
+    {
+     "month": 3,
+     "loss": 500,
+     "payout": 0,
+     "reason": "UNPAID"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-022",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "premiumTotal": 4.2,
+   "claimResults": [
+    {
+     "month": 4,
+     "loss": 500,
+     "payout": 400,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 400,
+   "remainingCoverage": 600
+  },
+  {
+   "id": "ins5-023",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "premiumTotal": 4.2,
+   "claimResults": [
+    {
+     "month": 1,
+     "loss": 500,
+     "payout": 0,
+     "reason": "WAITING"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-024",
+   "status": "lapsed",
+   "endMonth": 2,
+   "paidCount": 0,
+   "premiumTotal": 0.0,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 500,
+     "payout": 0,
+     "reason": "UNPAID"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-025",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "premiumTotal": 4.2,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-026",
+   "status": "lapsed",
+   "endMonth": 4,
+   "paidCount": 2,
+   "premiumTotal": 3.34,
+   "claimResults": [
+    {
+     "month": 4,
+     "loss": 800,
+     "payout": 0,
+     "reason": "UNPAID"
+    }
+   ],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-027",
+   "status": "lapsed",
+   "endMonth": 6,
+   "paidCount": 4,
+   "premiumTotal": 3.36,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-028",
+   "status": "exhausted",
+   "endMonth": 3,
+   "paidCount": 3,
+   "premiumTotal": 0.51,
+   "claimResults": [
+    {
+     "month": 3,
+     "loss": 400,
+     "payout": 200,
+     "reason": "PARTIAL"
+    }
+   ],
+   "totalPayout": 200,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-029",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 9,
+   "premiumTotal": 7.56,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-030",
+   "status": "cancelled",
+   "endMonth": 4,
+   "paidCount": 4,
+   "premiumTotal": 3.36,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-031",
+   "status": "cancelled",
+   "endMonth": 4,
+   "paidCount": 4,
+   "premiumTotal": 3.36,
+   "claimResults": [
+    {
+     "month": 4,
+     "loss": 400,
+     "payout": 300,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 300,
+   "remainingCoverage": 700
+  },
+  {
+   "id": "ins5-032",
+   "status": "cancelled",
+   "endMonth": 3,
+   "paidCount": 3,
+   "premiumTotal": 2.52,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-033",
+   "status": "lapsed",
+   "endMonth": 4,
+   "paidCount": 2,
+   "premiumTotal": 1.68,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-034",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-035",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-036",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-037",
+   "status": "active",
+   "endMonth": 3,
+   "paidCount": 3,
+   "premiumTotal": 2.52,
+   "claimResults": [
+    {
+     "month": 2,
+     "loss": 300,
+     "payout": 200,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 200,
+   "remainingCoverage": 800
+  },
+  {
+   "id": "ins5-038",
+   "status": "active",
+   "endMonth": 0,
+   "paidCount": 0,
+   "premiumTotal": 0.0,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-039",
+   "status": "active",
+   "endMonth": 3,
+   "paidCount": 2,
+   "premiumTotal": 6.68,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-040",
+   "status": "exhausted",
+   "endMonth": 4,
+   "paidCount": 4,
+   "premiumTotal": 1.0,
+   "claimResults": [
+    {
+     "month": 4,
+     "loss": 330,
+     "payout": 300,
+     "reason": "PAID"
+    }
+   ],
+   "totalPayout": 300,
+   "remainingCoverage": 0
+  },
+  {
+   "id": "ins5-041",
+   "error": "COVERAGE_INVALID"
+  },
+  {
+   "id": "ins5-042",
+   "error": "COVERAGE_INVALID"
+  },
+  {
+   "id": "ins5-043",
+   "error": "COVERAGE_INVALID"
+  },
+  {
+   "id": "ins5-044",
+   "error": "COVERAGE_INVALID"
+  },
+  {
+   "id": "ins5-045",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "premiumTotal": 5.04,
+   "claimResults": [],
+   "totalPayout": 0,
+   "remainingCoverage": 1000
+  },
+  {
+   "id": "ins5-046",
+   "error": "COVERAGE_INVALID"
+  },
+  {
+   "id": "ins5-047",
+   "error": "TERM_INVALID"
+  },
+  {
+   "id": "ins5-048",
+   "error": "CLASS_INVALID"
+  },
+  {
+   "id": "ins5-049",
+   "error": "CLASS_INVALID"
+  },
+  {
+   "id": "ins5-050",
+   "error": "OUTCOMES_INVALID"
+  },
+  {
+   "id": "ins5-051",
+   "error": "OUTCOMES_INVALID"
+  },
+  {
+   "id": "ins5-052",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-053",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-054",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-055",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-056",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-057",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-058",
+   "error": "CLAIMS_INVALID"
+  },
+  {
+   "id": "ins5-059",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "ins5-060",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "ins5-061",
+   "error": "COVERAGE_INVALID"
+  },
+  {
+   "id": "ins5-062",
+   "error": "CLAIMS_INVALID"
+  }
+ ],
+ "ambiguities": [
+  "premiumTotal를 JSON 숫자(float, 소수 둘째 자리 반올림 — 센트/100이라 항상 정확)로 출력함. 문자열 \"0.84\" 형식인지 숫자인지 명세가 침묵.",
+  "필수 필드(coverageAmount/termMonths/riskClass/outcomes)가 없거나 null인 경우 각 필드의 *_INVALID로 처리(명세는 claims/cancelAt만 누락 규정).",
+  "claims 원소가 객체가 아니거나 month/loss 키가 없으면 CLAIMS_INVALID로 처리(명세는 키 누락을 명시하지 않음).",
+  "CLAIMS_INVALID 하위 조건(month·loss·순서) 사이의 검사 순서는 명세에 없음 — 어느 쪽이든 같은 코드라 결과 영향 없음.",
+  "§2-3(나) '이 달 처리 후 잔여 0'은 그 달에 claims 원소가 하나라도 처리된 달(지급 0인 WAITING/UNPAID 포함)로 해석. 실제로는 R이 0이 되는 순간 계약이 끝나므로 차이 없음.",
+  "실효(lapsed) 달에도 그 달의 사고는 종료 판정 전에 처리되어 claimResults에 기록됨(§2 순서 1→2→3을 문자 그대로 적용). 그 달은 missed이므로 UNPAID.",
+  "cancelAt이 outcomes 길이 이내이지만 그 전에 실효·소진된 경우 cancelAt은 단순히 읽히지 않는 것으로 봄(오류 아님).",
+  "status=active일 때 endMonth = outcomes 길이(마지막 처리 달), 빈 outcomes면 0."
+ ]
+}
