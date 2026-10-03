@@ -1,0 +1,950 @@
+{
+  "round": "r07",
+  "executed_mode": "simulation",
+  "total": 48,
+  "passed": 48,
+  "byKind": {
+    "savings_linked": {
+      "total": 48,
+      "pass": 48
+    }
+  },
+  "results": [
+    {
+      "id": "sav7-001",
+      "kind": "savings_linked",
+      "note": "6개월 전부 납입, 재원 일정: 잔액 500..3000, 전체 10000, 재원 100센트/월",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 105,
+        "interest": 1.05,
+        "payout": 3001.05
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 105,
+        "interest": 1.05,
+        "payout": 3001.05
+      }
+    },
+    {
+      "id": "sav7-002",
+      "kind": "savings_linked",
+      "note": "12개월 전부 납입, 재원 100/월, 전체 20000",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "accruedCents": 390,
+        "interest": 3.9,
+        "payout": 12003.9
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "accruedCents": 390,
+        "interest": 3.9,
+        "payout": 12003.9
+      }
+    },
+    {
+      "id": "sav7-003",
+      "kind": "savings_linked",
+      "note": "재원이 전부 0 → 이자 0, 원금만",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": 3000
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": 3000
+      }
+    },
+    {
+      "id": "sav7-004",
+      "kind": "savings_linked",
+      "note": "계약이 전체 잔액의 전부(totalBalance == 잔액): 재원 전부를 받는다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 462,
+        "interest": 4.62,
+        "payout": 3004.62
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 462,
+        "interest": 4.62,
+        "payout": 3004.62
+      }
+    },
+    {
+      "id": "sav7-005",
+      "kind": "savings_linked",
+      "note": "totalBalance가 잔액보다 작으면 SETTLEMENT_INCONSISTENT",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENT_INCONSISTENT"
+      },
+      "actual": {
+        "error": "SETTLEMENT_INCONSISTENT"
+      }
+    },
+    {
+      "id": "sav7-006",
+      "kind": "savings_linked",
+      "note": "1월은 정상, 3월에 불일치(잔액 1500 > 1400) → 오류",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENT_INCONSISTENT"
+      },
+      "actual": {
+        "error": "SETTLEMENT_INCONSISTENT"
+      }
+    },
+    {
+      "id": "sav7-007",
+      "kind": "savings_linked",
+      "note": "몫 버림: 100*500/1500 = 33.33 → 33",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 33,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 33,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-008",
+      "kind": "savings_linked",
+      "note": "달마다 버림 후 합산 (50 + 66 = 116 ...)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 3,
+        "paidCount": 3,
+        "principal": 1500,
+        "accruedCents": 116,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 3,
+        "paidCount": 3,
+        "principal": 1500,
+        "accruedCents": 116,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-009",
+      "kind": "savings_linked",
+      "note": "active: 이자 0, payout null, accruedCents는 보인다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 4,
+        "paidCount": 4,
+        "principal": 1200,
+        "accruedCents": 30,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 4,
+        "paidCount": 4,
+        "principal": 1200,
+        "accruedCents": 30,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-010",
+      "kind": "savings_linked",
+      "note": "outcomes 비어 있음 → active, endMonth 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 0,
+        "paidCount": 0,
+        "principal": 0,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 0,
+        "paidCount": 0,
+        "principal": 0,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-011",
+      "kind": "savings_linked",
+      "note": "미납 달에도 잔액은 유지되어 이자가 계속 발생",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 4,
+        "principal": 1600,
+        "accruedCents": 208,
+        "interest": 2.08,
+        "payout": 1602.08
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 4,
+        "principal": 1600,
+        "accruedCents": 208,
+        "interest": 2.08,
+        "payout": 1602.08
+      }
+    },
+    {
+      "id": "sav7-012",
+      "kind": "savings_linked",
+      "note": "1월 미납: 잔액 0인 달은 이자 0 (totalBalance 0이어도 오류 아님)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 2000,
+        "accruedCents": 60,
+        "interest": 0.6,
+        "payout": 2000.6
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 2000,
+        "accruedCents": 60,
+        "interest": 0.6,
+        "payout": 2000.6
+      }
+    },
+    {
+      "id": "sav7-013",
+      "kind": "savings_linked",
+      "note": "1월 미납, totalBalance 0, 잔액 0 → 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 0,
+        "principal": 0,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 0,
+        "principal": 0,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-014",
+      "kind": "savings_linked",
+      "note": "2회 연속 미납 → 자동 해지, 이자는 발생분의 절반",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 4,
+        "paidCount": 2,
+        "principal": 1000,
+        "accruedCents": 87,
+        "interest": 0.43,
+        "payout": 1000.43
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 4,
+        "paidCount": 2,
+        "principal": 1000,
+        "accruedCents": 87,
+        "interest": 0.43,
+        "payout": 1000.43
+      }
+    },
+    {
+      "id": "sav7-015",
+      "kind": "savings_linked",
+      "note": "1월 미납 후 2월 미납 → 2월 끝 자동 해지, 원금 0, 이자 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 2,
+        "paidCount": 0,
+        "principal": 0,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": 0
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 2,
+        "paidCount": 0,
+        "principal": 0,
+        "accruedCents": 0,
+        "interest": 0,
+        "payout": 0
+      }
+    },
+    {
+      "id": "sav7-016",
+      "kind": "savings_linked",
+      "note": "1월 미납 후 2월 납입은 연속 아님",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 2500,
+        "accruedCents": 186,
+        "interest": 1.86,
+        "payout": 2501.86
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 2500,
+        "accruedCents": 186,
+        "interest": 1.86,
+        "payout": 2501.86
+      }
+    },
+    {
+      "id": "sav7-017",
+      "kind": "savings_linked",
+      "note": "사용자 해지: 4월 말, 이자는 발생분의 절반(버림)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 4,
+        "principal": 2400,
+        "accruedCents": 200,
+        "interest": 1,
+        "payout": 2401
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 4,
+        "principal": 2400,
+        "accruedCents": 200,
+        "interest": 1,
+        "payout": 2401
+      }
+    },
+    {
+      "id": "sav7-018",
+      "kind": "savings_linked",
+      "note": "해지 이자 절반 버림: 발생분 홀수 센트",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 2,
+        "paidCount": 2,
+        "principal": 1000,
+        "accruedCents": 6,
+        "interest": 0.03,
+        "payout": 1000.03
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 2,
+        "paidCount": 2,
+        "principal": 1000,
+        "accruedCents": 6,
+        "interest": 0.03,
+        "payout": 1000.03
+      }
+    },
+    {
+      "id": "sav7-019",
+      "kind": "savings_linked",
+      "note": "cancelAt == termMonths → 만기 (이자 전부)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 261,
+        "interest": 2.61,
+        "payout": 3002.61
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 261,
+        "interest": 2.61,
+        "payout": 3002.61
+      }
+    },
+    {
+      "id": "sav7-020",
+      "kind": "savings_linked",
+      "note": "자동 해지가 cancelAt보다 앞서면 cancelAt 무시",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 3,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 36,
+        "interest": 0.18,
+        "payout": 500.18
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 3,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 36,
+        "interest": 0.18,
+        "payout": 500.18
+      }
+    },
+    {
+      "id": "sav7-021",
+      "kind": "savings_linked",
+      "note": "해지 뒤 달의 입력은 읽지 않는다 (불일치가 뒤에 있어도 오류 아님)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 3,
+        "paidCount": 3,
+        "principal": 1500,
+        "accruedCents": 74,
+        "interest": 0.37,
+        "payout": 1500.37
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 3,
+        "paidCount": 3,
+        "principal": 1500,
+        "accruedCents": 74,
+        "interest": 0.37,
+        "payout": 1500.37
+      }
+    },
+    {
+      "id": "sav7-022",
+      "kind": "savings_linked",
+      "note": "만기 달 2회 연속 미납 → auto_terminated",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 6,
+        "paidCount": 4,
+        "principal": 2000,
+        "accruedCents": 224,
+        "interest": 1.12,
+        "payout": 2001.12
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 6,
+        "paidCount": 4,
+        "principal": 2000,
+        "accruedCents": 224,
+        "interest": 1.12,
+        "payout": 2001.12
+      }
+    },
+    {
+      "id": "sav7-023",
+      "kind": "savings_linked",
+      "note": "cancelAt null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 261,
+        "interest": 2.61,
+        "payout": 3002.61
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 261,
+        "interest": 2.61,
+        "payout": 3002.61
+      }
+    },
+    {
+      "id": "sav7-024",
+      "kind": "savings_linked",
+      "note": "rateBp 같은 추가 키는 무시",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 261,
+        "interest": 2.61,
+        "payout": 3002.61
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "accruedCents": 261,
+        "interest": 2.61,
+        "payout": 3002.61
+      }
+    },
+    {
+      "id": "sav7-025",
+      "kind": "savings_linked",
+      "note": "큰 재원: poolCents 1000000, 잔액 비중 5%",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 50000,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 50000,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-026",
+      "kind": "savings_linked",
+      "note": "totalBalance가 잔액과 같은 경계 (500 == 500) 허용",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 10,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 500,
+        "accruedCents": 10,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-027",
+      "kind": "savings_linked",
+      "note": "최소 납입 100, 최대 1000 모두 정상",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 600,
+        "accruedCents": 42,
+        "interest": 0.42,
+        "payout": 600.42
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 600,
+        "accruedCents": 42,
+        "interest": 0.42,
+        "payout": 600.42
+      }
+    },
+    {
+      "id": "sav7-028",
+      "kind": "savings_linked",
+      "note": "1000.0 은 정수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 1000,
+        "accruedCents": 5,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 1000,
+        "accruedCents": 5,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav7-029",
+      "kind": "savings_linked",
+      "note": "AMOUNT 99",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav7-030",
+      "kind": "savings_linked",
+      "note": "AMOUNT 1001",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav7-031",
+      "kind": "savings_linked",
+      "note": "AMOUNT 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav7-032",
+      "kind": "savings_linked",
+      "note": "TERM 9",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TERM_INVALID"
+      },
+      "actual": {
+        "error": "TERM_INVALID"
+      }
+    },
+    {
+      "id": "sav7-033",
+      "kind": "savings_linked",
+      "note": "OUTCOMES 길이 초과",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "OUTCOMES_INVALID"
+      },
+      "actual": {
+        "error": "OUTCOMES_INVALID"
+      }
+    },
+    {
+      "id": "sav7-034",
+      "kind": "savings_linked",
+      "note": "OUTCOMES 원소 이상",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "OUTCOMES_INVALID"
+      },
+      "actual": {
+        "error": "OUTCOMES_INVALID"
+      }
+    },
+    {
+      "id": "sav7-035",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-036",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-037",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS 길이가 outcomes보다 짧음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-038",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS 길이가 outcomes보다 김",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-039",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS poolCents 음수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-040",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS totalBalance 소수",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-041",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS 원소 null",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-042",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS 키 누락",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-043",
+      "kind": "savings_linked",
+      "note": "SETTLEMENTS 형식 오류는 종료 뒤 달에도 적용",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-044",
+      "kind": "savings_linked",
+      "note": "CANCEL 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CANCEL_INVALID"
+      },
+      "actual": {
+        "error": "CANCEL_INVALID"
+      }
+    },
+    {
+      "id": "sav7-045",
+      "kind": "savings_linked",
+      "note": "CANCEL outcomes 길이 초과",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CANCEL_INVALID"
+      },
+      "actual": {
+        "error": "CANCEL_INVALID"
+      }
+    },
+    {
+      "id": "sav7-046",
+      "kind": "savings_linked",
+      "note": "검사 순서: AMOUNT와 SETTLEMENTS가 모두 틀리면 AMOUNT",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav7-047",
+      "kind": "savings_linked",
+      "note": "검사 순서: SETTLEMENTS와 CANCEL이 모두 틀리면 SETTLEMENTS",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENTS_INVALID"
+      },
+      "actual": {
+        "error": "SETTLEMENTS_INVALID"
+      }
+    },
+    {
+      "id": "sav7-048",
+      "kind": "savings_linked",
+      "note": "검사 순서: 형식이 맞고 불일치와 CANCEL 이 없으면 SETTLEMENT_INCONSISTENT 는 처리 중에만",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "SETTLEMENT_INCONSISTENT"
+      },
+      "actual": {
+        "error": "SETTLEMENT_INCONSISTENT"
+      }
+    }
+  ]
+}

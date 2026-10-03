@@ -1,0 +1,363 @@
+{
+ "results": [
+  {
+   "id": "sav7-001",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "accruedCents": 105,
+   "interest": 1.05,
+   "payout": 3001.05
+  },
+  {
+   "id": "sav7-002",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "principal": 12000,
+   "accruedCents": 390,
+   "interest": 3.9,
+   "payout": 12003.9
+  },
+  {
+   "id": "sav7-003",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "accruedCents": 0,
+   "interest": 0.0,
+   "payout": 3000.0
+  },
+  {
+   "id": "sav7-004",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "accruedCents": 462,
+   "interest": 4.62,
+   "payout": 3004.62
+  },
+  {
+   "id": "sav7-005",
+   "error": "SETTLEMENT_INCONSISTENT"
+  },
+  {
+   "id": "sav7-006",
+   "error": "SETTLEMENT_INCONSISTENT"
+  },
+  {
+   "id": "sav7-007",
+   "status": "active",
+   "endMonth": 1,
+   "paidCount": 1,
+   "principal": 500,
+   "accruedCents": 33,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-008",
+   "status": "active",
+   "endMonth": 3,
+   "paidCount": 3,
+   "principal": 1500,
+   "accruedCents": 116,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-009",
+   "status": "active",
+   "endMonth": 4,
+   "paidCount": 4,
+   "principal": 1200,
+   "accruedCents": 30,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-010",
+   "status": "active",
+   "endMonth": 0,
+   "paidCount": 0,
+   "principal": 0,
+   "accruedCents": 0,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-011",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 4,
+   "principal": 1600,
+   "accruedCents": 208,
+   "interest": 2.08,
+   "payout": 1602.08
+  },
+  {
+   "id": "sav7-012",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "principal": 2000,
+   "accruedCents": 60,
+   "interest": 0.6,
+   "payout": 2000.6
+  },
+  {
+   "id": "sav7-013",
+   "status": "active",
+   "endMonth": 1,
+   "paidCount": 0,
+   "principal": 0,
+   "accruedCents": 0,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-014",
+   "status": "auto_terminated",
+   "endMonth": 4,
+   "paidCount": 2,
+   "principal": 1000,
+   "accruedCents": 87,
+   "interest": 0.43,
+   "payout": 1000.43
+  },
+  {
+   "id": "sav7-015",
+   "status": "auto_terminated",
+   "endMonth": 2,
+   "paidCount": 0,
+   "principal": 0,
+   "accruedCents": 0,
+   "interest": 0.0,
+   "payout": 0.0
+  },
+  {
+   "id": "sav7-016",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "principal": 2500,
+   "accruedCents": 186,
+   "interest": 1.86,
+   "payout": 2501.86
+  },
+  {
+   "id": "sav7-017",
+   "status": "cancelled",
+   "endMonth": 4,
+   "paidCount": 4,
+   "principal": 2400,
+   "accruedCents": 200,
+   "interest": 1.0,
+   "payout": 2401.0
+  },
+  {
+   "id": "sav7-018",
+   "status": "cancelled",
+   "endMonth": 2,
+   "paidCount": 2,
+   "principal": 1000,
+   "accruedCents": 6,
+   "interest": 0.03,
+   "payout": 1000.03
+  },
+  {
+   "id": "sav7-019",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "accruedCents": 261,
+   "interest": 2.61,
+   "payout": 3002.61
+  },
+  {
+   "id": "sav7-020",
+   "status": "auto_terminated",
+   "endMonth": 3,
+   "paidCount": 1,
+   "principal": 500,
+   "accruedCents": 36,
+   "interest": 0.18,
+   "payout": 500.18
+  },
+  {
+   "id": "sav7-021",
+   "status": "cancelled",
+   "endMonth": 3,
+   "paidCount": 3,
+   "principal": 1500,
+   "accruedCents": 74,
+   "interest": 0.37,
+   "payout": 1500.37
+  },
+  {
+   "id": "sav7-022",
+   "status": "auto_terminated",
+   "endMonth": 6,
+   "paidCount": 4,
+   "principal": 2000,
+   "accruedCents": 224,
+   "interest": 1.12,
+   "payout": 2001.12
+  },
+  {
+   "id": "sav7-023",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "accruedCents": 261,
+   "interest": 2.61,
+   "payout": 3002.61
+  },
+  {
+   "id": "sav7-024",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "accruedCents": 261,
+   "interest": 2.61,
+   "payout": 3002.61
+  },
+  {
+   "id": "sav7-025",
+   "status": "active",
+   "endMonth": 1,
+   "paidCount": 1,
+   "principal": 500,
+   "accruedCents": 50000,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-026",
+   "status": "active",
+   "endMonth": 1,
+   "paidCount": 1,
+   "principal": 500,
+   "accruedCents": 10,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-027",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 600,
+   "accruedCents": 42,
+   "interest": 0.42,
+   "payout": 600.42
+  },
+  {
+   "id": "sav7-028",
+   "status": "active",
+   "endMonth": 1,
+   "paidCount": 1,
+   "principal": 1000,
+   "accruedCents": 5,
+   "interest": 0.0,
+   "payout": null
+  },
+  {
+   "id": "sav7-029",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav7-030",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav7-031",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav7-032",
+   "error": "TERM_INVALID"
+  },
+  {
+   "id": "sav7-033",
+   "error": "OUTCOMES_INVALID"
+  },
+  {
+   "id": "sav7-034",
+   "error": "OUTCOMES_INVALID"
+  },
+  {
+   "id": "sav7-035",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-036",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-037",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-038",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-039",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-040",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-041",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-042",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-043",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-044",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "sav7-045",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "sav7-046",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav7-047",
+   "error": "SETTLEMENTS_INVALID"
+  },
+  {
+   "id": "sav7-048",
+   "error": "SETTLEMENT_INCONSISTENT"
+  }
+ ],
+ "ambiguities": [
+  "§2의 outcomes[k]·outcomes[k-1]는 1부터 세는 달 번호로 해석(0-기반 배열의 k-1번째 원소). 같은 방식으로 달 k의 정산은 settlements[k-1].",
+  "settlements 원소에 poolCents/totalBalance 키가 없으면(sav7-042) '정수가 아님'으로 보아 SETTLEMENTS_INVALID로 처리(명세는 키 누락을 명시하지 않음).",
+  "outcomes가 빈 배열(sav7-010)도 유효로 보고 active·endMonth 0으로 처리(§4가 이 경우를 언급하므로 허용으로 해석; 최소 길이 규정은 없음).",
+  "active일 때 accruedCents는 처리한 달까지의 누적값을 그대로 출력하고 interest는 0으로 둠.",
+  "interest·payout의 '₮ 숫자' 표현: 센트 정수 ÷100을 소수 둘째 자리 숫자(JSON number)로 출력; payout도 정수 ₮일 수 있으나 숫자형으로만 비교 가능(정수/실수 표기 구분은 명세가 정하지 않음).",
+  "principal 등 정수 출력은 monthlyAmount가 1000.0처럼 실수 표기여도 정수로 정규화(§1 '정수는 값이 정수이면 된다')해 출력.",
+  "cancelAt 검사에서 '정수가 아님'·범위 검사는 cancelAt 키가 없거나 null일 때 건너뜀(명세대로). 단 cancelAt 검사 기준인 outcomes 길이는 자동 해지 등으로 실제 처리되지 않는 달까지 포함한 배열 길이로 해석.",
+  "SETTLEMENT_INCONSISTENT 검사는 이자 계산 전에 매달 B_k > totalBalance로만 판정(B_k=0, totalBalance=0은 일관된 것으로 봄 — sav7-012/013).",
+  "poolCents의 상한이나 poolCents와 totalBalance의 관계에 제약이 없어, 비현실적으로 큰 재원(sav7-025: 계약 1건이 50,000센트 발생)도 그대로 계산함."
+ ]
+}
