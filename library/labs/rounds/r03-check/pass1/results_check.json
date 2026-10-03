@@ -1,0 +1,360 @@
+{
+ "ambiguities": [
+  "§2의 outcomes[k]는 1부터 센 k번째 달(배열 인덱스 k-1)로 해석함. k=1이 missed일 때 outcomes[0](직전 달)은 없으므로 연속 미납으로 보지 않음.",
+  "active 상태의 interest 값을 명세 §5가 정하지 않음(payout만 null로 규정). 미확정 이자이므로 0으로 출력함.",
+  "'정수'의 판정: JSON에서 500.0처럼 정수값인 실수를 정수로 볼지 명세가 침묵함(이번 입력에는 없음; 500.5, 2.5는 비정수로 처리).",
+  "만기 달(k==termMonths)에 2회 연속 미납이 성립하면 §2 규칙 순서(2번이 4번보다 먼저)에 따라 만기가 아닌 auto_terminated로 처리함. §2의 '만기 달 cancelAt'만 명시되고 이 경우는 명시되지 않음.",
+  "OUTCOMES_INVALID 검사는 계약 종료 후 읽지 않는 달의 원소까지 포함해 배열 전체에 적용한다고 해석함.",
+  "cancelAt 필드가 null로 주어진 경우의 처리(부재로 볼지 CANCEL_INVALID로 볼지) 명세 침묵(이번 입력에는 없음)."
+ ],
+ "results": [
+  {
+   "id": "sav3-001",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "principal": 12000,
+   "interest": 32.5,
+   "payout": 12032.5
+  },
+  {
+   "id": "sav3-002",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "principal": 12000,
+   "interest": 0.0,
+   "payout": 12000.0
+  },
+  {
+   "id": "sav3-003",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 3000,
+   "interest": 2.18,
+   "payout": 3002.18
+  },
+  {
+   "id": "sav3-004",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 600,
+   "interest": 0.87,
+   "payout": 600.87
+  },
+  {
+   "id": "sav3-005",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "principal": 1200,
+   "interest": 0.06,
+   "payout": 1200.06
+  },
+  {
+   "id": "sav3-006",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "principal": 3996,
+   "interest": 2.16,
+   "payout": 3998.16
+  },
+  {
+   "id": "sav3-007",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 4662,
+   "interest": 0.95,
+   "payout": 4662.95
+  },
+  {
+   "id": "sav3-008",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 11,
+   "principal": 11000,
+   "interest": 28.33,
+   "payout": 11028.33
+  },
+  {
+   "id": "sav3-009",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 11,
+   "principal": 11000,
+   "interest": 27.5,
+   "payout": 11027.5
+  },
+  {
+   "id": "sav3-010",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 11,
+   "principal": 11000,
+   "interest": 32.08,
+   "payout": 11032.08
+  },
+  {
+   "id": "sav3-011",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 9,
+   "principal": 4500,
+   "interest": 6.37,
+   "payout": 4506.37
+  },
+  {
+   "id": "sav3-012",
+   "status": "auto_terminated",
+   "endMonth": 4,
+   "paidCount": 2,
+   "principal": 2000,
+   "interest": 1.45,
+   "payout": 2001.45
+  },
+  {
+   "id": "sav3-013",
+   "status": "auto_terminated",
+   "endMonth": 2,
+   "paidCount": 0,
+   "principal": 0,
+   "interest": 0.0,
+   "payout": 0.0
+  },
+  {
+   "id": "sav3-014",
+   "status": "auto_terminated",
+   "endMonth": 6,
+   "paidCount": 4,
+   "principal": 4000,
+   "interest": 3.75,
+   "payout": 4003.75
+  },
+  {
+   "id": "sav3-015",
+   "status": "auto_terminated",
+   "endMonth": 3,
+   "paidCount": 1,
+   "principal": 1000,
+   "interest": 0.62,
+   "payout": 1000.62
+  },
+  {
+   "id": "sav3-016",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 10,
+   "principal": 8000,
+   "interest": 7.46,
+   "payout": 8007.46
+  },
+  {
+   "id": "sav3-017",
+   "status": "auto_terminated",
+   "endMonth": 3,
+   "paidCount": 1,
+   "principal": 1000,
+   "interest": 0.62,
+   "payout": 1000.62
+  },
+  {
+   "id": "sav3-018",
+   "status": "cancelled",
+   "endMonth": 6,
+   "paidCount": 6,
+   "principal": 6000,
+   "interest": 4.37,
+   "payout": 6004.37
+  },
+  {
+   "id": "sav3-019",
+   "status": "cancelled",
+   "endMonth": 1,
+   "paidCount": 1,
+   "principal": 1000,
+   "interest": 0.2,
+   "payout": 1000.2
+  },
+  {
+   "id": "sav3-020",
+   "status": "cancelled",
+   "endMonth": 11,
+   "paidCount": 11,
+   "principal": 11000,
+   "interest": 13.75,
+   "payout": 11013.75
+  },
+  {
+   "id": "sav3-021",
+   "status": "matured",
+   "endMonth": 12,
+   "paidCount": 12,
+   "principal": 12000,
+   "interest": 32.5,
+   "payout": 12032.5
+  },
+  {
+   "id": "sav3-022",
+   "status": "cancelled",
+   "endMonth": 3,
+   "paidCount": 3,
+   "principal": 1500,
+   "interest": 0.0,
+   "payout": 1500.0
+  },
+  {
+   "id": "sav3-023",
+   "status": "cancelled",
+   "endMonth": 4,
+   "paidCount": 3,
+   "principal": 2700,
+   "interest": 1.2,
+   "payout": 2701.2
+  },
+  {
+   "id": "sav3-024",
+   "status": "cancelled",
+   "endMonth": 4,
+   "paidCount": 3,
+   "principal": 3000,
+   "interest": 1.87,
+   "payout": 3001.87
+  },
+  {
+   "id": "sav3-025",
+   "status": "cancelled",
+   "endMonth": 5,
+   "paidCount": 5,
+   "principal": 1665,
+   "interest": 0.27,
+   "payout": 1665.27
+  },
+  {
+   "id": "sav3-026",
+   "status": "active",
+   "endMonth": 4,
+   "paidCount": 3,
+   "principal": 3000,
+   "interest": 0,
+   "payout": null
+  },
+  {
+   "id": "sav3-027",
+   "status": "active",
+   "endMonth": 0,
+   "paidCount": 0,
+   "principal": 0,
+   "interest": 0,
+   "payout": null
+  },
+  {
+   "id": "sav3-028",
+   "status": "active",
+   "endMonth": 2,
+   "paidCount": 1,
+   "principal": 1000,
+   "interest": 0,
+   "payout": null
+  },
+  {
+   "id": "sav3-029",
+   "status": "matured",
+   "endMonth": 6,
+   "paidCount": 5,
+   "principal": 1250,
+   "interest": 1.25,
+   "payout": 1251.25
+  },
+  {
+   "id": "sav3-030",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav3-031",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav3-032",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav3-033",
+   "error": "TERM_INVALID"
+  },
+  {
+   "id": "sav3-034",
+   "error": "RATE_INVALID"
+  },
+  {
+   "id": "sav3-035",
+   "error": "RATE_INVALID"
+  },
+  {
+   "id": "sav3-036",
+   "error": "RATE_INVALID"
+  },
+  {
+   "id": "sav3-037",
+   "error": "OUTCOMES_INVALID"
+  },
+  {
+   "id": "sav3-038",
+   "error": "OUTCOMES_INVALID"
+  },
+  {
+   "id": "sav3-039",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "sav3-040",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "sav3-041",
+   "error": "CANCEL_INVALID"
+  },
+  {
+   "id": "sav3-042",
+   "error": "AMOUNT_INVALID"
+  },
+  {
+   "id": "sav3-043",
+   "error": "TERM_INVALID"
+  },
+  {
+   "id": "sav3-044",
+   "error": "RATE_INVALID"
+  },
+  {
+   "id": "sav3-045",
+   "status": "cancelled",
+   "endMonth": 2,
+   "paidCount": 2,
+   "principal": 2000,
+   "interest": 0.62,
+   "payout": 2000.62
+  },
+  {
+   "id": "sav3-046",
+   "status": "cancelled",
+   "endMonth": 4,
+   "paidCount": 4,
+   "principal": 4000,
+   "interest": 2.08,
+   "payout": 4002.08
+  },
+  {
+   "id": "sav3-047",
+   "status": "auto_terminated",
+   "endMonth": 7,
+   "paidCount": 5,
+   "principal": 3000,
+   "interest": 2.18,
+   "payout": 3002.18
+  }
+ ]
+}

@@ -7,7 +7,7 @@
 //
 // 이 실행기는 네트워크·지갑·실제 잔액에 접근하지 않는다. 신용평가는 js/gdc-credit.js 의
 // evaluateCredit()을 실제로 호출하되, 서버 응답(fetch)만 시나리오 입력으로 대체한다.
-// 한도 검사는 js/gdc-limits.js 를 호출한다. 따라서 결과는 "시뮬레이션"이며,
+// 한도 검사는 js/gdc-limits.js, 적금 계산은 js/gdc-savings.js 를 호출한다. 따라서 결과는 "시뮬레이션"이며,
 // 실제 GDC 잔액이 움직이는 거래의 시험이 아니다.
 import { readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
@@ -20,6 +20,7 @@ const dir = path.join(root, 'library/labs/rounds', round);
 
 const { evaluateCredit } = await import(pathToFileURL(path.join(root, 'js/gdc-credit.js')));
 const { checkTransfer, checkLoan } = await import(pathToFileURL(path.join(root, 'js/gdc-limits.js')));
+const { evaluateSavings } = await import(pathToFileURL(path.join(root, 'js/gdc-savings.js')));
 
 const SCORE_TOL = 0.001; // 점수는 소수 첫째 자리 반올림값이므로 사실상 정확히 일치해야 한다. (R01 때는 0.1이어서 동점 반올림 차이를 가렸다)
 const DSR_TOL = 0.0005;
@@ -51,6 +52,7 @@ async function runOne(s) {
   }
   if (s.kind === 'transfer') return checkTransfer(s.inputs);
   if (s.kind === 'loan_limit') return checkLoan(s.inputs);
+  if (s.kind === 'savings') return evaluateSavings(s.inputs);
   return { error: 'unknown kind ' + s.kind };
 }
 

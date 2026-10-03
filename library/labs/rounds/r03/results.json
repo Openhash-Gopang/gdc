@@ -1,0 +1,991 @@
+{
+  "round": "r03",
+  "executed_mode": "simulation",
+  "total": 49,
+  "passed": 49,
+  "byKind": {
+    "savings": {
+      "total": 49,
+      "pass": 49
+    }
+  },
+  "results": [
+    {
+      "id": "sav3-001",
+      "kind": "savings",
+      "note": "12개월 전부 납입, 최대 납입액·최대 이율 (손계산 ₮32.50)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "interest": 32.5,
+        "payout": 12032.5
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "interest": 32.5,
+        "payout": 12032.5
+      }
+    },
+    {
+      "id": "sav3-002",
+      "kind": "savings",
+      "note": "12개월 전부 납입, 이율 0 (현행 승인 범위: 무이자)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "interest": 0,
+        "payout": 12000
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "interest": 0,
+        "payout": 12000
+      }
+    },
+    {
+      "id": "sav3-003",
+      "kind": "savings",
+      "note": "6개월 전부 납입, 이율 25bp",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "interest": 2.18,
+        "payout": 3002.18
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "interest": 2.18,
+        "payout": 3002.18
+      }
+    },
+    {
+      "id": "sav3-004",
+      "kind": "savings",
+      "note": "6개월 전부 납입, 최소 납입액 100",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 600,
+        "interest": 0.87,
+        "payout": 600.87
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 600,
+        "interest": 0.87,
+        "payout": 600.87
+      }
+    },
+    {
+      "id": "sav3-005",
+      "kind": "savings",
+      "note": "12개월 전부 납입, 이율 1bp, 최소 납입액 (이자 ₮0.06)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 1200,
+        "interest": 0.06,
+        "payout": 1200.06
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 1200,
+        "interest": 0.06,
+        "payout": 1200.06
+      }
+    },
+    {
+      "id": "sav3-006",
+      "kind": "savings",
+      "note": "12개월 전부 납입, 이율 10bp, 납입액 333 (216.45센트 → 버림 ₮2.16)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 3996,
+        "interest": 2.16,
+        "payout": 3998.16
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 3996,
+        "interest": 2.16,
+        "payout": 3998.16
+      }
+    },
+    {
+      "id": "sav3-007",
+      "kind": "savings",
+      "note": "6개월, 이율 7bp, 납입액 777 (버림 확인)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 4662,
+        "interest": 0.95,
+        "payout": 4662.95
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 4662,
+        "interest": 0.95,
+        "payout": 4662.95
+      }
+    },
+    {
+      "id": "sav3-008",
+      "kind": "savings",
+      "note": "중간 1회 미납(비연속) 후 만기",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 28.33,
+        "payout": 11028.33
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 28.33,
+        "payout": 11028.33
+      }
+    },
+    {
+      "id": "sav3-009",
+      "kind": "savings",
+      "note": "첫 달 미납 후 만기",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 27.5,
+        "payout": 11027.5
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 27.5,
+        "payout": 11027.5
+      }
+    },
+    {
+      "id": "sav3-010",
+      "kind": "savings",
+      "note": "마지막 달만 미납 후 만기",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 32.08,
+        "payout": 11032.08
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 32.08,
+        "payout": 11032.08
+      }
+    },
+    {
+      "id": "sav3-011",
+      "kind": "savings",
+      "note": "비연속 미납 3회, 연속 아님 → 만기",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 9,
+        "principal": 4500,
+        "interest": 6.37,
+        "payout": 4506.37
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 9,
+        "principal": 4500,
+        "interest": 6.37,
+        "payout": 4506.37
+      }
+    },
+    {
+      "id": "sav3-012",
+      "kind": "savings",
+      "note": "연속 2회 미납(3·4월) 자동 해지 → 4월 끝",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 4,
+        "paidCount": 2,
+        "principal": 2000,
+        "interest": 1.45,
+        "payout": 2001.45
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 4,
+        "paidCount": 2,
+        "principal": 2000,
+        "interest": 1.45,
+        "payout": 2001.45
+      }
+    },
+    {
+      "id": "sav3-013",
+      "kind": "savings",
+      "note": "첫 두 달 연속 미납 → 2월 끝 자동 해지, 납입 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 2,
+        "paidCount": 0,
+        "principal": 0,
+        "interest": 0,
+        "payout": 0
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 2,
+        "paidCount": 0,
+        "principal": 0,
+        "interest": 0,
+        "payout": 0
+      }
+    },
+    {
+      "id": "sav3-014",
+      "kind": "savings",
+      "note": "연속 미납이 마지막 두 달 → 만기가 아니라 자동 해지",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 6,
+        "paidCount": 4,
+        "principal": 4000,
+        "interest": 3.75,
+        "payout": 4003.75
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 6,
+        "paidCount": 4,
+        "principal": 4000,
+        "interest": 3.75,
+        "payout": 4003.75
+      }
+    },
+    {
+      "id": "sav3-015",
+      "kind": "savings",
+      "note": "연속 3회 미납 중 2회째에서 이미 해지, 이후 결과는 읽지 않음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 3,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0.62,
+        "payout": 1000.62
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 3,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0.62,
+        "payout": 1000.62
+      }
+    },
+    {
+      "id": "sav3-016",
+      "kind": "savings",
+      "note": "미납 후 납입 후 다시 미납(비연속)은 해지 아님",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 10,
+        "principal": 8000,
+        "interest": 7.46,
+        "payout": 8007.46
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 10,
+        "principal": 8000,
+        "interest": 7.46,
+        "payout": 8007.46
+      }
+    },
+    {
+      "id": "sav3-017",
+      "kind": "savings",
+      "note": "자동 해지 달에 cancelAt이 같은 달 → 자동 해지가 먼저",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 3,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0.62,
+        "payout": 1000.62
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 3,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0.62,
+        "payout": 1000.62
+      }
+    },
+    {
+      "id": "sav3-018",
+      "kind": "savings",
+      "note": "사용자 해지 6개월째(12개월 계약)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 6000,
+        "interest": 4.37,
+        "payout": 6004.37
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 6000,
+        "interest": 4.37,
+        "payout": 6004.37
+      }
+    },
+    {
+      "id": "sav3-019",
+      "kind": "savings",
+      "note": "사용자 해지 1개월째",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0.2,
+        "payout": 1000.2
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 1,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0.2,
+        "payout": 1000.2
+      }
+    },
+    {
+      "id": "sav3-020",
+      "kind": "savings",
+      "note": "사용자 해지 11개월째 (만기 직전)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 11,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 13.75,
+        "payout": 11013.75
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 11,
+        "paidCount": 11,
+        "principal": 11000,
+        "interest": 13.75,
+        "payout": 11013.75
+      }
+    },
+    {
+      "id": "sav3-021",
+      "kind": "savings",
+      "note": "만기 달에 cancelAt = termMonths → 만기로 본다",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "interest": 32.5,
+        "payout": 12032.5
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 12,
+        "paidCount": 12,
+        "principal": 12000,
+        "interest": 32.5,
+        "payout": 12032.5
+      }
+    },
+    {
+      "id": "sav3-022",
+      "kind": "savings",
+      "note": "6개월 계약, 3개월째 해지, 이율 0",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 3,
+        "paidCount": 3,
+        "principal": 1500,
+        "interest": 0,
+        "payout": 1500
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 3,
+        "paidCount": 3,
+        "principal": 1500,
+        "interest": 0,
+        "payout": 1500
+      }
+    },
+    {
+      "id": "sav3-023",
+      "kind": "savings",
+      "note": "미납이 섞인 상태에서 해지 (납입 3회: 1,2,4월, 4월 끝 해지)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 3,
+        "principal": 2700,
+        "interest": 1.2,
+        "payout": 2701.2
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 3,
+        "principal": 2700,
+        "interest": 1.2,
+        "payout": 2701.2
+      }
+    },
+    {
+      "id": "sav3-024",
+      "kind": "savings",
+      "note": "해지 달이 미납 (마지막 납입 이후 1회 미납, 해지)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 3,
+        "principal": 3000,
+        "interest": 1.87,
+        "payout": 3001.87
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 3,
+        "principal": 3000,
+        "interest": 1.87,
+        "payout": 3001.87
+      }
+    },
+    {
+      "id": "sav3-025",
+      "kind": "savings",
+      "note": "중도해지 이자 홀수 버림 (S 가 2400의 배수 아님)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 5,
+        "paidCount": 5,
+        "principal": 1665,
+        "interest": 0.27,
+        "payout": 1665.27
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 5,
+        "paidCount": 5,
+        "principal": 1665,
+        "interest": 0.27,
+        "payout": 1665.27
+      }
+    },
+    {
+      "id": "sav3-026",
+      "kind": "savings",
+      "note": "아직 진행 중(active), 결과 일부만",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 4,
+        "paidCount": 3,
+        "principal": 3000,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 4,
+        "paidCount": 3,
+        "principal": 3000,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav3-027",
+      "kind": "savings",
+      "note": "아직 진행 중, 결과 없음",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 0,
+        "paidCount": 0,
+        "principal": 0,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 0,
+        "paidCount": 0,
+        "principal": 0,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav3-028",
+      "kind": "savings",
+      "note": "아직 진행 중, 직전까지 1회 미납(연속 아님)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "active",
+        "endMonth": 2,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0,
+        "payout": null
+      },
+      "actual": {
+        "status": "active",
+        "endMonth": 2,
+        "paidCount": 1,
+        "principal": 1000,
+        "interest": 0,
+        "payout": null
+      }
+    },
+    {
+      "id": "sav3-029",
+      "kind": "savings",
+      "note": "6개월 만기, 전부 미납 아님: 첫 5개월 납입 후 마지막 미납",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 1250,
+        "interest": 1.25,
+        "payout": 1251.25
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 1250,
+        "interest": 1.25,
+        "payout": 1251.25
+      }
+    },
+    {
+      "id": "sav3-030",
+      "kind": "savings",
+      "note": "금액 99 → AMOUNT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav3-031",
+      "kind": "savings",
+      "note": "금액 1001 → AMOUNT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav3-032",
+      "kind": "savings",
+      "note": "금액 소수 → AMOUNT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav3-033",
+      "kind": "savings",
+      "note": "기간 9 → TERM_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TERM_INVALID"
+      },
+      "actual": {
+        "error": "TERM_INVALID"
+      }
+    },
+    {
+      "id": "sav3-034",
+      "kind": "savings",
+      "note": "이율 51 → RATE_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "RATE_INVALID"
+      },
+      "actual": {
+        "error": "RATE_INVALID"
+      }
+    },
+    {
+      "id": "sav3-035",
+      "kind": "savings",
+      "note": "이율 음수 → RATE_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "RATE_INVALID"
+      },
+      "actual": {
+        "error": "RATE_INVALID"
+      }
+    },
+    {
+      "id": "sav3-036",
+      "kind": "savings",
+      "note": "이율 소수 → RATE_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "RATE_INVALID"
+      },
+      "actual": {
+        "error": "RATE_INVALID"
+      }
+    },
+    {
+      "id": "sav3-037",
+      "kind": "savings",
+      "note": "결과 길이가 기간보다 길다 → OUTCOMES_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "OUTCOMES_INVALID"
+      },
+      "actual": {
+        "error": "OUTCOMES_INVALID"
+      }
+    },
+    {
+      "id": "sav3-038",
+      "kind": "savings",
+      "note": "알 수 없는 결과값 → OUTCOMES_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "OUTCOMES_INVALID"
+      },
+      "actual": {
+        "error": "OUTCOMES_INVALID"
+      }
+    },
+    {
+      "id": "sav3-039",
+      "kind": "savings",
+      "note": "cancelAt 0 → CANCEL_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CANCEL_INVALID"
+      },
+      "actual": {
+        "error": "CANCEL_INVALID"
+      }
+    },
+    {
+      "id": "sav3-040",
+      "kind": "savings",
+      "note": "cancelAt이 기간 초과 → CANCEL_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CANCEL_INVALID"
+      },
+      "actual": {
+        "error": "CANCEL_INVALID"
+      }
+    },
+    {
+      "id": "sav3-041",
+      "kind": "savings",
+      "note": "cancelAt이 결과 길이 초과 → CANCEL_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "CANCEL_INVALID"
+      },
+      "actual": {
+        "error": "CANCEL_INVALID"
+      }
+    },
+    {
+      "id": "sav3-042",
+      "kind": "savings",
+      "note": "검사 순서: 금액 오류와 기간 오류가 함께 → AMOUNT_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "AMOUNT_INVALID"
+      },
+      "actual": {
+        "error": "AMOUNT_INVALID"
+      }
+    },
+    {
+      "id": "sav3-043",
+      "kind": "savings",
+      "note": "검사 순서: 기간 오류와 이율 오류가 함께 → TERM_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "TERM_INVALID"
+      },
+      "actual": {
+        "error": "TERM_INVALID"
+      }
+    },
+    {
+      "id": "sav3-044",
+      "kind": "savings",
+      "note": "검사 순서: 이율 오류와 결과 오류가 함께 → RATE_INVALID",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "error": "RATE_INVALID"
+      },
+      "actual": {
+        "error": "RATE_INVALID"
+      }
+    },
+    {
+      "id": "sav3-045",
+      "kind": "savings",
+      "note": "12개월, 해지 2개월째, 이율 50, 납입 2회",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 2,
+        "paidCount": 2,
+        "principal": 2000,
+        "interest": 0.62,
+        "payout": 2000.62
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 2,
+        "paidCount": 2,
+        "principal": 2000,
+        "interest": 0.62,
+        "payout": 2000.62
+      }
+    },
+    {
+      "id": "sav3-046",
+      "kind": "savings",
+      "note": "12개월, 4개월째 해지, 전부 납입, 이율 50",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 4,
+        "principal": 4000,
+        "interest": 2.08,
+        "payout": 4002.08
+      },
+      "actual": {
+        "status": "cancelled",
+        "endMonth": 4,
+        "paidCount": 4,
+        "principal": 4000,
+        "interest": 2.08,
+        "payout": 4002.08
+      }
+    },
+    {
+      "id": "sav3-047",
+      "kind": "savings",
+      "note": "자동 해지 직전 마지막 납입 후 2회 연속 미납 (납입 5회)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "auto_terminated",
+        "endMonth": 7,
+        "paidCount": 5,
+        "principal": 3000,
+        "interest": 2.18,
+        "payout": 3002.18
+      },
+      "actual": {
+        "status": "auto_terminated",
+        "endMonth": 7,
+        "paidCount": 5,
+        "principal": 3000,
+        "interest": 2.18,
+        "payout": 3002.18
+      }
+    },
+    {
+      "id": "sav3-048",
+      "kind": "savings",
+      "note": "cancelAt이 null이면 해지 없음 (만기까지)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "interest": 1.75,
+        "payout": 3001.75
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 6,
+        "principal": 3000,
+        "interest": 1.75,
+        "payout": 3001.75
+      }
+    },
+    {
+      "id": "sav3-049",
+      "kind": "savings",
+      "note": "1회차 미납 후 2회차 납입은 연속 미납 아님 (k=1 직전 달 없음)",
+      "pass": true,
+      "diffs": [],
+      "expected": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 2500,
+        "interest": 1.25,
+        "payout": 2501.25
+      },
+      "actual": {
+        "status": "matured",
+        "endMonth": 6,
+        "paidCount": 5,
+        "principal": 2500,
+        "interest": 1.25,
+        "payout": 2501.25
+      }
+    }
+  ]
+}
